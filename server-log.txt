@@ -1,0 +1,128 @@
+▲ Next.js 16.2.10 (webpack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.11:3000
+- Environments: .env
+✓ Ready in 895ms
+
+○ Compiling /login ...
+ GET /login 200 in 9.6s (next.js: 8.6s, proxy.ts: 587ms, application-code: 334ms)
+ GET /register 200 in 1259ms (next.js: 1031ms, proxy.ts: 9ms, application-code: 218ms)
+ GET /login?redirect=%2Fdashboard 200 in 223ms (next.js: 73ms, proxy.ts: 13ms, application-code: 137ms)
+○ Compiling /api/auth/register ...
+Registration error: Error [PrismaClientKnownRequestError]: 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Error validating `accelerateUrl`: the URL must start with the protocol `prisma://` or `prisma+postgres://`
+    at async POST (src\app\api\auth\register\route.ts:27:22)
+  25 |     const { email, password, fullName, consentPrivacy, consentDisclaimer } = parsed.data
+  26 |
+> 27 |     const existing = await prisma.user.findUnique({ where: { email } })
+     |                      ^
+  28 |     if (existing) {
+  29 |       return NextResponse.json(
+  30 |         { error: { code: "CONFLICT", message: "An account with this email already exists" ... {
+  code: 'P6001',
+  meta: { modelName: 'User' },
+  clientVersion: '7.8.0'
+}
+ POST /api/auth/register 500 in 4.2s (next.js: 3.9s, proxy.ts: 12ms, application-code: 337ms)
+Login error: Error [PrismaClientKnownRequestError]: 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Error validating `accelerateUrl`: the URL must start with the protocol `prisma://` or `prisma+postgres://`
+    at async POST (src\app\api\auth\login\route.ts:24:18)
+  22 |     const { email, password } = parsed.data
+  23 |
+> 24 |     const user = await prisma.user.findUnique({ where: { email } })
+     |                  ^
+  25 |     if (!user) {
+  26 |       return NextResponse.json(
+  27 |         { error: { code: "INVALID_CREDENTIALS", message: "Invalid email or password" } }, {
+  code: 'P6001',
+  meta: { modelName: 'User' },
+  clientVersion: '7.8.0'
+}
+ POST /api/auth/login 500 in 944ms (next.js: 742ms, proxy.ts: 15ms, application-code: 187ms)
+⨯ No HTTP methods exported in 'D:\Projects\Health-OS\src\app\api\auth\register\route.ts'. Export a named export for each HTTP method.
+ POST /api/auth/register 405 in 184ms (next.js: 95ms, proxy.ts: 8ms, application-code: 81ms)
+ POST /api/auth/register 405 in 24ms (next.js: 5ms, proxy.ts: 10ms, application-code: 10ms)
+Registration error: Error [PrismaClientKnownRequestError]: 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Error validating `accelerateUrl`: the URL must start with the protocol `prisma://` or `prisma+postgres://`
+    at async POST (src\app\api\auth\register\route.ts:27:22)
+  25 |     const { email, password, fullName, consentPrivacy, consentDisclaimer } = parsed.data
+  26 |
+> 27 |     const existing = await prisma.user.findUnique({ where: { email } })
+     |                      ^
+  28 |     if (existing) {
+  29 |       return NextResponse.json(
+  30 |         { error: { code: "CONFLICT", message: "An account with this email already exists" ... {
+  code: 'P6001',
+  meta: { modelName: 'User' },
+  clientVersion: '7.8.0'
+}
+ POST /api/auth/register 500 in 348ms (next.js: 143ms, proxy.ts: 9ms, application-code: 196ms)
+Registration error: Error [PrismaClientKnownRequestError]: 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Error validating `accelerateUrl`: the URL must start with the protocol `prisma://` or `prisma+postgres://`
+    at async POST (src\app\api\auth\register\route.ts:27:22)
+  25 |     const { email, password, fullName, consentPrivacy, consentDisclaimer } = parsed.data
+  26 |
+> 27 |     const existing = await prisma.user.findUnique({ where: { email } })
+     |                      ^
+  28 |     if (existing) {
+  29 |       return NextResponse.json(
+  30 |         { error: { code: "CONFLICT", message: "An account with this email already exists" ... {
+  code: 'P6001',
+  meta: { modelName: 'User' },
+  clientVersion: '7.8.0'
+}
+ POST /api/auth/register 500 in 1043ms (next.js: 823ms, proxy.ts: 10ms, application-code: 210ms)
+  Reload env: .env
+Registration error: Error [PrismaClientKnownRequestError]: 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Error validating `accelerateUrl`: the URL must start with the protocol `prisma://` or `prisma+postgres://`
+    at async POST (src\app\api\auth\register\route.ts:27:22)
+  25 |     const { email, password, fullName, consentPrivacy, consentDisclaimer } = parsed.data
+  26 |
+> 27 |     const existing = await prisma.user.findUnique({ where: { email } })
+     |                      ^
+  28 |     if (existing) {
+  29 |       return NextResponse.json(
+  30 |         { error: { code: "CONFLICT", message: "An account with this email already exists" ... {
+  code: 'P6001',
+  meta: { modelName: 'User' },
+  clientVersion: '7.8.0'
+}
+ POST /api/auth/register 500 in 504ms (next.js: 303ms, proxy.ts: 13ms, application-code: 188ms)
+  Reload env: .env
+  Reload env: .env
+  Reload env: .env
+  Reload env: .env
+  Reload env: .env
+Error: Both middleware file "./src\middleware.ts" and proxy file "./src\proxy.ts" are detected. Please use "./src\proxy.ts" only. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+    at ignore-listed frames
+⨯ unhandledRejection: Error: Both middleware file "./src\middleware.ts" and proxy file "./src\proxy.ts" are detected. Please use "./src\proxy.ts" only. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+    at ignore-listed frames
+⨯ unhandledRejection:  Error: Both middleware file "./src\middleware.ts" and proxy file "./src\proxy.ts" are detected. Please use "./src\proxy.ts" only. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+    at ignore-listed frames
+Error: Both middleware file "./src\middleware.ts" and proxy file "./src\proxy.ts" are detected. Please use "./src\proxy.ts" only. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+    at ignore-listed frames
+⨯ unhandledRejection: Error: Both middleware file "./src\middleware.ts" and proxy file "./src\proxy.ts" are detected. Please use "./src\proxy.ts" only. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+    at ignore-listed frames
+⨯ unhandledRejection:  Error: Both middleware file "./src\middleware.ts" and proxy file "./src\proxy.ts" are detected. Please use "./src\proxy.ts" only. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+    at ignore-listed frames
+Error: Both middleware file "./src\middleware.ts" and proxy file "./src\proxy.ts" are detected. Please use "./src\proxy.ts" only. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+    at ignore-listed frames
+⨯ unhandledRejection: Error: Both middleware file "./src\middleware.ts" and proxy file "./src\proxy.ts" are detected. Please use "./src\proxy.ts" only. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+    at ignore-listed frames
+⨯ unhandledRejection:  Error: Both middleware file "./src\middleware.ts" and proxy file "./src\proxy.ts" are detected. Please use "./src\proxy.ts" only. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+    at ignore-listed frames

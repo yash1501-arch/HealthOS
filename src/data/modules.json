@@ -1,0 +1,82 @@
+{
+  "clusters": [
+    {
+      "id": "intelligence",
+      "title": "AI Intelligence",
+      "color": "#2FE6C4",
+      "icon": "🧠",
+      "modules": [
+        "AI Health Assistant",
+        "Report Analyzer",
+        "Medical Records",
+        "AI-Powered Search",
+        "Health Timeline"
+      ]
+    },
+    {
+      "id": "monitoring",
+      "title": "Continuous Monitoring",
+      "color": "#8B7FFF",
+      "icon": "📊",
+      "modules": [
+        "Wearables Sync",
+        "Smart Dashboard",
+        "Health Score",
+        "Vitals Tracking",
+        "Emergency Detection"
+      ]
+    },
+    {
+      "id": "fitness",
+      "title": "Fitness & Nutrition",
+      "color": "#FFB86B",
+      "icon": "💪",
+      "modules": [
+        "Nutrition AI",
+        "Fitness AI",
+        "Meal Planning",
+        "Exercise Tracking",
+        "Diet Optimization"
+      ]
+    },
+    {
+      "id": "wellness",
+      "title": "Mental & Wellness",
+      "color": "#2FE6C4",
+      "icon": "🌿",
+      "modules": [
+        "Mental Wellness",
+        "Stress Management",
+        "Sleep Analysis",
+        "Mindfulness",
+        "Disease Prediction"
+      ]
+    },
+    {
+      "id": "care",
+      "title": "Care Management",
+      "color": "#8B7FFF",
+      "icon": "🏥",
+      "modules": [
+        "Medication Manager",
+        "Appointments",
+        "Goals System",
+        "Care Team",
+        "AI Knowledge Engine"
+      ]
+    },
+    {
+      "id": "family",
+      "title": "Family & Life Stages",
+      "color": "#FFB86B",
+      "icon": "👨‍👩‍👧‍👦",
+      "modules": [
+        "Family Health",
+        "Elder Care",
+        "Vaccination Tracker",
+        "Women's Health",
+        "Emergency AI"
+      ]
+    }
+  ]
+}

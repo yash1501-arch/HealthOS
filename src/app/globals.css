@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════
+   HealthOS — Design System
+   ═══════════════════════════════════════════════ */
+
+@theme {
+  --color-base: #05060A;
+  --color-card: #0D0E14;
+
+  --color-signature-cool: #2FE6C4;
+  --color-signature-warm: #FFB86B;
+  --color-accent: #8B7FFF;
+
+  --color-text-primary: #F5F7FA;
+  --color-text-secondary: #8B93A1;
+  --color-text-tertiary: rgba(139, 147, 161, 0.5);
+
+  --color-primary: #2FE6C4;
+}
+
+body {
+  background: #05060A;
+  color: #F5F7FA;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(46, 230, 196, 0.2);
+  color: #fff;
+}
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.06); border-radius: 2px; }
+
+/* ── Typography ── */
+.display-xl {
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+.display-lg {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+.display-md {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+.body-lg {
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+}
+.data-text {
+  font-family: "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+  font-feature-settings: "tnum" 1;
+}
+
+/* ── Section ── */
+.section {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+@media (min-width: 768px) {
+  .section { padding-left: 3rem; padding-right: 3rem; }
+}
+.section-inner {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── Buttons ── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  background: #2FE6C4;
+  color: #05060A;
+  cursor: pointer;
+  border: none;
+}
+.btn-primary:hover {
+  box-shadow: 0 0 30px rgba(46, 230, 196, 0.3);
+}
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #F5F7FA;
+  cursor: pointer;
+  background: transparent;
+}
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ── Utilities ── */
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Lenis ── */
+html.lenis { scroll-behavior: auto; }
+html.lenis-smooth { scroll-behavior: auto; }

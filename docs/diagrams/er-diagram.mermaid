@@ -1,0 +1,330 @@
+erDiagram
+    users ||--o| profiles : has
+    users ||--o| occupations : has
+    users ||--o| lifestyle : has
+    users ||--o| nutrition_profile : has
+    users ||--o| medical_history : has
+    users ||--o{ pain_assessments : reports
+    users ||--o{ goals : sets
+    users ||--o{ vision_media : uploads
+    users ||--o{ medical_reports : uploads
+    users ||--o{ recommendations : receives
+    users ||--o{ diet_plans : gets
+    users ||--o{ exercise_plans : gets
+    users ||--o{ routines : has
+    users ||--o{ weekly_checkins : submits
+    users ||--o{ progress_metrics : tracks
+    users ||--o{ health_timeline : has
+    users ||--o{ sessions : has
+    users ||--o{ ai_audit_logs : generates
+    users ||--o{ consent_logs : signs
+
+    users {
+        uuid id PK
+        varchar email UK
+        varchar password_hash
+        boolean is_verified
+        boolean consent_privacy
+        boolean consent_disclaimer
+        boolean consent_vision
+        timestamptz created_at
+        timestamptz updated_at
+        timestamptz deleted_at
+    }
+
+    profiles {
+        uuid id PK
+        uuid user_id FK
+        varchar full_name
+        date date_of_birth
+        varchar biological_sex
+        decimal height_cm
+        decimal weight_kg
+        decimal waist_cm
+        varchar blood_group
+    }
+
+    sessions {
+        uuid id PK
+        uuid user_id FK
+        varchar refresh_token UK
+        timestamptz expires_at
+    }
+
+    occupations {
+        uuid id PK
+        uuid user_id FK
+        varchar job_title
+        varchar industry
+        int working_hours
+        varchar shift_schedule
+        varchar work_type
+        decimal sitting_hours
+        decimal standing_hours
+        decimal driving_hours
+        varchar daily_activity
+    }
+
+    lifestyle {
+        uuid id PK
+        uuid user_id FK
+        time wake_up_time
+        time bed_time
+        decimal avg_sleep_hours
+        varchar sleep_quality
+        decimal water_intake_l
+        int sunlight_minutes
+        decimal screen_time_hours
+        int walking_steps
+        varchar exercise_freq
+        int stress_level
+        varchar smoking
+        varchar alcohol
+        int caffeine_intake
+    }
+
+    nutrition_profile {
+        uuid id PK
+        uuid user_id FK
+        varchar diet_type
+        text[] food_allergies
+        text[] dietary_restrictions
+        text[] religious_preferences
+        int cooking_time_min
+        decimal monthly_budget
+        text[] favorite_foods
+        text[] foods_to_avoid
+    }
+
+    medical_history {
+        uuid id PK
+        uuid user_id FK
+        text[] current_conditions
+        text[] past_illnesses
+        text[] past_surgeries
+        text[] current_medications
+        jsonb medication_details
+        text[] allergies
+        jsonb family_history
+        varchar pregnancy_status
+    }
+
+    pain_assessments {
+        uuid id PK
+        uuid user_id FK
+        varchar body_area
+        int severity
+        varchar duration
+        varchar frequency
+        varchar pain_type
+        text[] triggering_activities
+        text[] relieving_factors
+        boolean morning_stiffness
+        varchar mobility_limitation
+        boolean is_active
+    }
+
+    goals {
+        uuid id PK
+        uuid user_id FK
+        varchar goal
+        int priority
+        date target_date
+        boolean is_active
+    }
+
+    vision_media ||--o{ vision_analyses : produces
+    vision_analyses ||--o{ posture_characteristics : identifies
+
+    vision_media {
+        uuid id PK
+        uuid user_id FK
+        varchar media_type
+        varchar angle
+        varchar movement_type
+        varchar file_key
+        bigint file_size_bytes
+        varchar mime_type
+        varchar status
+        timestamptz deleted_at
+    }
+
+    vision_analyses {
+        uuid id PK
+        uuid user_id FK
+        uuid media_id FK
+        varchar analysis_type
+        jsonb landmarks
+        jsonb angles
+        jsonb findings
+        text summary
+        decimal confidence_score
+        int processing_time_ms
+        varchar model_version
+    }
+
+    posture_characteristics {
+        uuid id PK
+        uuid user_id FK
+        uuid analysis_id FK
+        varchar characteristic
+        varchar severity
+        decimal confidence
+        text description
+        boolean is_active
+    }
+
+    medical_reports ||--o| report_analyses : has
+    medical_reports ||--o{ lab_results : contains
+
+    medical_reports {
+        uuid id PK
+        uuid user_id FK
+        varchar report_type
+        varchar title
+        varchar file_key
+        bigint file_size_bytes
+        varchar mime_type
+        date report_date
+        varchar institution_name
+        varchar status
+        timestamptz deleted_at
+    }
+
+    report_analyses {
+        uuid id PK
+        uuid report_id FK
+        uuid user_id FK
+        text raw_text
+        jsonb parsed_data
+        text patient_summary
+        text doctor_summary
+        decimal confidence_score
+        int processing_time_ms
+    }
+
+    lab_results {
+        uuid id PK
+        uuid user_id FK
+        uuid report_id FK
+        varchar test_name
+        varchar test_category
+        decimal value
+        varchar unit
+        varchar reference_range
+        boolean is_abnormal
+        varchar flag
+        date test_date
+    }
+
+    recommendations {
+        uuid id PK
+        uuid user_id FK
+        int version
+        text summary
+        jsonb suggestions
+        varchar confidence_level
+        text evidence_summary
+        text[] doctor_topics
+        jsonb suggested_tests
+        text[] red_flags
+        int prompt_tokens
+        int completion_tokens
+        varchar model_version
+    }
+
+    diet_plans {
+        uuid id PK
+        uuid user_id FK
+        date week_start
+        date week_end
+        jsonb meals
+        jsonb daily_targets
+        jsonb shopping_list
+        jsonb recipes
+        jsonb meal_timing
+        boolean is_active
+    }
+
+    exercise_plans {
+        uuid id PK
+        uuid user_id FK
+        varchar phase
+        date week_start
+        date week_end
+        jsonb warm_up
+        jsonb stretching
+        jsonb strength
+        jsonb walking
+        jsonb yoga
+        jsonb progression
+        boolean is_active
+    }
+
+    routines {
+        uuid id PK
+        uuid user_id FK
+        int day_of_week
+        jsonb schedule
+        boolean is_active
+    }
+
+    weekly_checkins {
+        uuid id PK
+        uuid user_id FK
+        date week_start
+        jsonb pain_scores
+        int energy_level
+        decimal sleep_hours
+        int sleep_quality
+        int mood
+        decimal weight_kg
+        decimal water_intake_l
+        int exercise_completion
+        int walking_steps
+        int diet_adherence
+        text notes
+        text ai_summary
+    }
+
+    progress_metrics {
+        uuid id PK
+        uuid user_id FK
+        date metric_date
+        varchar metric_type
+        decimal value
+        varchar source
+    }
+
+    health_timeline {
+        uuid id PK
+        uuid user_id FK
+        varchar event_type
+        uuid reference_id
+        varchar title
+        text description
+        timestamptz event_date
+        vector embedding
+        jsonb metadata
+    }
+
+    ai_audit_logs {
+        uuid id PK
+        uuid user_id FK
+        varchar module
+        varchar action
+        text prompt
+        text response
+        int tokens_used
+        varchar model
+        int latency_ms
+        inet ip_address
+    }
+
+    consent_logs {
+        uuid id PK
+        uuid user_id FK
+        varchar consent_type
+        varchar action
+        inet ip_address
+    }

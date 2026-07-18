@@ -1,0 +1,480 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  DELETED
+}
+
+model User {
+  id                String          @id @default(uuid())
+  email             String          @unique
+  passwordHash      String          @map("password_hash")
+  isVerified        Boolean         @default(false) @map("is_verified")
+  consentPrivacy    Boolean         @default(false) @map("consent_privacy")
+  consentDisclaimer Boolean         @default(false) @map("consent_disclaimer")
+  consentVision     Boolean         @default(false) @map("consent_vision")
+  status            UserStatus      @default(ACTIVE)
+  onboardingComplete Boolean        @default(false) @map("onboarding_complete")
+  createdAt         DateTime        @default(now()) @map("created_at")
+  updatedAt         DateTime        @updatedAt @map("updated_at")
+  deletedAt         DateTime?       @map("deleted_at")
+
+  profile             Profile?
+  occupation          Occupation?
+  lifestyle           Lifestyle?
+  nutritionProfile    NutritionProfile?
+  medicalHistory      MedicalHistory?
+  painAssessments     PainAssessment[]
+  goals               Goal[]
+  visionMedia         VisionMedia[]
+  visionAnalyses      VisionAnalysis[]
+  postureCharacteristics PostureCharacteristic[]
+  medicalReports      MedicalReport[]
+  reportAnalyses      ReportAnalysis[]
+  labResults          LabResult[]
+  recommendations     Recommendation[]
+  dietPlans           DietPlan[]
+  exercisePlans       ExercisePlan[]
+  routines            Routine[]
+  weeklyCheckins      WeeklyCheckin[]
+  progressMetrics     ProgressMetric[]
+  healthTimeline      HealthTimelineEntry[]
+  sessions            Session[]
+  aiAuditLogs         AiAuditLog[]
+  consentLogs         ConsentLog[]
+
+  @@map("users")
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  userId       String   @map("user_id")
+  refreshToken String   @unique @map("refresh_token")
+  expiresAt    DateTime @map("expires_at")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Profile {
+  id            String  @id @default(uuid())
+  userId        String  @unique @map("user_id")
+  fullName      String  @map("full_name")
+  dateOfBirth   DateTime @map("date_of_birth")
+  biologicalSex String? @map("biological_sex")
+  heightCm      Decimal? @map("height_cm")
+  weightKg      Decimal? @map("weight_kg")
+  waistCm       Decimal? @map("waist_cm")
+  bloodGroup    String? @map("blood_group")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("profiles")
+}
+
+model Occupation {
+  id             String  @id @default(uuid())
+  userId         String  @unique @map("user_id")
+  jobTitle       String? @map("job_title")
+  industry       String?
+  workingHours   Int?    @map("working_hours")
+  shiftSchedule  String? @map("shift_schedule")
+  workType       String? @map("work_type")
+  sittingHours   Decimal? @map("sitting_hours")
+  standingHours  Decimal? @map("standing_hours")
+  drivingHours   Decimal? @map("driving_hours")
+  dailyActivity  String? @map("daily_activity")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("occupations")
+}
+
+model Lifestyle {
+  id              String   @id @default(uuid())
+  userId          String   @unique @map("user_id")
+  wakeUpTime      String?  @map("wake_up_time")
+  bedTime         String?  @map("bed_time")
+  avgSleepHours   Decimal? @map("avg_sleep_hours")
+  sleepQuality    String?  @map("sleep_quality")
+  waterIntakeL    Decimal? @map("water_intake_l")
+  sunlightMinutes Int?     @map("sunlight_minutes")
+  screenTimeHours Decimal? @map("screen_time_hours")
+  walkingSteps    Int?
+  exerciseFreq    String?  @map("exercise_freq")
+  stressLevel     Int?     @map("stress_level")
+  smoking         String?
+  alcohol         String?
+  caffeineIntake  Int?     @map("caffeine_intake")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("lifestyles")
+}
+
+model NutritionProfile {
+  id                   String   @id @default(uuid())
+  userId               String   @unique @map("user_id")
+  dietType             String?  @map("diet_type")
+  foodAllergies        String[] @map("food_allergies")
+  dietaryRestrictions  String[] @map("dietary_restrictions")
+  religiousPreferences String[] @map("religious_preferences")
+  cookingTimeMin       Int?     @map("cooking_time_min")
+  monthlyBudget        Decimal? @map("monthly_budget")
+  favoriteFoods        String[] @map("favorite_foods")
+  foodsToAvoid         String[] @map("foods_to_avoid")
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("nutrition_profiles")
+}
+
+model MedicalHistory {
+  id                String   @id @default(uuid())
+  userId            String   @unique @map("user_id")
+  currentConditions String[] @map("current_conditions")
+  pastIllnesses     String[] @map("past_illnesses")
+  pastSurgeries     String[] @map("past_surgeries")
+  currentMedications String[] @map("current_medications")
+  medicationDetails Json?    @map("medication_details")
+  allergies         String[]
+  familyHistory     Json?    @map("family_history")
+  pregnancyStatus   String?  @map("pregnancy_status")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("medical_histories")
+}
+
+model PainAssessment {
+  id                  String   @id @default(uuid())
+  userId              String   @map("user_id")
+  bodyArea            String   @map("body_area")
+  severity            Int
+  duration            String?
+  frequency           String?
+  painType            String?  @map("pain_type")
+  triggeringActivities String[] @map("triggering_activities")
+  relievingFactors    String[] @map("relieving_factors")
+  morningStiffness    Boolean? @map("morning_stiffness")
+  mobilityLimitation  String?  @map("mobility_limitation")
+  isActive            Boolean  @default(true) @map("is_active")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("pain_assessments")
+}
+
+model Goal {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  goal       String
+  priority   Int      @default(0)
+  targetDate DateTime? @map("target_date")
+  isActive   Boolean  @default(true) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("goals")
+}
+
+model VisionMedia {
+  id            String    @id @default(uuid())
+  userId        String    @map("user_id")
+  mediaType     String    @map("media_type")
+  angle         String?
+  movementType  String?   @map("movement_type")
+  fileKey       String    @map("file_key")
+  fileSizeBytes BigInt?   @map("file_size_bytes")
+  mimeType      String?   @map("mime_type")
+  status        String    @default("pending")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  deletedAt     DateTime? @map("deleted_at")
+
+  user     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  analyses VisionAnalysis[]
+
+  @@map("vision_media")
+}
+
+model VisionAnalysis {
+  id               String   @id @default(uuid())
+  userId           String   @map("user_id")
+  mediaId          String   @map("media_id")
+  analysisType     String?  @map("analysis_type")
+  landmarks        Json?
+  angles           Json?
+  findings         Json?
+  summary          String?
+  confidenceScore  Decimal? @map("confidence_score")
+  processingTimeMs Int?     @map("processing_time_ms")
+  modelVersion     String?  @map("model_version")
+  status           String   @default("completed")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  media            VisionMedia          @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  user             User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postureCharacteristics PostureCharacteristic[]
+
+  @@map("vision_analyses")
+}
+
+model PostureCharacteristic {
+  id              String   @id @default(uuid())
+  userId          String   @map("user_id")
+  analysisId      String   @map("analysis_id")
+  characteristic  String
+  severity        String?
+  confidence      Decimal?
+  description     String?
+  isActive        Boolean  @default(true) @map("is_active")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  analysis VisionAnalysis @relation(fields: [analysisId], references: [id], onDelete: Cascade)
+  user     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("posture_characteristics")
+}
+
+model MedicalReport {
+  id            String    @id @default(uuid())
+  userId        String    @map("user_id")
+  reportType    String?   @map("report_type")
+  title         String?
+  fileKey       String    @map("file_key")
+  fileSizeBytes BigInt?   @map("file_size_bytes")
+  mimeType      String?   @map("mime_type")
+  reportDate    DateTime? @map("report_date")
+  institutionName String? @map("institution_name")
+  status        String    @default("pending")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  deletedAt     DateTime? @map("deleted_at")
+
+  user     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  analysis ReportAnalysis?
+  labResults LabResult[]
+
+  @@map("medical_reports")
+}
+
+model ReportAnalysis {
+  id               String   @id @default(uuid())
+  reportId         String   @unique @map("report_id")
+  userId           String   @map("user_id")
+  rawText          String?  @map("raw_text")
+  parsedData       Json?    @map("parsed_data")
+  patientSummary   String?  @map("patient_summary")
+  doctorSummary    String?  @map("doctor_summary")
+  confidenceScore  Decimal? @map("confidence_score")
+  processingTimeMs Int?     @map("processing_time_ms")
+  modelVersion     String?  @map("model_version")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  report MedicalReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  user   User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("report_analyses")
+}
+
+model LabResult {
+  id             String   @id @default(uuid())
+  userId         String   @map("user_id")
+  reportId       String   @map("report_id")
+  testName       String   @map("test_name")
+  testCategory   String?  @map("test_category")
+  value          Decimal?
+  unit           String?
+  referenceRange String?  @map("reference_range")
+  isAbnormal     Boolean? @map("is_abnormal")
+  flag           String?
+  testDate       DateTime? @map("test_date")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  report MedicalReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  user   User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("lab_results")
+}
+
+model Recommendation {
+  id                String   @id @default(uuid())
+  userId            String   @map("user_id")
+  version           Int      @default(1)
+  summary           String
+  suggestions       Json?
+  confidenceLevel   String?  @map("confidence_level")
+  evidenceSummary   String?  @map("evidence_summary")
+  doctorTopics      String[] @map("doctor_topics")
+  suggestedTests    Json?    @map("suggested_tests")
+  redFlags          String[] @map("red_flags")
+  promptTokens      Int?     @map("prompt_tokens")
+  completionTokens  Int?     @map("completion_tokens")
+  modelVersion      String?  @map("model_version")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("recommendations")
+}
+
+model DietPlan {
+  id            String   @id @default(uuid())
+  userId        String   @map("user_id")
+  weekStart     DateTime @map("week_start")
+  weekEnd       DateTime @map("week_end")
+  meals         Json?
+  dailyTargets  Json?    @map("daily_targets")
+  shoppingList  Json?    @map("shopping_list")
+  recipes       Json?
+  mealTiming    Json?    @map("meal_timing")
+  isActive      Boolean  @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("diet_plans")
+}
+
+model ExercisePlan {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  phase       String?
+  weekStart   DateTime @map("week_start")
+  weekEnd     DateTime @map("week_end")
+  warmUp      Json?    @map("warm_up")
+  stretching  Json?
+  strength    Json?
+  walking     Json?
+  yoga        Json?
+  progression Json?
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("exercise_plans")
+}
+
+model Routine {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  dayOfWeek  Int      @map("day_of_week")
+  schedule   Json?
+  isActive   Boolean  @default(true) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("routines")
+}
+
+model WeeklyCheckin {
+  id                String   @id @default(uuid())
+  userId            String   @map("user_id")
+  weekStart         DateTime @map("week_start")
+  painScores        Json?    @map("pain_scores")
+  energyLevel       Int?     @map("energy_level")
+  sleepHours        Decimal? @map("sleep_hours")
+  sleepQuality      Int?     @map("sleep_quality")
+  mood              Int?
+  weightKg          Decimal? @map("weight_kg")
+  waterIntakeL      Decimal? @map("water_intake_l")
+  exerciseCompletion Int?    @map("exercise_completion")
+  walkingSteps      Int?     @map("walking_steps")
+  dietAdherence     Int?     @map("diet_adherence")
+  notes             String?
+  aiSummary         String?  @map("ai_summary")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, weekStart])
+  @@map("weekly_checkins")
+}
+
+model ProgressMetric {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  metricDate DateTime @map("metric_date")
+  metricType String   @map("metric_type")
+  value      Decimal
+  source     String?
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, metricType, metricDate])
+  @@map("progress_metrics")
+}
+
+model HealthTimelineEntry {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  eventType   String   @map("event_type")
+  referenceId String?  @map("reference_id")
+  title       String
+  description String?
+  eventDate   DateTime @map("event_date")
+  metadata    Json?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, eventDate])
+  @@map("health_timeline")
+}
+
+model AiAuditLog {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  module     String
+  action     String
+  prompt     String?
+  response   String?
+  tokensUsed Int?     @map("tokens_used")
+  model      String?
+  latencyMs  Int?     @map("latency_ms")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("ai_audit_logs")
+}
+
+model ConsentLog {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  consentType String   @map("consent_type")
+  action      String
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("consent_logs")
+}
