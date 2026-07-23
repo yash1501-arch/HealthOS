@@ -1,0 +1,47 @@
+# CodeRabbit AI Code Review Configuration
+# Docs: https://docs.coderabbit.ai/configuration
+
+language: en-US
+early_access: true
+reviews:
+  profile: assertive
+  review_status: true
+  request_changes_workflow: true
+  high_level_summary: true
+  poem: false
+  collapse_walkthrough: false
+  sequence_diagrams: true
+  path_filters:
+    - "!node_modules/**"
+    - "!**/generated/**"
+    - "!.next/**"
+  path_instructions:
+    - path: "src/app/api/**/*.ts"
+      instructions: |
+        Check for: missing auth (getAuthUserId), insufficient input validation,
+        SQL injection via raw queries, path traversal, rate limiting,
+        proper error responses (no stack leaks).
+    - path: "src/lib/auth.ts"
+      instructions: |
+        Verify JWT secret handling, cookie security flags, bcrypt cost factor,
+        token expiry, refresh token rotation.
+    - path: "prisma/schema.prisma"
+      instructions: |
+        Check for missing indexes on foreign keys, unique constraints,
+        field-level encryption needs for PII data.
+    - path: "src/**/*.tsx"
+      instructions: |
+        Check for XSS (dangerouslySetInnerHTML), insecure direct object references,
+        missing loading states, error boundaries.
+
+chat:
+  auto_reply: true
+  auto_resolve: true
+
+knowledge_base:
+  learnings:
+    scope: local
+  bugs:
+    scope: local
+  pull_requests:
+    scope: local

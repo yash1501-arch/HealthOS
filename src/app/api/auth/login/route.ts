@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { verifyPassword, createAccessToken, createRefreshToken, setAuthCookies } from "@/lib/auth"
+import { checkLoginRateLimit, validateOrigin } from "@/lib/security"
 import { z } from "zod"
 
 const loginSchema = z.object({
@@ -10,6 +11,14 @@ const loginSchema = z.object({
 
 export async function POST(request: Request) {
   try {
+    // CSRF check
+    if (!validateOrigin(request)) {
+      return NextResponse.json(
+        { error: { code: "FORBIDDEN", message: "Invalid request origin" } },
+        { status: 403 }
+      )
+    }
+
     const body = await request.json()
     const parsed = loginSchema.safeParse(body)
     if (!parsed.success) {
@@ -20,6 +29,27 @@ export async function POST(request: Request) {
     }
 
     const { email, password } = parsed.data
+
+    // Rate limiting — per email + per IP combo
+    const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown"
+    const rateResult = await checkLoginRateLimit(`${email}:${ip}`)
+    if (!rateResult.allowed) {
+      return NextResponse.json(
+        {
+          error: {
+            code: "RATE_LIMITED",
+            message: `Too many attempts. Try again in ${rateResult.retryAfter} seconds.`,
+          },
+        },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(rateResult.retryAfter),
+            "X-RateLimit-Remaining": "0",
+          },
+        }
+      )
+    }
 
     const user = await prisma.user.findUnique({ where: { email } })
     if (!user) {

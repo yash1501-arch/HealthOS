@@ -33,6 +33,16 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# uploaded files
+/uploads/
+!uploads/.gitkeep
+
+# archived unused files
+/_archive/
+
+# Claude AI worktrees
+.claude/
+
 # vercel
 .vercel
 

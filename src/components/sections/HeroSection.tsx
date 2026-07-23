@@ -12,12 +12,14 @@ const item = {
 export default function HeroSection() {
   return (
     <section className="flex flex-col items-center justify-center min-h-screen px-6 text-center relative">
-      {/* Ambient glow */}
+      {/* Ambient glow - multi-color */}
       <div
         className="absolute inset-0 pointer-events-none overflow-hidden"
         style={{
           background:
-            "radial-gradient(circle at 50% 50%, rgba(46,230,196,0.08) 0%, transparent 60%)",
+            "radial-gradient(ellipse 60% 50% at 50% 30%, rgba(47,230,196,0.08) 0%, transparent 60%), " +
+            "radial-gradient(ellipse 50% 40% at 50% 70%, rgba(139,127,255,0.06) 0%, transparent 60%), " +
+            "radial-gradient(ellipse 40% 30% at 50% 50%, rgba(255,184,107,0.05) 0%, transparent 50%)",
         }}
       />
 
@@ -30,7 +32,7 @@ export default function HeroSection() {
         <motion.p
           variants={item}
           transition={{ duration: 0.7, ease }}
-          className="eyebrow mb-6"
+          className="eyebrow-gradient mb-6"
         >
           AI-Powered Health Intelligence
         </motion.p>
@@ -42,7 +44,7 @@ export default function HeroSection() {
         >
           The Operating System
           <br />
-          <span style={{ color: "#2FE6C4" }}>for Human Health</span>
+          <span className="gradient-text">for Human Health</span>
         </motion.h1>
 
         <motion.p
@@ -74,6 +76,22 @@ export default function HeroSection() {
             Watch Demo
           </button>
         </motion.div>
+      </motion.div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.6 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-xs text-[#4B5870]/50"
+      >
+        <span className="uppercase tracking-[0.2em]">Scroll to explore</span>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          className="w-1.5 h-1.5 rounded-full"
+          style={{ background: "linear-gradient(135deg, #176B63, #476A91)" }}
+        />
       </motion.div>
     </section>
   )

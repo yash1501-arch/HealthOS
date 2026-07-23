@@ -1,6 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
+import Link from "next/link"
 
 const footerLinks = [
   {
@@ -82,16 +83,16 @@ export default function FinalCTASection() {
   return (
     <footer className="relative overflow-hidden">
       {/* ── Background ── */}
-      <div className="absolute inset-0 bg-[#0B1120] pointer-events-none" />
+      <div className="absolute inset-0 bg-white pointer-events-none" />
 
-      {/* Animated gradient overlay */}
+      {/* Subtle gradient overlay */}
       <motion.div
         className="absolute inset-0 pointer-events-none"
         animate={{
           background: [
-            "radial-gradient(ellipse 80% 50% at 20% 20%, rgba(46,230,196,0.06) 0%, transparent 60%)",
-            "radial-gradient(ellipse 80% 50% at 80% 80%, rgba(139,127,255,0.06) 0%, transparent 60%)",
-            "radial-gradient(ellipse 80% 50% at 20% 20%, rgba(46,230,196,0.06) 0%, transparent 60%)",
+            "radial-gradient(ellipse 80% 50% at 20% 20%, rgba(47,230,196,0.04) 0%, transparent 60%)",
+            "radial-gradient(ellipse 80% 50% at 80% 80%, rgba(139,127,255,0.04) 0%, transparent 60%)",
+            "radial-gradient(ellipse 80% 50% at 20% 20%, rgba(47,230,196,0.04) 0%, transparent 60%)",
           ],
         }}
         transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
@@ -99,21 +100,21 @@ export default function FinalCTASection() {
 
       {/* Dotted grid */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
+        className="absolute inset-0 pointer-events-none opacity-[0.02]"
         style={{
-          backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px)",
+          backgroundImage: "radial-gradient(circle, rgba(0,0,0,0.08) 1px, transparent 1px)",
           backgroundSize: "32px 32px",
         }}
       />
 
       {/* Watermark */}
       <div
-        className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
+        className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-[0.015]"
         aria-hidden
       >
         <span
-          className="text-[clamp(6rem,20vw,16rem)] font-bold tracking-[-0.05em] opacity-[0.02]"
-          style={{ filter: "blur(6px)" }}
+          className="text-[clamp(6rem,20vw,16rem)] font-bold tracking-[-0.02em] text-black"
+          style={{ filter: "blur(12px)" }}
         >
           HEALTHOS
         </span>
@@ -130,7 +131,7 @@ export default function FinalCTASection() {
           <h2 className="display-xl max-w-4xl mx-auto mb-6">
             Ready to Take Control
             <br />
-            <span style={{ color: "#2FE6C4" }}>of Your Health?</span>
+            <span className="gradient-text">of Your Health?</span>
           </h2>
           <p className="body-lg max-w-md mx-auto mb-10">
             Join thousands already using HealthOS to understand, predict, and protect their health.
@@ -143,7 +144,7 @@ export default function FinalCTASection() {
                 <path d="M11.5 7H2.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
               </svg>
             </a>
-            <button className="btn-outline">Talk to Sales</button>
+            <button className="btn-primary">Talk to Sales</button>
           </div>
         </motion.div>
       </section>
@@ -152,7 +153,7 @@ export default function FinalCTASection() {
       <div
         className="relative z-10 h-px mx-6 md:mx-12"
         style={{
-          background: "linear-gradient(to right, transparent, rgba(46,230,196,0.15), rgba(139,127,255,0.15), transparent)",
+          background: "linear-gradient(to right, transparent, rgba(47,230,196,0.15), rgba(139,127,255,0.15), transparent)",
         }}
       />
 
@@ -171,14 +172,14 @@ export default function FinalCTASection() {
               <div className="flex items-center gap-2.5 mb-4">
                 <div
                   className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold"
-                  style={{ background: "linear-gradient(135deg, #2FE6C4, #8B7FFF)" }}
+                  style={{ background: "linear-gradient(135deg, #176B63, #476A91)" }}
                 >
                   H
                 </div>
-                <span className="text-sm font-semibold">HealthOS</span>
+                <span className="text-sm font-semibold text-[#172033]">HealthOS</span>
               </div>
-              <p className="text-xs text-text-tertiary mb-1">Your AI Health Operating System</p>
-              <p className="text-[11px] text-text-tertiary/50 leading-relaxed mb-6 max-w-xs">
+              <p className="text-xs text-[#4B5870] mb-1">Your AI Health Operating System</p>
+              <p className="text-[11px] text-[#4B5870]/60 leading-relaxed mb-6 max-w-xs">
                 HealthOS is an AI-powered healthcare operating system that unifies medical records,
                 wearable devices, AI diagnostics, health insights, nutrition, fitness, and preventive
                 care into one intelligent platform.
@@ -194,22 +195,21 @@ export default function FinalCTASection() {
                     whileTap={{ scale: 0.95 }}
                     className="w-8 h-8 rounded-full flex items-center justify-center text-xs cursor-pointer transition-all duration-300"
                     style={{
-                      background: "rgba(255,255,255,0.04)",
-                      backdropFilter: "blur(8px)",
-                      border: "1px solid rgba(255,255,255,0.06)",
-                      color: "rgba(255,255,255,0.35)",
+                      background: "#F0F2F5",
+                      border: "1px solid rgba(0,0,0,0.06)",
+                      color: "rgba(0,0,0,0.35)",
                     }}
                     aria-label={s.name}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = "rgba(46,230,196,0.12)";
-                      e.currentTarget.style.borderColor = "rgba(46,230,196,0.25)";
-                      e.currentTarget.style.color = "#2FE6C4";
-                      e.currentTarget.style.boxShadow = "0 0 20px rgba(46,230,196,0.2)";
+                      e.currentTarget.style.background = "rgba(47,230,196,0.12)";
+                      e.currentTarget.style.borderColor = "rgba(47,230,196,0.25)";
+                      e.currentTarget.style.color = "#176B63";
+                      e.currentTarget.style.boxShadow = "0 0 20px rgba(47,230,196,0.2)";
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.background = "rgba(255,255,255,0.04)";
-                      e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)";
-                      e.currentTarget.style.color = "rgba(255,255,255,0.35)";
+                      e.currentTarget.style.background = "#F0F2F5";
+                      e.currentTarget.style.borderColor = "rgba(0,0,0,0.06)";
+                      e.currentTarget.style.color = "rgba(0,0,0,0.35)";
                       e.currentTarget.style.boxShadow = "none";
                     }}
                   >
@@ -218,7 +218,7 @@ export default function FinalCTASection() {
                 ))}
               </div>
 
-              <p className="text-[10px] text-text-tertiary/40">
+              <p className="text-[10px] text-[#4B5870]/50">
                 © 2026 HealthOS. All Rights Reserved.
               </p>
             </motion.div>
@@ -226,7 +226,7 @@ export default function FinalCTASection() {
             {/* Columns 2-4: Link lists */}
             {footerLinks.map((col) => (
               <motion.div key={col.title} variants={fadeUp} transition={{ duration: 0.6, ease }}>
-                <h3 className="text-xs font-semibold tracking-wider uppercase text-text-secondary mb-5">
+                <h3 className="text-xs font-semibold tracking-wider uppercase text-[#4B5870] mb-5">
                   {col.title}
                 </h3>
                 <ul className="space-y-2.5">
@@ -234,10 +234,10 @@ export default function FinalCTASection() {
                     <li key={link.label}>
                       <motion.a
                         href={link.href}
-                        className="text-[13px] text-text-tertiary/60 inline-block relative cursor-pointer"
+                        className="text-[13px] text-[#4B5870]/70 inline-block relative cursor-pointer"
                         whileHover={{ x: 3 }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.color = "#e8eaed";
+                          e.currentTarget.style.color = "#172033";
                           e.currentTarget.querySelector("span")!.style.width = "100%";
                         }}
                         onMouseLeave={(e) => {
@@ -250,7 +250,7 @@ export default function FinalCTASection() {
                           className="absolute bottom-0 left-0 h-px transition-all duration-300"
                           style={{
                             width: "0%",
-                            background: "#2FE6C4",
+                            background: "#176B63",
                           }}
                         />
                       </motion.a>
@@ -262,7 +262,7 @@ export default function FinalCTASection() {
 
             {/* Column 5: Get Started */}
             <motion.div variants={fadeUp} transition={{ duration: 0.6, ease }}>
-              <h3 className="text-xs font-semibold tracking-wider uppercase text-text-secondary mb-5">
+              <h3 className="text-xs font-semibold tracking-wider uppercase text-[#4B5870] mb-5">
                 Get Started
               </h3>
               <ul className="space-y-2.5 mb-6">
@@ -270,7 +270,7 @@ export default function FinalCTASection() {
                   <li key={label}>
                     <motion.a
                       href={href}
-                      className="text-[13px] text-text-tertiary/60 inline-block relative cursor-pointer"
+                      className="text-[13px] text-[#4B5870]/70 inline-block relative cursor-pointer"
                       whileHover={{ x: 3 }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.color = "#e8eaed";
@@ -284,7 +284,7 @@ export default function FinalCTASection() {
                       {label}
                       <span
                         className="absolute bottom-0 left-0 h-px transition-all duration-300"
-                        style={{ width: "0%", background: "#2FE6C4" }}
+                        style={{ width: "0%", background: "#176B63" }}
                       />
                     </motion.a>
                   </li>
@@ -293,7 +293,7 @@ export default function FinalCTASection() {
 
               {/* Newsletter */}
               <div>
-                <p className="text-[11px] text-text-tertiary/50 mb-3 leading-relaxed">
+                <p className="text-[11px] text-[#4B5870]/60 mb-3 leading-relaxed">
                   Get weekly AI health tips and product updates.
                 </p>
                 <div className="flex gap-2">
@@ -303,17 +303,16 @@ export default function FinalCTASection() {
                       placeholder="your@email.com"
                       className="w-full rounded-lg px-3 py-2 text-xs outline-none transition-all duration-500"
                       style={{
-                        background: "rgba(255,255,255,0.04)",
-                        border: "1px solid rgba(255,255,255,0.08)",
-                        color: "rgba(255,255,255,0.6)",
-                        backdropFilter: "blur(8px)",
+                        background: "#F5F7FA",
+                        border: "1px solid rgba(0,0,0,0.08)",
+                        color: "#172033",
                       }}
                       onFocus={(e) => {
-                        e.currentTarget.style.borderColor = "rgba(46,230,196,0.4)";
-                        e.currentTarget.style.boxShadow = "0 0 16px rgba(46,230,196,0.1)";
+                        e.currentTarget.style.borderColor = "rgba(47,230,196,0.4)";
+                        e.currentTarget.style.boxShadow = "0 0 16px rgba(47,230,196,0.1)";
                       }}
                       onBlur={(e) => {
-                        e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+                        e.currentTarget.style.borderColor = "rgba(0,0,0,0.08)";
                         e.currentTarget.style.boxShadow = "none";
                       }}
                     />
@@ -323,9 +322,9 @@ export default function FinalCTASection() {
                     whileTap={{ scale: 0.97 }}
                     className="px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-300"
                     style={{
-                      background: "#2FE6C4",
-                      color: "#05060A",
-                      boxShadow: "0 0 20px rgba(46,230,196,0.15)",
+                      background: "#176B63",
+                      color: "#172033",
+                      boxShadow: "0 0 20px rgba(47,230,196,0.15)",
                     }}
                   >
                     Subscribe
@@ -341,25 +340,25 @@ export default function FinalCTASection() {
       <div
         className="relative z-10 h-px mx-6 md:mx-12"
         style={{
-          background: "linear-gradient(to right, transparent, rgba(255,255,255,0.06), transparent)",
+          background: "linear-gradient(to right, transparent, rgba(0,0,0,0.04), transparent)",
         }}
       />
       <div className="relative z-10 section py-5">
         <div className="section-inner flex flex-col md:flex-row items-center justify-between gap-3">
-          <p className="text-[10px] text-text-tertiary/40">
-            Built with ❤️ using AI for a healthier future.
+          <p className="text-[10px] text-[#4B5870]/50">
+            Built with ❤️ by Narayan Parab for a healthier future.
           </p>
           <div className="flex items-center gap-4">
             {["Status", "Privacy", "Cookies", "Accessibility"].map((item) => (
               <a
                 key={item}
                 href="#"
-                className="text-[10px] text-text-tertiary/30 hover:text-text-tertiary/60 transition-colors"
+                className="text-[10px] text-[#4B5870]/40 hover:text-[#4B5870]/70 transition-colors"
               >
                 {item}
               </a>
             ))}
-            <span className="text-[10px] text-text-tertiary/20 pl-2 border-l border-white/[0.04]">
+            <span className="text-[10px] text-[#4B5870]/30 pl-2 border-l border-black/[0.04]">
               v1.0
             </span>
           </div>

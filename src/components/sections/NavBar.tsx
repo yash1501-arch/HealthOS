@@ -10,6 +10,18 @@ const navLinks = [
   { label: "Insights", href: "#insights" },
 ]
 
+const NavIcon = ({ icon, color }: { icon: React.ReactNode; color: string }) => (
+  <div
+    className="w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold transition-all duration-300"
+    style={{
+      background: `linear-gradient(135deg, ${color}, ${color}CC)`,
+      boxShadow: `0 0 30px ${color}33`,
+    }}
+  >
+    {icon}
+  </div>
+)
+
 export default function NavBar() {
   return (
     <motion.nav
@@ -21,29 +33,23 @@ export default function NavBar() {
       <div
         className="mx-4 mt-4 max-w-7xl lg:mx-auto rounded-2xl border transition-all duration-300"
         style={{
-          background: "rgba(10, 11, 18, 0.75)",
+          background: "rgba(255, 255, 255, 0.85)",
           backdropFilter: "blur(24px) saturate(1.4)",
           WebkitBackdropFilter: "blur(24px) saturate(1.4)",
-          borderColor: "rgba(255, 255, 255, 0.06)",
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04)",
+          borderColor: "rgba(0, 0, 0, 0.06)",
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8)",
         }}
       >
         <div className="flex items-center justify-between px-5 py-3">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <motion.div
-              whileHover={{ scale: 1.05, rotate: -2 }}
-              className="w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold transition-all duration-300"
-              style={{
-                background: "linear-gradient(135deg, #2FE6C4, #8B7FFF)",
-                boxShadow: "0 0 24px rgba(46,230,196,0.15)",
-              }}
+            <NavIcon icon="H" color="#176B63" />
+            <motion.span
+              whileHover={{ x: 2 }}
+              className="text-sm font-semibold tracking-tight text-[#172033] hidden sm:inline"
             >
-              H
-            </motion.div>
-            <span className="text-sm font-semibold tracking-tight text-[#F5F7FA] hidden sm:inline">
               HealthOS
-            </span>
+            </motion.span>
           </Link>
 
           {/* Center Nav Links */}
@@ -57,7 +63,7 @@ export default function NavBar() {
           <div className="flex items-center gap-3">
             <Link
               href="/login"
-              className="text-xs font-medium text-[#8B93A1] hover:text-[#F5F7FA] transition-colors duration-200 px-3 py-1.5 rounded-lg hover:bg-white/[0.04]"
+              className="text-xs font-medium text-[#4B5870] hover:text-[#172033] transition-colors duration-200 px-3 py-1.5 rounded-lg hover:bg-black/[0.04]"
             >
               Sign In
             </Link>
@@ -65,8 +71,8 @@ export default function NavBar() {
               href="/register"
               className="relative text-xs font-semibold px-5 py-2 rounded-xl transition-all duration-300 overflow-hidden group"
               style={{
-                background: "linear-gradient(135deg, #2FE6C4, #1CAF92)",
-                color: "#05060A",
+                background: "linear-gradient(135deg, #176B63, #10554F)",
+                color: "#172033",
               }}
             >
               {/* Shimmer overlay */}
@@ -78,7 +84,7 @@ export default function NavBar() {
                 animate={{ x: ["-100%", "200%"] }}
                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", repeatDelay: 3 }}
               />
-              <span className="relative z-10">Get Started</span>
+              <span className="relative z-10, text-white">Get Started</span>
             </Link>
           </div>
         </div>
@@ -87,26 +93,26 @@ export default function NavBar() {
   )
 }
 
-// ─── Nav Link Component ───────────────────────────────────────
+// --- Nav Link Component ---------------------------------------
 
 function NavLink({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
       className="relative group px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-200"
-      style={{ color: "#8B93A1" }}
+      style={{ color: "#4B5870" }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.color = "#F5F7FA"
+        e.currentTarget.style.color = "#172033"
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.color = "#8B93A1"
+        e.currentTarget.style.color = "#4B5870"
       }}
     >
       {label}
       <motion.span
         className="absolute bottom-0 left-3 right-3 h-px rounded-full opacity-0 group-hover:opacity-100"
         style={{
-          background: "linear-gradient(90deg, transparent, #2FE6C4, transparent)",
+          background: "linear-gradient(90deg, transparent, #176B63, transparent)",
         }}
         initial={{ scaleX: 0 }}
         whileInView={{ scaleX: 1 }}

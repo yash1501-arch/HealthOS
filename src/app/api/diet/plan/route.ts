@@ -1,1503 +1,338 @@
 import { NextResponse } from "next/server"
+import { prisma } from "@/lib/prisma"
+import { getAuthUserId } from "@/lib/auth"
+import type { WeekPlan, DayPlan, DailyTargets, ShoppingItem, MealSlot } from "@/types/diet"
+
+// ─── GET /api/diet/plan — Get weekly meal plan ──────────────────
 
 export async function GET() {
-  // Simulate AI-generated weekly meal plan
-  const plan = {
-    weekStart: "2026-07-20",
-    weekEnd: "2026-07-26",
-    dailyTargets: {
-      calories: 2000,
-      protein: 75,
-      carbs: 250,
-      fat: 55,
-      fiber: 30,
-      water: 2.5,
-    },
-    shoppingList: [
-      // Produce
-      { name: "Bananas", quantity: 6, unit: "units", category: "Produce", checked: false },
-      { name: "Apples", quantity: 4, unit: "units", category: "Produce", checked: false },
-      { name: "Spinach", quantity: 200, unit: "g", category: "Produce", checked: false },
-      { name: "Tomatoes", quantity: 4, unit: "units", category: "Produce", checked: false },
-      { name: "Onions", quantity: 3, unit: "units", category: "Produce", checked: false },
-      { name: "Garlic", quantity: 1, unit: "head", category: "Produce", checked: false },
-      { name: "Ginger", quantity: 1, unit: "piece", category: "Produce", checked: false },
-      { name: "Lemons", quantity: 3, unit: "units", category: "Produce", checked: false },
-      { name: "Carrots", quantity: 3, unit: "units", category: "Produce", checked: false },
-      { name: "Bell Peppers", quantity: 2, unit: "units", category: "Produce", checked: false },
-      { name: "Avocado", quantity: 2, unit: "units", category: "Produce", checked: false },
-      { name: "Mixed Berries", quantity: 200, unit: "g", category: "Produce", checked: false },
-      { name: "Cucumber", quantity: 2, unit: "units", category: "Produce", checked: false },
-      // Dairy & Alternatives
-      { name: "Greek Yogurt", quantity: 500, unit: "g", category: "Dairy & Alternatives", checked: false },
-      { name: "Milk", quantity: 1, unit: "L", category: "Dairy & Alternatives", checked: false },
-      { name: "Paneer", quantity: 250, unit: "g", category: "Dairy & Alternatives", checked: false },
-      { name: "Butter", quantity: 100, unit: "g", category: "Dairy & Alternatives", checked: false },
-      // Grains
-      { name: "Rolled Oats", quantity: 500, unit: "g", category: "Grains", checked: false },
-      { name: "Brown Rice", quantity: 1, unit: "kg", category: "Grains", checked: false },
-      { name: "Whole Wheat Bread", quantity: 1, unit: "loaf", category: "Grains", checked: false },
-      { name: "Whole Wheat Roti Flour", quantity: 1, unit: "kg", category: "Grains", checked: false },
-      { name: "Quinoa", quantity: 250, unit: "g", category: "Grains", checked: false },
-      // Protein
-      { name: "Chicken Breast", quantity: 500, unit: "g", category: "Protein", checked: false },
-      { name: "Eggs", quantity: 12, unit: "units", category: "Protein", checked: false },
-      { name: "Chickpeas (canned)", quantity: 2, unit: "cans", category: "Protein", checked: false },
-      { name: "Lentils (Masoor Dal)", quantity: 250, unit: "g", category: "Protein", checked: false },
-      // Pantry
-      { name: "Olive Oil", quantity: 250, unit: "ml", category: "Pantry", checked: false },
-      { name: "Honey", quantity: 250, unit: "g", category: "Pantry", checked: false },
-      { name: "Cumin Seeds", quantity: 50, unit: "g", category: "Pantry", checked: false },
-      { name: "Turmeric Powder", quantity: 50, unit: "g", category: "Pantry", checked: false },
-      { name: "Coriander Powder", quantity: 50, unit: "g", category: "Pantry", checked: false },
-      { name: "Salt", quantity: 1, unit: "pack", category: "Pantry", checked: false },
-      { name: "Black Pepper", quantity: 50, unit: "g", category: "Pantry", checked: false },
-      { name: "Mixed Nuts", quantity: 200, unit: "g", category: "Pantry", checked: false },
-      { name: "Chia Seeds", quantity: 100, unit: "g", category: "Pantry", checked: false },
-    ],
-    days: [
-      {
-        date: "2026-07-20",
-        dayName: "Monday",
-        meals: {
-          breakfast: {
-            mealId: "mon-bfast",
-            name: "Oats & Berry Bowl",
-            timing: "7:30 AM",
-            recipe: {
-              id: "recipe-1",
-              name: "Oats & Berry Bowl",
-              prepTime: 5,
-              cookTime: 5,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Continental",
-              dietaryTags: ["vegetarian", "high-fiber", "low-fat"],
-              ingredients: [
-                { name: "Rolled Oats", quantity: 50, unit: "g" },
-                { name: "Milk", quantity: 200, unit: "ml" },
-                { name: "Mixed Berries", quantity: 80, unit: "g" },
-                { name: "Honey", quantity: 15, unit: "ml" },
-                { name: "Chia Seeds", quantity: 10, unit: "g" },
-                { name: "Mixed Nuts", quantity: 15, unit: "g", notes: "chopped" },
-              ],
-              instructions: [
-                "In a saucepan, bring milk to a gentle simmer over medium heat.",
-                "Add rolled oats and reduce heat to low. Cook for 4-5 minutes, stirring occasionally.",
-                "Transfer to a bowl. Top with mixed berries, chopped nuts, and chia seeds.",
-                "Drizzle honey on top and serve warm.",
-              ],
-              tips: [
-                "For creamier oats, use half milk and half water.",
-                "Soak chia seeds in water for 5 minutes before adding for better texture.",
-              ],
-              nutritionalInfo: {
-                calories: 385,
-                protein: 14,
-                carbs: 58,
-                fat: 12,
-                fiber: 9,
-              },
-            },
-          },
-          morningSnack: {
-            mealId: "mon-snack1",
-            name: "Apple with Peanut Butter",
-            timing: "10:30 AM",
-            recipe: {
-              id: "recipe-2",
-              name: "Apple with Peanut Butter",
-              prepTime: 2,
-              cookTime: 0,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Continental",
-              dietaryTags: ["vegetarian", "vegan", "high-protein"],
-              ingredients: [
-                { name: "Apple", quantity: 1, unit: "unit", notes: "sliced" },
-                { name: "Peanut Butter", quantity: 30, unit: "g" },
-              ],
-              instructions: [
-                "Wash and slice the apple into wedges.",
-                "Serve with peanut butter for dipping.",
-              ],
-              nutritionalInfo: {
-                calories: 210,
-                protein: 8,
-                carbs: 28,
-                fat: 9,
-                fiber: 5,
-              },
-            },
-          },
-          lunch: {
-            mealId: "mon-lunch",
-            name: "Grilled Chicken Salad",
-            timing: "1:00 PM",
-            recipe: {
-              id: "recipe-3",
-              name: "Grilled Chicken Salad",
-              prepTime: 15,
-              cookTime: 12,
-              servings: 1,
-              difficulty: "medium",
-              cuisine: "Mediterranean",
-              dietaryTags: ["high-protein", "low-carb"],
-              ingredients: [
-                { name: "Chicken Breast", quantity: 150, unit: "g" },
-                { name: "Spinach", quantity: 60, unit: "g" },
-                { name: "Avocado", quantity: 0.5, unit: "unit" },
-                { name: "Cucumber", quantity: 0.5, unit: "unit", notes: "diced" },
-                { name: "Cherry Tomatoes", quantity: 6, unit: "units", notes: "halved" },
-                { name: "Olive Oil", quantity: 15, unit: "ml" },
-                { name: "Lemon Juice", quantity: 15, unit: "ml" },
-                { name: "Salt", quantity: 1, unit: "pinch" },
-                { name: "Black Pepper", quantity: 1, unit: "pinch" },
-              ],
-              instructions: [
-                "Season chicken breast with salt, pepper, and a drizzle of olive oil.",
-                "Grill chicken in a pan over medium-high heat for 5-6 minutes per side until cooked through.",
-                "Let chicken rest for 3 minutes, then slice into strips.",
-                "In a large bowl, combine spinach, diced cucumber, and halved cherry tomatoes.",
-                "Slice half an avocado and add to the bowl.",
-                "Top with sliced chicken, drizzle with lemon juice and remaining olive oil.",
-                "Toss gently and serve immediately.",
-              ],
-              tips: [
-                "For extra flavor, marinate chicken in lemon juice and herbs for 30 minutes before cooking.",
-                "Add a sprinkle of feta cheese for extra taste (adds ~50 cal).",
-              ],
-              nutritionalInfo: {
-                calories: 420,
-                protein: 42,
-                carbs: 12,
-                fat: 24,
-                fiber: 7,
-              },
-            },
-          },
-          eveningSnack: {
-            mealId: "mon-snack2",
-            name: "Greek Yogurt with Nuts",
-            timing: "4:30 PM",
-            recipe: {
-              id: "recipe-4",
-              name: "Greek Yogurt with Nuts",
-              prepTime: 2,
-              cookTime: 0,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Continental",
-              dietaryTags: ["vegetarian", "high-protein"],
-              ingredients: [
-                { name: "Greek Yogurt", quantity: 150, unit: "g" },
-                { name: "Mixed Nuts", quantity: 20, unit: "g", notes: "roughly chopped" },
-                { name: "Honey", quantity: 10, unit: "ml" },
-              ],
-              instructions: [
-                "Spoon Greek yogurt into a bowl.",
-                "Top with chopped nuts and drizzle with honey.",
-                "Stir and enjoy.",
-              ],
-              nutritionalInfo: {
-                calories: 195,
-                protein: 12,
-                carbs: 18,
-                fat: 9,
-                fiber: 2,
-              },
-            },
-          },
-          dinner: {
-            mealId: "mon-dinner",
-            name: "Dal Tadka with Roti & Salad",
-            timing: "7:30 PM",
-            recipe: {
-              id: "recipe-5",
-              name: "Dal Tadka with Roti & Salad",
-              prepTime: 10,
-              cookTime: 25,
-              servings: 1,
-              difficulty: "medium",
-              cuisine: "Indian",
-              dietaryTags: ["vegetarian", "high-protein", "high-fiber"],
-              ingredients: [
-                { name: "Lentils (Masoor Dal)", quantity: 60, unit: "g" },
-                { name: "Whole Wheat Roti Flour", quantity: 60, unit: "g" },
-                { name: "Onion", quantity: 0.5, unit: "unit", notes: "finely chopped" },
-                { name: "Tomato", quantity: 1, unit: "unit", notes: "finely chopped" },
-                { name: "Garlic Cloves", quantity: 3, unit: "units", notes: "minced" },
-                { name: "Ginger", quantity: 5, unit: "g", notes: "grated" },
-                { name: "Cumin Seeds", quantity: 5, unit: "g" },
-                { name: "Turmeric Powder", quantity: 2, unit: "g" },
-                { name: "Coriander Powder", quantity: 3, unit: "g" },
-                { name: "Butter", quantity: 10, unit: "g" },
-                { name: "Cucumber", quantity: 0.5, unit: "unit", notes: "diced for salad" },
-                { name: "Carrot", quantity: 0.5, unit: "unit", notes: "grated for salad" },
-                { name: "Lemon Juice", quantity: 10, unit: "ml" },
-                { name: "Salt", quantity: 1, unit: "pinch" },
-              ],
-              instructions: [
-                "Wash lentils thoroughly and cook in a pot with 200ml water, turmeric, and salt. Simmer for 15-20 minutes until soft.",
-                "Meanwhile, knead roti flour with warm water into a soft dough. Divide into 2 balls, roll into circles.",
-                "Cook rotis on a hot griddle, 30 seconds each side until golden spots appear.",
-                "For tadka: Heat butter in a small pan. Add cumin seeds and let them splutter.",
-                "Add minced garlic, grated ginger, and chopped onion. Sauté until golden.",
-                "Add chopped tomato and coriander powder. Cook for 2 minutes until mushy.",
-                "Pour tadka over cooked dal and mix well.",
-                "Prepare salad by mixing diced cucumber, grated carrot, and lemon juice.",
-                "Serve dal with hot rotis and salad on the side.",
-              ],
-              tips: [
-                "Pressure cook dal for 3-4 whistles if you have a pressure cooker - saves time!",
-                "Add a pinch of asafoetida (hing) to the tadka for authentic flavor.",
-              ],
-              nutritionalInfo: {
-                calories: 495,
-                protein: 22,
-                carbs: 72,
-                fat: 12,
-                fiber: 14,
-              },
-            },
-          },
+  try {
+    const userId = await getAuthUserId()
+    if (!userId) {
+      return NextResponse.json(
+        { error: { code: "UNAUTHORIZED", message: "Not authenticated" } },
+        { status: 401 }
+      )
+    }
+
+    // Check for existing plan
+    const existing = await prisma.dietPlan.findFirst({
+      where: { userId, isActive: true, weekStart: { gte: getMonday(new Date()) } },
+      orderBy: { createdAt: "desc" },
+    })
+
+    if (existing) {
+      return NextResponse.json({
+        data: {
+          weekStart: existing.weekStart.toISOString().slice(0, 10),
+          weekEnd: existing.weekEnd.toISOString().slice(0, 10),
+          days: existing.meals as unknown as DayPlan[],
+          dailyTargets: existing.dailyTargets as unknown as DailyTargets,
+          shoppingList: existing.shoppingList as unknown as ShoppingItem[],
         },
+      })
+    }
+
+    // Generate personalized plan
+    const plan = await generatePersonalizedPlan(userId)
+    return NextResponse.json({ data: plan })
+  } catch (error) {
+    console.error("Diet plan GET error:", error)
+    return NextResponse.json(
+      { error: { code: "INTERNAL_ERROR", message: "Something went wrong" } },
+      { status: 500 }
+    )
+  }
+}
+
+// ─── POST /api/diet/plan — Regenerate meal plan ─────────────────
+
+export async function POST() {
+  try {
+    const userId = await getAuthUserId()
+    if (!userId) {
+      return NextResponse.json(
+        { error: { code: "UNAUTHORIZED", message: "Not authenticated" } },
+        { status: 401 }
+      )
+    }
+
+    // Deactivate old plans
+    await prisma.dietPlan.updateMany({
+      where: { userId, isActive: true },
+      data: { isActive: false },
+    })
+
+    const plan = await generatePersonalizedPlan(userId)
+
+    // Save to database
+    await prisma.dietPlan.create({
+      data: {
+        userId,
+        weekStart: new Date(plan.weekStart),
+        weekEnd: new Date(plan.weekEnd),
+        meals: plan.days as any,
+        dailyTargets: plan.dailyTargets as any,
+        shoppingList: plan.shoppingList as any,
       },
-      {
-        date: "2026-07-21",
-        dayName: "Tuesday",
-        meals: {
-          breakfast: {
-            mealId: "tue-bfast",
-            name: "Scrambled Eggs on Toast",
-            timing: "7:30 AM",
-            recipe: {
-              id: "recipe-6",
-              name: "Scrambled Eggs on Toast",
-              prepTime: 3,
-              cookTime: 8,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Continental",
-              dietaryTags: ["high-protein", "low-carb"],
-              ingredients: [
-                { name: "Eggs", quantity: 3, unit: "units" },
-                { name: "Whole Wheat Bread", quantity: 2, unit: "slices" },
-                { name: "Butter", quantity: 10, unit: "g" },
-                { name: "Milk", quantity: 15, unit: "ml" },
-                { name: "Salt", quantity: 1, unit: "pinch" },
-                { name: "Black Pepper", quantity: 1, unit: "pinch" },
-              ],
-              instructions: [
-                "Crack eggs into a bowl, add milk, salt, and pepper. Whisk until frothy.",
-                "Heat butter in a non-stick pan over medium-low heat.",
-                "Pour in eggs and let them set for 20 seconds, then gently push with a spatula.",
-                "Continue pushing and folding until eggs are just set but still soft and creamy.",
-                "Toast bread slices until golden.",
-                "Serve scrambled eggs over toast.",
-              ],
-              tips: [
-                "Remove eggs from heat just before they look done - residual heat finishes cooking them.",
-                "For extra creaminess, stir in a teaspoon of cream cheese at the end.",
-              ],
-              nutritionalInfo: {
-                calories: 340,
-                protein: 22,
-                carbs: 26,
-                fat: 17,
-                fiber: 3,
-              },
-            },
-          },
-          morningSnack: {
-            mealId: "tue-snack1",
-            name: "Banana Smoothie",
-            timing: "10:30 AM",
-            recipe: {
-              id: "recipe-7",
-              name: "Banana Smoothie",
-              prepTime: 5,
-              cookTime: 0,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Continental",
-              dietaryTags: ["vegetarian", "vegan-option"],
-              ingredients: [
-                { name: "Banana", quantity: 1, unit: "unit" },
-                { name: "Greek Yogurt", quantity: 100, unit: "g" },
-                { name: "Milk", quantity: 150, unit: "ml" },
-                { name: "Honey", quantity: 10, unit: "ml" },
-              ],
-              instructions: [
-                "Peel banana and break into chunks.",
-                "Add banana, yogurt, milk, and honey to a blender.",
-                "Blend on high for 30-45 seconds until smooth and creamy.",
-                "Pour into a glass and serve immediately.",
-              ],
-              tips: ["Use frozen banana chunks for a thicker, creamier smoothie without ice."],
-              nutritionalInfo: {
-                calories: 265,
-                protein: 10,
-                carbs: 48,
-                fat: 4,
-                fiber: 3,
-              },
-            },
-          },
-          lunch: {
-            mealId: "tue-lunch",
-            name: "Chickpea & Spinach Curry",
-            timing: "1:00 PM",
-            recipe: {
-              id: "recipe-8",
-              name: "Chickpea & Spinach Curry",
-              prepTime: 10,
-              cookTime: 20,
-              servings: 1,
-              difficulty: "medium",
-              cuisine: "Indian",
-              dietaryTags: ["vegetarian", "vegan", "high-fiber", "high-protein"],
-              ingredients: [
-                { name: "Chickpeas (canned)", quantity: 200, unit: "g", notes: "drained and rinsed" },
-                { name: "Spinach", quantity: 60, unit: "g" },
-                { name: "Onion", quantity: 0.5, unit: "unit", notes: "finely chopped" },
-                { name: "Tomato", quantity: 1, unit: "unit", notes: "pureed" },
-                { name: "Garlic Cloves", quantity: 2, unit: "units", notes: "minced" },
-                { name: "Ginger", quantity: 5, unit: "g", notes: "grated" },
-                { name: "Cumin Seeds", quantity: 3, unit: "g" },
-                { name: "Coriander Powder", quantity: 5, unit: "g" },
-                { name: "Turmeric Powder", quantity: 2, unit: "g" },
-                { name: "Olive Oil", quantity: 10, unit: "ml" },
-                { name: "Brown Rice", quantity: 60, unit: "g", notes: "dry weight" },
-                { name: "Salt", quantity: 1, unit: "pinch" },
-              ],
-              instructions: [
-                "Cook brown rice in a pot of boiling water for 15-18 minutes until tender. Drain and set aside.",
-                "Heat olive oil in a pan. Add cumin seeds and let them splutter.",
-                "Add chopped onion, minced garlic, and grated ginger. Sauté until onions are golden brown.",
-                "Add tomato puree, coriander powder, turmeric, and salt. Cook for 3-4 minutes until oil separates.",
-                "Add chickpeas and 50ml water. Simmer for 10 minutes.",
-                "Add spinach and cook for 2 more minutes until wilted.",
-                "Serve chickpea curry over a bed of brown rice.",
-              ],
-              tips: [
-                "Replace spinach with kale for a different nutrient profile.",
-                "Add a squeeze of lemon juice before serving for brightness.",
-              ],
-              nutritionalInfo: {
-                calories: 455,
-                protein: 18,
-                carbs: 68,
-                fat: 12,
-                fiber: 16,
-              },
-            },
-          },
-          eveningSnack: {
-            mealId: "tue-snack2",
-            name: "Mixed Nuts & Seeds",
-            timing: "4:30 PM",
-            recipe: {
-              id: "recipe-9",
-              name: "Mixed Nuts & Seeds Trail Mix",
-              prepTime: 2,
-              cookTime: 0,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Continental",
-              dietaryTags: ["vegetarian", "vegan", "high-protein"],
-              ingredients: [
-                { name: "Mixed Nuts", quantity: 25, unit: "g" },
-                { name: "Chia Seeds", quantity: 5, unit: "g" },
-              ],
-              instructions: ["Mix nuts and seeds together in a small bowl.", "Enjoy as a crunchy snack."],
-              nutritionalInfo: {
-                calories: 160,
-                protein: 5,
-                carbs: 6,
-                fat: 14,
-                fiber: 3,
-              },
-            },
-          },
-          dinner: {
-            mealId: "tue-dinner",
-            name: "Paneer Bhurji with Quinoa",
-            timing: "7:30 PM",
-            recipe: {
-              id: "recipe-10",
-              name: "Paneer Bhurji with Quinoa",
-              prepTime: 10,
-              cookTime: 15,
-              servings: 1,
-              difficulty: "medium",
-              cuisine: "Indian",
-              dietaryTags: ["vegetarian", "high-protein", "gluten-free"],
-              ingredients: [
-                { name: "Paneer", quantity: 150, unit: "g", notes: "crumbled" },
-                { name: "Quinoa", quantity: 50, unit: "g", notes: "dry weight" },
-                { name: "Onion", quantity: 0.5, unit: "unit", notes: "finely diced" },
-                { name: "Bell Pepper", quantity: 0.5, unit: "unit", notes: "finely diced" },
-                { name: "Tomato", quantity: 1, unit: "unit", notes: "finely chopped" },
-                { name: "Garlic Cloves", quantity: 2, unit: "units", notes: "minced" },
-                { name: "Turmeric Powder", quantity: 2, unit: "g" },
-                { name: "Cumin Seeds", quantity: 3, unit: "g" },
-                { name: "Olive Oil", quantity: 10, unit: "ml" },
-                { name: "Salt", quantity: 1, unit: "pinch" },
-                { name: "Lemon Juice", quantity: 10, unit: "ml" },
-              ],
-              instructions: [
-                "Cook quinoa in 100ml water with a pinch of salt. Bring to boil, then simmer for 12-15 minutes until fluffy.",
-                "Heat olive oil in a pan. Add cumin seeds and let them splutter.",
-                "Add minced garlic and diced onion. Sauté until translucent.",
-                "Add diced bell pepper and cook for 2 minutes.",
-                "Add chopped tomato and turmeric. Cook until tomatoes soften.",
-                "Add crumbled paneer and salt. Mix well and cook for 3-4 minutes.",
-                "Squeeze lemon juice over the bhurji and mix.",
-                "Serve paneer bhurji over fluffy quinoa.",
-              ],
-              tips: [
-                "Toast quinoa in the pan for 2 minutes before adding water for a nuttier flavor.",
-                "Add finely chopped cilantro on top for freshness.",
-              ],
-              nutritionalInfo: {
-                calories: 480,
-                protein: 28,
-                carbs: 38,
-                fat: 24,
-                fiber: 5,
-              },
-            },
-          },
-        },
-      },
-      {
-        date: "2026-07-22",
-        dayName: "Wednesday",
-        meals: {
-          breakfast: {
-            mealId: "wed-bfast",
-            name: "Masala Omelette with Toast",
-            timing: "7:30 AM",
-            recipe: {
-              id: "recipe-11",
-              name: "Masala Omelette with Toast",
-              prepTime: 5,
-              cookTime: 8,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Indian",
-              dietaryTags: ["high-protein", "low-carb"],
-              ingredients: [
-                { name: "Eggs", quantity: 3, unit: "units" },
-                { name: "Onion", quantity: 0.25, unit: "unit", notes: "finely chopped" },
-                { name: "Tomato", quantity: 0.5, unit: "unit", notes: "finely chopped" },
-                { name: "Green Chili", quantity: 1, unit: "unit", notes: "finely chopped (optional)" },
-                { name: "Whole Wheat Bread", quantity: 1, unit: "slice" },
-                { name: "Butter", quantity: 10, unit: "g" },
-                { name: "Salt", quantity: 1, unit: "pinch" },
-                { name: "Black Pepper", quantity: 1, unit: "pinch" },
-              ],
-              instructions: [
-                "Whisk eggs with salt and pepper until frothy.",
-                "Mix in chopped onion, tomato, and green chili.",
-                "Melt butter in a non-stick pan over medium heat.",
-                "Pour egg mixture into the pan. Swirl to spread evenly.",
-                "Cook for 3-4 minutes until edges are set and bottom is golden.",
-                "Fold omelette in half and slide onto plate.",
-                "Toast bread and serve alongside.",
-              ],
-              tips: [
-                "Add a pinch of turmeric for color and anti-inflammatory benefits.",
-                "Don't overmix the vegetables into the eggs - fold them in gently.",
-              ],
-              nutritionalInfo: {
-                calories: 320,
-                protein: 20,
-                carbs: 18,
-                fat: 19,
-                fiber: 3,
-              },
-            },
-          },
-          morningSnack: {
-            mealId: "wed-snack1",
-            name: "Fresh Fruit Bowl",
-            timing: "10:30 AM",
-            recipe: {
-              id: "recipe-12",
-              name: "Fresh Fruit Bowl",
-              prepTime: 5,
-              cookTime: 0,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Continental",
-              dietaryTags: ["vegetarian", "vegan", "low-fat"],
-              ingredients: [
-                { name: "Banana", quantity: 0.5, unit: "unit", notes: "sliced" },
-                { name: "Apple", quantity: 0.5, unit: "unit", notes: "diced" },
-                { name: "Mixed Berries", quantity: 50, unit: "g" },
-                { name: "Lemon Juice", quantity: 5, unit: "ml" },
-              ],
-              instructions: [
-                "Chop all fruits into bite-sized pieces.",
-                "Toss together in a bowl.",
-                "Squeeze lemon juice over to prevent browning and enhance flavor.",
-              ],
-              nutritionalInfo: {
-                calories: 120,
-                protein: 2,
-                carbs: 28,
-                fat: 1,
-                fiber: 5,
-              },
-            },
-          },
-          lunch: {
-            mealId: "wed-lunch",
-            name: "Quinoa Buddha Bowl",
-            timing: "1:00 PM",
-            recipe: {
-              id: "recipe-13",
-              name: "Quinoa Buddha Bowl",
-              prepTime: 10,
-              cookTime: 15,
-              servings: 1,
-              difficulty: "medium",
-              cuisine: "Fusion",
-              dietaryTags: ["vegetarian", "vegan-option", "gluten-free", "high-fiber"],
-              ingredients: [
-                { name: "Quinoa", quantity: 60, unit: "g", notes: "dry weight" },
-                { name: "Chickpeas (canned)", quantity: 100, unit: "g", notes: "drained" },
-                { name: "Avocado", quantity: 0.5, unit: "unit", notes: "sliced" },
-                { name: "Carrot", quantity: 1, unit: "unit", notes: "ribboned or grated" },
-                { name: "Spinach", quantity: 40, unit: "g" },
-                { name: "Olive Oil", quantity: 15, unit: "ml" },
-                { name: "Lemon Juice", quantity: 15, unit: "ml" },
-                { name: "Salt", quantity: 1, unit: "pinch" },
-              ],
-              instructions: [
-                "Cook quinoa in 120ml salted water. Bring to boil, cover, and simmer for 12-15 minutes.",
-                "While quinoa cooks, prepare the dressing: mix olive oil, lemon juice, and a pinch of salt.",
-                "In a bowl, arrange cooked quinoa as the base.",
-                "Arrange chickpeas, sliced avocado, carrot ribbons, and spinach on top in sections.",
-                "Drizzle the lemon-olive oil dressing over everything.",
-                "Serve at room temperature.",
-              ],
-              tips: [
-                "Roast chickpeas with spices at 200°C for 20 minutes for extra crunch.",
-                "Add pickled onions or sprouts for variety.",
-              ],
-              nutritionalInfo: {
-                calories: 445,
-                protein: 16,
-                carbs: 52,
-                fat: 20,
-                fiber: 14,
-              },
-            },
-          },
-          eveningSnack: {
-            mealId: "wed-snack2",
-            name: "Cucumber & Hummus",
-            timing: "4:30 PM",
-            recipe: {
-              id: "recipe-14",
-              name: "Cucumber & Hummus",
-              prepTime: 3,
-              cookTime: 0,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Mediterranean",
-              dietaryTags: ["vegetarian", "vegan", "gluten-free"],
-              ingredients: [
-                { name: "Cucumber", quantity: 1, unit: "unit", notes: "sliced into sticks" },
-                { name: "Hummus", quantity: 50, unit: "g" },
-              ],
-              instructions: ["Slice cucumber into thick sticks.", "Serve with hummus for dipping."],
-              nutritionalInfo: {
-                calories: 115,
-                protein: 4,
-                carbs: 10,
-                fat: 7,
-                fiber: 3,
-              },
-            },
-          },
-          dinner: {
-            mealId: "wed-dinner",
-            name: "Lemon Herb Grilled Fish with Veggies",
-            timing: "7:30 PM",
-            recipe: {
-              id: "recipe-15",
-              name: "Lemon Herb Grilled Fish with Veggies",
-              prepTime: 10,
-              cookTime: 15,
-              servings: 1,
-              difficulty: "medium",
-              cuisine: "Mediterranean",
-              dietaryTags: ["high-protein", "low-carb", "gluten-free"],
-              ingredients: [
-                { name: "Fish Fillet (Pomfret/Seabass)", quantity: 150, unit: "g" },
-                { name: "Lemon Juice", quantity: 15, unit: "ml" },
-                { name: "Garlic Cloves", quantity: 2, unit: "units", notes: "minced" },
-                { name: "Olive Oil", quantity: 15, unit: "ml" },
-                { name: "Bell Pepper", quantity: 0.5, unit: "unit", notes: "sliced" },
-                { name: "Zucchini", quantity: 0.5, unit: "unit", notes: "sliced" },
-                { name: "Cherry Tomatoes", quantity: 5, unit: "units" },
-                { name: "Salt", quantity: 1, unit: "pinch" },
-                { name: "Black Pepper", quantity: 1, unit: "pinch" },
-                { name: "Fresh Herbs", quantity: 5, unit: "g", notes: "dill or parsley, chopped" },
-              ],
-              instructions: [
-                "Marinate fish with lemon juice, minced garlic, 5ml olive oil, salt, pepper, and herbs. Set aside for 10 minutes.",
-                "Toss sliced bell pepper, zucchini, and cherry tomatoes with remaining olive oil, salt, and pepper.",
-                "Heat a grill pan over medium-high heat.",
-                "Grill vegetables for 3-4 minutes per side until charred. Set aside.",
-                "In the same pan, cook fish for 3-4 minutes per side until flaky and golden.",
-                "Serve fish alongside grilled vegetables, garnished with fresh herbs.",
-              ],
-              tips: [
-                "Don't overcook fish - it's done when it flakes easily with a fork.",
-                "Any white fish works: cod, tilapia, or Indian pomfret are great choices.",
-              ],
-              nutritionalInfo: {
-                calories: 380,
-                protein: 36,
-                carbs: 14,
-                fat: 20,
-                fiber: 5,
-              },
-            },
-          },
-        },
-      },
-      {
-        date: "2026-07-23",
-        dayName: "Thursday",
-        meals: {
-          breakfast: {
-            mealId: "thu-bfast",
-            name: "Banana Oat Pancakes",
-            timing: "7:30 AM",
-            recipe: {
-              id: "recipe-16",
-              name: "Banana Oat Pancakes",
-              prepTime: 5,
-              cookTime: 10,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Continental",
-              dietaryTags: ["vegetarian", "gluten-free-option"],
-              ingredients: [
-                { name: "Banana", quantity: 1, unit: "unit", notes: "ripe, mashed" },
-                { name: "Eggs", quantity: 2, unit: "units" },
-                { name: "Rolled Oats", quantity: 30, unit: "g", notes: "ground into flour" },
-                { name: "Butter", quantity: 5, unit: "g" },
-                { name: "Honey", quantity: 10, unit: "ml" },
-              ],
-              instructions: [
-                "Grind oats into a flour using a blender.",
-                "Mash banana in a bowl. Add eggs and oat flour. Whisk until smooth batter forms.",
-                "Heat butter in a non-stick pan over medium heat.",
-                "Pour small circles of batter (about 2 tbsp each).",
-                "Cook for 2-3 minutes until bubbles form on top, then flip and cook for 1-2 more minutes.",
-                "Stack pancakes, drizzle with honey, and serve warm.",
-              ],
-              tips: [
-                "Make oat flour in advance by blending oats and storing in an airtight jar.",
-                "Add a pinch of cinnamon to the batter for extra flavor.",
-              ],
-              nutritionalInfo: {
-                calories: 365,
-                protein: 18,
-                carbs: 48,
-                fat: 12,
-                fiber: 5,
-              },
-            },
-          },
-          morningSnack: {
-            mealId: "thu-snack1",
-            name: "Mixed Berries Yogurt",
-            timing: "10:30 AM",
-            recipe: {
-              id: "recipe-17",
-              name: "Mixed Berries Yogurt",
-              prepTime: 2,
-              cookTime: 0,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Continental",
-              dietaryTags: ["vegetarian", "high-protein"],
-              ingredients: [
-                { name: "Greek Yogurt", quantity: 120, unit: "g" },
-                { name: "Mixed Berries", quantity: 60, unit: "g" },
-              ],
-              instructions: [
-                "Spoon Greek yogurt into a bowl.",
-                "Top with mixed berries.",
-                "Stir gently and enjoy.",
-              ],
-              nutritionalInfo: {
-                calories: 130,
-                protein: 10,
-                carbs: 16,
-                fat: 3,
-                fiber: 3,
-              },
-            },
-          },
-          lunch: {
-            mealId: "thu-lunch",
-            name: "Whole Wheat Pasta Primavera",
-            timing: "1:00 PM",
-            recipe: {
-              id: "recipe-18",
-              name: "Whole Wheat Pasta Primavera",
-              prepTime: 10,
-              cookTime: 15,
-              servings: 1,
-              difficulty: "medium",
-              cuisine: "Italian",
-              dietaryTags: ["vegetarian", "high-fiber"],
-              ingredients: [
-                { name: "Whole Wheat Pasta", quantity: 75, unit: "g", notes: "dry weight" },
-                { name: "Garlic Cloves", quantity: 2, unit: "units", notes: "sliced" },
-                { name: "Bell Pepper", quantity: 0.5, unit: "unit", notes: "sliced" },
-                { name: "Cherry Tomatoes", quantity: 6, unit: "units", notes: "halved" },
-                { name: "Spinach", quantity: 40, unit: "g" },
-                { name: "Olive Oil", quantity: 15, unit: "ml" },
-                { name: "Red Chili Flakes", quantity: 2, unit: "g" },
-                { name: "Salt", quantity: 1, unit: "pinch" },
-                { name: "Parmesan Cheese", quantity: 10, unit: "g", notes: "grated (optional)" },
-              ],
-              instructions: [
-                "Cook pasta in salted boiling water according to package directions (8-10 min). Drain, reserving 50ml pasta water.",
-                "While pasta cooks, heat olive oil in a large pan over medium heat.",
-                "Add sliced garlic and red chili flakes. Sauté for 30 seconds until fragrant.",
-                "Add bell pepper slices. Cook for 3 minutes until slightly charred.",
-                "Add cherry tomatoes. Cook for 2 minutes until they start to burst.",
-                "Add spinach and cook until wilted (about 1 minute).",
-                "Toss in cooked pasta. Add a splash of reserved pasta water if needed for moisture.",
-                "Serve with grated parmesan on top if desired.",
-              ],
-              tips: [
-                "Reserve pasta water before draining - the starch helps the sauce cling to the pasta.",
-                "Add grilled chicken or chickpeas for extra protein.",
-              ],
-              nutritionalInfo: {
-                calories: 430,
-                protein: 14,
-                carbs: 62,
-                fat: 16,
-                fiber: 10,
-              },
-            },
-          },
-          eveningSnack: {
-            mealId: "thu-snack2",
-            name: "Roasted Makhana",
-            timing: "4:30 PM",
-            recipe: {
-              id: "recipe-19",
-              name: "Roasted Makhana (Fox Nuts)",
-              prepTime: 2,
-              cookTime: 5,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Indian",
-              dietaryTags: ["vegetarian", "vegan", "gluten-free"],
-              ingredients: [
-                { name: "Makhana (Fox Nuts)", quantity: 25, unit: "g" },
-                { name: "Olive Oil", quantity: 5, unit: "ml" },
-                { name: "Salt", quantity: 1, unit: "pinch" },
-                { name: "Black Pepper", quantity: 1, unit: "pinch" },
-              ],
-              instructions: [
-                "Heat olive oil in a non-stick pan over medium heat.",
-                "Add makhana and roast for 4-5 minutes, stirring constantly until crispy and golden.",
-                "Season with salt and pepper while hot.",
-                "Let cool for 2 minutes before eating - they get crunchier as they cool.",
-              ],
-              tips: ["Add chaat masala for a tangy twist instead of plain salt and pepper."],
-              nutritionalInfo: {
-                calories: 110,
-                protein: 4,
-                carbs: 16,
-                fat: 4,
-                fiber: 4,
-              },
-            },
-          },
-          dinner: {
-            mealId: "thu-dinner",
-            name: "Chicken Tikka with Mint Chutney & Roti",
-            timing: "7:30 PM",
-            recipe: {
-              id: "recipe-20",
-              name: "Chicken Tikka with Mint Chutney & Roti",
-              prepTime: 15,
-              cookTime: 15,
-              servings: 1,
-              difficulty: "medium",
-              cuisine: "Indian",
-              dietaryTags: ["high-protein", "gluten-free-option"],
-              ingredients: [
-                { name: "Chicken Breast", quantity: 150, unit: "g", notes: "cubed" },
-                { name: "Greek Yogurt", quantity: 30, unit: "g" },
-                { name: "Ginger Garlic Paste", quantity: 10, unit: "g" },
-                { name: "Turmeric Powder", quantity: 2, unit: "g" },
-                { name: "Cumin Powder", quantity: 3, unit: "g" },
-                { name: "Coriander Powder", quantity: 3, unit: "g" },
-                { name: "Lemon Juice", quantity: 10, unit: "ml" },
-                { name: "Whole Wheat Roti Flour", quantity: 60, unit: "g" },
-                { name: "Fresh Mint Leaves", quantity: 15, unit: "g" },
-                { name: "Fresh Coriander", quantity: 10, unit: "g" },
-                { name: "Green Chili", quantity: 1, unit: "unit" },
-                { name: "Salt", quantity: 1, unit: "pinch" },
-                { name: "Olive Oil", quantity: 5, unit: "ml" },
-              ],
-              instructions: [
-                "Marinate chicken cubes with yogurt, ginger garlic paste, turmeric, cumin, coriander powder, lemon juice, and salt. Refrigerate for at least 30 minutes (overnight is best).",
-                "Thread marinated chicken onto skewers. Grill in a pan or oven at 200°C for 12-15 minutes, turning occasionally.",
-                "Meanwhile, make chutney: blend mint leaves, coriander, green chili, lemon juice, and a pinch of salt into a smooth paste. Add water if too thick.",
-                "Knead roti flour with water into a soft dough. Roll into 2 rotis and cook on a hot griddle.",
-                "Serve chicken tikka with hot rotis and mint chutney on the side.",
-              ],
-              tips: [
-                "Soak wooden skewers in water for 30 minutes before using to prevent burning.",
-                "For a smoky flavor, place a piece of hot charcoal in a bowl with the cooked tikka and add a drop of oil - cover immediately for 5 minutes.",
-              ],
-              nutritionalInfo: {
-                calories: 465,
-                protein: 40,
-                carbs: 42,
-                fat: 15,
-                fiber: 6,
-              },
-            },
-          },
-        },
-      },
-      {
-        date: "2026-07-24",
-        dayName: "Friday",
-        meals: {
-          breakfast: {
-            mealId: "fri-bfast",
-            name: "Smoothie Bowl with Granola",
-            timing: "7:30 AM",
-            recipe: {
-              id: "recipe-21",
-              name: "Smoothie Bowl with Granola",
-              prepTime: 5,
-              cookTime: 0,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Continental",
-              dietaryTags: ["vegetarian", "high-fiber"],
-              ingredients: [
-                { name: "Banana", quantity: 1, unit: "unit", notes: "frozen" },
-                { name: "Mixed Berries", quantity: 60, unit: "g", notes: "frozen" },
-                { name: "Greek Yogurt", quantity: 80, unit: "g" },
-                { name: "Milk", quantity: 60, unit: "ml" },
-                { name: "Rolled Oats", quantity: 20, unit: "g", notes: "for topping" },
-                { name: "Mixed Nuts", quantity: 10, unit: "g", notes: "chopped, for topping" },
-              ],
-              instructions: [
-                "Blend frozen banana, frozen berries, Greek yogurt, and milk until thick and creamy.",
-                "Pour into a bowl - the mixture should be thick enough to eat with a spoon.",
-                "Top with rolled oats, chopped nuts, and any remaining berries.",
-                "Serve immediately.",
-              ],
-              tips: [
-                "Use frozen fruit for a thicker, ice-cream-like texture.",
-                "Prepare smoothie packs by portioning frozen fruit into bags for quick mornings.",
-              ],
-              nutritionalInfo: {
-                calories: 350,
-                protein: 14,
-                carbs: 52,
-                fat: 10,
-                fiber: 7,
-              },
-            },
-          },
-          morningSnack: {
-            mealId: "fri-snack1",
-            name: "Handful of Almonds",
-            timing: "10:30 AM",
-            recipe: {
-              id: "recipe-22",
-              name: "Handful of Almonds",
-              prepTime: 0,
-              cookTime: 0,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Continental",
-              dietaryTags: ["vegetarian", "vegan", "gluten-free", "high-protein"],
-              ingredients: [
-                { name: "Almonds", quantity: 25, unit: "g" },
-              ],
-              instructions: ["Enjoy almonds as a quick, nutrient-dense snack."],
-              nutritionalInfo: {
-                calories: 145,
-                protein: 5,
-                carbs: 5,
-                fat: 13,
-                fiber: 3,
-              },
-            },
-          },
-          lunch: {
-            mealId: "fri-lunch",
-            name: "Masoor Dal Khichdi with Raita",
-            timing: "1:00 PM",
-            recipe: {
-              id: "recipe-23",
-              name: "Masoor Dal Khichdi with Raita",
-              prepTime: 10,
-              cookTime: 25,
-              servings: 1,
-              difficulty: "medium",
-              cuisine: "Indian",
-              dietaryTags: ["vegetarian", "gluten-free", "high-fiber", "high-protein"],
-              ingredients: [
-                { name: "Lentils (Masoor Dal)", quantity: 40, unit: "g" },
-                { name: "Brown Rice", quantity: 40, unit: "g" },
-                { name: "Onion", quantity: 0.25, unit: "unit", notes: "sliced" },
-                { name: "Garlic Cloves", quantity: 2, unit: "units", notes: "sliced" },
-                { name: "Ginger", quantity: 5, unit: "g", notes: "julienned" },
-                { name: "Cumin Seeds", quantity: 3, unit: "g" },
-                { name: "Turmeric Powder", quantity: 2, unit: "g" },
-                { name: "Butter", quantity: 10, unit: "g" },
-                { name: "Greek Yogurt", quantity: 60, unit: "g", notes: "for raita" },
-                { name: "Cucumber", quantity: 0.25, unit: "unit", notes: "grated, for raita" },
-                { name: "Salt", quantity: 1, unit: "pinch" },
-              ],
-              instructions: [
-                "Wash dal and rice together until water runs clear.",
-                "In a pot, add dal-rice mixture, turmeric, and 400ml water. Cook for 20-25 minutes until soft and mushy.",
-                "In a small pan, heat butter. Add cumin seeds, sliced garlic, and sliced onion. Sauté until golden.",
-                "Pour this tadka over the cooked khichdi and mix well. Add ginger juliennes on top.",
-                "For raita: grate cucumber, squeeze out excess water, and mix with Greek yogurt and salt.",
-                "Serve khichdi hot with raita on the side.",
-              ],
-              tips: [
-                "Khichdi is a complete protein when dal and rice are eaten together - perfect for muscle recovery!",
-                "Add vegetables like peas, carrots, or beans to boost nutrition.",
-              ],
-              nutritionalInfo: {
-                calories: 425,
-                protein: 18,
-                carbs: 64,
-                fat: 10,
-                fiber: 9,
-              },
-            },
-          },
-          eveningSnack: {
-            mealId: "fri-snack2",
-            name: "Roasted Chickpeas",
-            timing: "4:30 PM",
-            recipe: {
-              id: "recipe-24",
-              name: "Roasted Chickpeas",
-              prepTime: 3,
-              cookTime: 5,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Indian",
-              dietaryTags: ["vegetarian", "vegan", "gluten-free", "high-fiber", "high-protein"],
-              ingredients: [
-                { name: "Chickpeas (canned)", quantity: 100, unit: "g", notes: "drained, rinsed, and patted dry" },
-                { name: "Olive Oil", quantity: 5, unit: "ml" },
-                { name: "Chaat Masala", quantity: 2, unit: "g" },
-              ],
-              instructions: [
-                "Heat olive oil in a pan over medium heat.",
-                "Add chickpeas and roast for 5 minutes, shaking the pan occasionally, until crispy and golden.",
-                "Sprinkle chaat masala and toss to coat.",
-                "Serve warm or at room temperature.",
-              ],
-              tips: [
-                "For extra crunch, roast chickpeas in an oven at 200°C for 20-25 minutes.",
-                "Try different seasonings: garlic powder, smoked paprika, or curry powder.",
-              ],
-              nutritionalInfo: {
-                calories: 140,
-                protein: 7,
-                carbs: 18,
-                fat: 5,
-                fiber: 6,
-              },
-            },
-          },
-          dinner: {
-            mealId: "fri-dinner",
-            name: "Brown Rice Veg Pulao with Salad",
-            timing: "7:30 PM",
-            recipe: {
-              id: "recipe-25",
-              name: "Brown Rice Veg Pulao with Salad",
-              prepTime: 10,
-              cookTime: 25,
-              servings: 1,
-              difficulty: "medium",
-              cuisine: "Indian",
-              dietaryTags: ["vegetarian", "vegan", "gluten-free", "high-fiber"],
-              ingredients: [
-                { name: "Brown Rice", quantity: 60, unit: "g" },
-                { name: "Carrot", quantity: 0.5, unit: "unit", notes: "diced" },
-                { name: "Green Peas", quantity: 30, unit: "g" },
-                { name: "Bell Pepper", quantity: 0.25, unit: "unit", notes: "diced" },
-                { name: "Onion", quantity: 0.25, unit: "unit", notes: "sliced" },
-                { name: "Cinnamon Stick", quantity: 1, unit: "unit", notes: "small piece" },
-                { name: "Cumin Seeds", quantity: 3, unit: "g" },
-                { name: "Cloves", quantity: 2, unit: "units" },
-                { name: "Olive Oil", quantity: 10, unit: "ml" },
-                { name: "Lemon Juice", quantity: 10, unit: "ml" },
-                { name: "Cucumber", quantity: 0.25, unit: "unit", notes: "diced for salad" },
-                { name: "Tomato", quantity: 0.5, unit: "unit", notes: "diced for salad" },
-                { name: "Salt", quantity: 1, unit: "pinch" },
-              ],
-              instructions: [
-                "Soak brown rice in water for 15 minutes. Drain.",
-                "Heat olive oil in a pot. Add cinnamon, cloves, and cumin seeds.",
-                "Add sliced onion and sauté until golden.",
-                "Add diced carrot, peas, and bell pepper. Sauté for 2 minutes.",
-                "Add drained rice and salt. Sauté for 1 minute.",
-                "Add 120ml water, bring to boil, cover, and simmer on low for 18-20 minutes.",
-                "Let pulao rest for 5 minutes (don't open lid).",
-                "Mix salad ingredients together with lemon juice.",
-                "Fluff pulao with a fork and serve with fresh salad.",
-              ],
-              tips: [
-                "Toast whole spices in oil first for maximum flavor extraction.",
-                "Add a pinch of saffron soaked in warm milk for a festive twist.",
-              ],
-              nutritionalInfo: {
-                calories: 430,
-                protein: 10,
-                carbs: 74,
-                fat: 11,
-                fiber: 9,
-              },
-            },
-          },
-        },
-      },
-      {
-        date: "2026-07-25",
-        dayName: "Saturday",
-        meals: {
-          breakfast: {
-            mealId: "sat-bfast",
-            name: "Veggie Avocado Toast",
-            timing: "8:00 AM",
-            recipe: {
-              id: "recipe-26",
-              name: "Veggie Avocado Toast",
-              prepTime: 5,
-              cookTime: 5,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Continental",
-              dietaryTags: ["vegetarian", "vegan", "high-fiber"],
-              ingredients: [
-                { name: "Whole Wheat Bread", quantity: 2, unit: "slices" },
-                { name: "Avocado", quantity: 0.5, unit: "unit", notes: "ripe, mashed" },
-                { name: "Cherry Tomatoes", quantity: 4, unit: "units", notes: "sliced" },
-                { name: "Lemon Juice", quantity: 5, unit: "ml" },
-                { name: "Salt", quantity: 1, unit: "pinch" },
-                { name: "Black Pepper", quantity: 1, unit: "pinch" },
-                { name: "Red Chili Flakes", quantity: 1, unit: "g" },
-              ],
-              instructions: [
-                "Toast bread slices until golden and crispy.",
-                "Mash avocado with lemon juice, salt, and pepper.",
-                "Spread mashed avocado generously on each toast slice.",
-                "Top with sliced cherry tomatoes.",
-                "Sprinkle red chili flakes on top and serve immediately.",
-              ],
-              tips: [
-                "Add a poached egg on top for extra protein (adds ~70 cal).",
-                "Sprinkle with pumpkin seeds for added crunch and zinc.",
-              ],
-              nutritionalInfo: {
-                calories: 285,
-                protein: 8,
-                carbs: 32,
-                fat: 15,
-                fiber: 9,
-              },
-            },
-          },
-          morningSnack: {
-            mealId: "sat-snack1",
-            name: "Papaya Bowl",
-            timing: "10:30 AM",
-            recipe: {
-              id: "recipe-27",
-              name: "Papaya Bowl",
-              prepTime: 3,
-              cookTime: 0,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Indian",
-              dietaryTags: ["vegetarian", "vegan", "low-fat", "gluten-free"],
-              ingredients: [
-                { name: "Papaya", quantity: 150, unit: "g", notes: "cubed" },
-                { name: "Lemon Juice", quantity: 5, unit: "ml" },
-              ],
-              instructions: [
-                "Cube papaya into bite-sized pieces.",
-                "Squeeze lemon juice over if desired for enhanced flavor.",
-                "Serve fresh.",
-              ],
-              nutritionalInfo: {
-                calories: 68,
-                protein: 1,
-                carbs: 17,
-                fat: 0,
-                fiber: 4,
-              },
-            },
-          },
-          lunch: {
-            mealId: "sat-lunch",
-            name: "Egg Fried Brown Rice",
-            timing: "1:30 PM",
-            recipe: {
-              id: "recipe-28",
-              name: "Egg Fried Brown Rice",
-              prepTime: 10,
-              cookTime: 12,
-              servings: 1,
-              difficulty: "medium",
-              cuisine: "Asian",
-              dietaryTags: ["high-protein", "gluten-free"],
-              ingredients: [
-                { name: "Brown Rice", quantity: 70, unit: "g", notes: "cooked (day-old is best)" },
-                { name: "Eggs", quantity: 2, unit: "units" },
-                { name: "Carrot", quantity: 0.5, unit: "unit", notes: "finely diced" },
-                { name: "Green Peas", quantity: 30, unit: "g" },
-                { name: "Garlic Cloves", quantity: 2, unit: "units", notes: "minced" },
-                { name: "Soy Sauce", quantity: 10, unit: "ml" },
-                { name: "Sesame Oil", quantity: 10, unit: "ml" },
-                { name: "Spring Onions", quantity: 2, unit: "units", notes: "sliced" },
-                { name: "Salt", quantity: 1, unit: "pinch" },
-              ],
-              instructions: [
-                "Heat sesame oil in a wok or large pan over high heat.",
-                "Add minced garlic and sauté for 15 seconds.",
-                "Add diced carrot and peas. Stir-fry for 2 minutes.",
-                "Push vegetables to one side. Crack eggs into the empty space and scramble quickly.",
-                "Add cooked brown rice. Toss everything together for 2-3 minutes.",
-                "Add soy sauce and salt. Toss to combine well.",
-                "Turn off heat, garnish with sliced spring onions, and serve hot.",
-              ],
-              tips: [
-                "Use day-old rice for the best fried rice texture - fresh rice gets mushy.",
-                "Add a dash of white pepper for authentic Chinese flavor.",
-              ],
-              nutritionalInfo: {
-                calories: 485,
-                protein: 20,
-                carbs: 64,
-                fat: 17,
-                fiber: 6,
-              },
-            },
-          },
-          eveningSnack: {
-            mealId: "sat-snack2",
-            name: "Salted Edamame",
-            timing: "5:00 PM",
-            recipe: {
-              id: "recipe-29",
-              name: "Salted Edamame",
-              prepTime: 1,
-              cookTime: 4,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Japanese",
-              dietaryTags: ["vegetarian", "vegan", "gluten-free", "high-protein", "high-fiber"],
-              ingredients: [
-                { name: "Edamame (frozen)", quantity: 100, unit: "g", notes: "in pods" },
-                { name: "Salt", quantity: 2, unit: "g" },
-              ],
-              instructions: [
-                "Boil edamame in salted water for 3-4 minutes until tender.",
-                "Drain and sprinkle with additional salt.",
-                "Serve warm. Pop beans out of pods to eat.",
-              ],
-              nutritionalInfo: {
-                calories: 110,
-                protein: 10,
-                carbs: 8,
-                fat: 4,
-                fiber: 5,
-              },
-            },
-          },
-          dinner: {
-            mealId: "sat-dinner",
-            name: "Grilled Fish Tacos with Mango Salsa",
-            timing: "8:00 PM",
-            recipe: {
-              id: "recipe-30",
-              name: "Grilled Fish Tacos with Mango Salsa",
-              prepTime: 15,
-              cookTime: 10,
-              servings: 1,
-              difficulty: "medium",
-              cuisine: "Mexican",
-              dietaryTags: ["high-protein", "gluten-free-option"],
-              ingredients: [
-                { name: "Fish Fillet", quantity: 120, unit: "g" },
-                { name: "Whole Wheat Tortilla", quantity: 2, unit: "units" },
-                { name: "Mango", quantity: 0.5, unit: "unit", notes: "diced for salsa" },
-                { name: "Onion", quantity: 0.25, unit: "unit", notes: "finely diced for salsa" },
-                { name: "Coriander", quantity: 5, unit: "g", notes: "chopped for salsa" },
-                { name: "Lemon Juice", quantity: 15, unit: "ml" },
-                { name: "Olive Oil", quantity: 10, unit: "ml" },
-                { name: "Chili Powder", quantity: 3, unit: "g" },
-                { name: "Garlic Powder", quantity: 2, unit: "g" },
-                { name: "Salt", quantity: 1, unit: "pinch" },
-              ],
-              instructions: [
-                "Mix chili powder, garlic powder, salt, and 5ml olive oil to make a rub.",
-                "Coat fish fillet with the spice rub on both sides.",
-                "Heat remaining olive oil in a grill pan. Cook fish for 3-4 minutes per side until flaky.",
-                "For salsa: mix diced mango, diced onion, chopped coriander, and lemon juice.",
-                "Warm tortillas in a dry pan for 30 seconds each side.",
-                "Break fish into chunks, divide between tortillas.",
-                "Top with mango salsa and serve immediately.",
-              ],
-              tips: [
-                "Use corn tortillas for a gluten-free option.",
-                "Add sliced avocado or a drizzle of crema (yogurt + lime) for extra richness.",
-              ],
-              nutritionalInfo: {
-                calories: 420,
-                protein: 32,
-                carbs: 42,
-                fat: 14,
-                fiber: 6,
-              },
-            },
-          },
-        },
-      },
-      {
-        date: "2026-07-26",
-        dayName: "Sunday",
-        meals: {
-          breakfast: {
-            mealId: "sun-bfast",
-            name: "Chia Pudding with Mango",
-            timing: "8:30 AM",
-            recipe: {
-              id: "recipe-31",
-              name: "Chia Pudding with Mango",
-              prepTime: 5,
-              cookTime: 0,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Continental",
-              dietaryTags: ["vegetarian", "vegan", "gluten-free", "high-fiber"],
-              ingredients: [
-                { name: "Chia Seeds", quantity: 30, unit: "g" },
-                { name: "Milk", quantity: 150, unit: "ml" },
-                { name: "Mango", quantity: 0.5, unit: "unit", notes: "diced" },
-                { name: "Honey", quantity: 10, unit: "ml" },
-              ],
-              instructions: [
-                "Mix chia seeds with milk and honey in a jar or bowl. Stir well.",
-                "Refrigerate for at least 4 hours or overnight.",
-                "When ready to serve, stir the pudding (it should be thick and gel-like).",
-                "Top with fresh diced mango and enjoy.",
-              ],
-              tips: [
-                "Make 3-4 jars at once for grab-and-go breakfasts throughout the week.",
-                "Top with any seasonal fruit - berries, banana, or passionfruit all work great.",
-              ],
-              nutritionalInfo: {
-                calories: 310,
-                protein: 10,
-                carbs: 38,
-                fat: 14,
-                fiber: 14,
-              },
-            },
-          },
-          morningSnack: {
-            mealId: "sun-snack1",
-            name: "Coconut Water with Nuts",
-            timing: "11:00 AM",
-            recipe: {
-              id: "recipe-32",
-              name: "Coconut Water with Nuts",
-              prepTime: 1,
-              cookTime: 0,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Continental",
-              dietaryTags: ["vegetarian", "vegan", "gluten-free"],
-              ingredients: [
-                { name: "Coconut Water", quantity: 250, unit: "ml" },
-                { name: "Mixed Nuts", quantity: 20, unit: "g" },
-              ],
-              instructions: ["Pour coconut water into a glass. Serve with a small bowl of mixed nuts."],
-              nutritionalInfo: {
-                calories: 165,
-                protein: 4,
-                carbs: 14,
-                fat: 11,
-                fiber: 2,
-              },
-            },
-          },
-          lunch: {
-            mealId: "sun-lunch",
-            name: "Weekend Veggie Wrap",
-            timing: "1:30 PM",
-            recipe: {
-              id: "recipe-33",
-              name: "Weekend Veggie Wrap",
-              prepTime: 10,
-              cookTime: 5,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Fusion",
-              dietaryTags: ["vegetarian", "high-fiber"],
-              ingredients: [
-                { name: "Whole Wheat Tortilla", quantity: 1, unit: "unit" },
-                { name: "Hummus", quantity: 40, unit: "g" },
-                { name: "Avocado", quantity: 0.25, unit: "unit", notes: "sliced" },
-                { name: "Bell Pepper", quantity: 0.25, unit: "unit", notes: "sliced" },
-                { name: "Carrot", quantity: 0.5, unit: "unit", notes: "grated" },
-                { name: "Spinach", quantity: 30, unit: "g" },
-                { name: "Cucumber", quantity: 0.25, unit: "unit", notes: "cut into sticks" },
-                { name: "Lemon Juice", quantity: 5, unit: "ml" },
-                { name: "Salt", quantity: 1, unit: "pinch" },
-              ],
-              instructions: [
-                "Warm the tortilla in a dry pan for 20 seconds per side.",
-                "Spread hummus evenly over the tortilla.",
-                "Layer avocado slices, sliced bell pepper, grated carrot, spinach, and cucumber sticks.",
-                "Squeeze lemon juice and sprinkle salt over the vegetables.",
-                "Fold the sides in, then roll tightly from the bottom.",
-                "Cut diagonally in half and serve.",
-              ],
-              tips: [
-                "Don't overstuff the wrap or it will be hard to roll.",
-                "To keep wrap from getting soggy, pat vegetables dry before assembling.",
-              ],
-              nutritionalInfo: {
-                calories: 370,
-                protein: 12,
-                carbs: 44,
-                fat: 17,
-                fiber: 12,
-              },
-            },
-          },
-          eveningSnack: {
-            mealId: "sun-snack2",
-            name: "Popcorn (Air-Popped)",
-            timing: "5:00 PM",
-            recipe: {
-              id: "recipe-34",
-              name: "Air-Popped Popcorn",
-              prepTime: 2,
-              cookTime: 5,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Continental",
-              dietaryTags: ["vegetarian", "vegan", "gluten-free", "high-fiber"],
-              ingredients: [
-                { name: "Popcorn Kernels", quantity: 25, unit: "g" },
-                { name: "Olive Oil", quantity: 5, unit: "ml", notes: "for misting" },
-                { name: "Salt", quantity: 1, unit: "pinch" },
-                { name: "Black Pepper", quantity: 1, unit: "pinch" },
-              ],
-              instructions: [
-                "Heat a pot with a tight lid over medium-high heat.",
-                "Add kernels and shake to form a single layer. Cover immediately.",
-                "When popping starts, shake the pot occasionally.",
-                "Once popping slows to 2-3 seconds between pops, remove from heat.",
-                "Mist popped corn with olive oil, sprinkle with salt and pepper, and toss.",
-              ],
-              tips: [
-                "Add nutritional yeast for a cheesy flavor without dairy.",
-                "Try different seasonings: cinnamon-sugar, curry powder, or garlic herb.",
-              ],
-              nutritionalInfo: {
-                calories: 95,
-                protein: 3,
-                carbs: 12,
-                fat: 5,
-                fiber: 4,
-              },
-            },
-          },
-          dinner: {
-            mealId: "sun-dinner",
-            name: "Hearty Lentil Soup with Garlic Bread",
-            timing: "7:30 PM",
-            recipe: {
-              id: "recipe-35",
-              name: "Hearty Lentil Soup with Garlic Bread",
-              prepTime: 10,
-              cookTime: 30,
-              servings: 1,
-              difficulty: "easy",
-              cuisine: "Mediterranean",
-              dietaryTags: ["vegetarian", "vegan", "high-fiber", "high-protein"],
-              ingredients: [
-                { name: "Lentils (Masoor Dal)", quantity: 60, unit: "g" },
-                { name: "Onion", quantity: 0.5, unit: "unit", notes: "diced" },
-                { name: "Carrot", quantity: 1, unit: "unit", notes: "diced" },
-                { name: "Garlic Cloves", quantity: 3, unit: "units", notes: "minced" },
-                { name: "Tomato", quantity: 1, unit: "unit", notes: "pureed" },
-                { name: "Cumin Powder", quantity: 3, unit: "g" },
-                { name: "Olive Oil", quantity: 15, unit: "ml" },
-                { name: "Whole Wheat Bread", quantity: 1, unit: "slice" },
-                { name: "Lemon Juice", quantity: 10, unit: "ml" },
-                { name: "Salt", quantity: 1, unit: "pinch" },
-                { name: "Black Pepper", quantity: 1, unit: "pinch" },
-                { name: "Fresh Coriander", quantity: 5, unit: "g", notes: "chopped, for garnish" },
-              ],
-              instructions: [
-                "Heat 10ml olive oil in a pot. Add diced onion and carrot. Sauté for 5 minutes until softened.",
-                "Add minced garlic and cumin powder. Cook for 1 minute until fragrant.",
-                "Add tomato puree and cook for 2 minutes.",
-                "Add washed lentils, 400ml water, salt, and pepper. Bring to a boil.",
-                "Reduce heat, cover, and simmer for 20-25 minutes until lentils are soft.",
-                "While soup simmers, make garlic bread: mix remaining olive oil with a pinch of garlic and salt, brush on bread, and toast.",
-                "Once soup is done, blend partially with an immersion blender for a creamy texture with some chunks left.",
-                "Stir in lemon juice. Serve soup garnished with coriander alongside crispy garlic bread.",
-              ],
-              tips: [
-                "This soup freezes well - make a double batch for busy weeknights.",
-                "Add a splash of coconut milk at the end for a creamy, dairy-free version.",
-              ],
-              nutritionalInfo: {
-                calories: 440,
-                protein: 20,
-                carbs: 62,
-                fat: 13,
-                fiber: 16,
-              },
-            },
-          },
-        },
-      },
-    ],
+    })
+
+    return NextResponse.json({ data: plan })
+  } catch (error) {
+    console.error("Diet plan POST error:", error)
+    return NextResponse.json(
+      { error: { code: "INTERNAL_ERROR", message: "Something went wrong" } },
+      { status: 500 }
+    )
+  }
+}
+
+// ─── Personalized Plan Generator ─────────────────────────────────
+
+async function generatePersonalizedPlan(userId: string): Promise<WeekPlan> {
+  const [profile, goals, nutrition, lifestyle] = await Promise.all([
+    prisma.profile.findUnique({ where: { userId } }),
+    prisma.goal.findMany({ where: { userId, isActive: true } }),
+    prisma.nutritionProfile.findUnique({ where: { userId } }),
+    prisma.lifestyle.findUnique({ where: { userId } }),
+  ])
+
+  const targets = computeTargets(profile, goals, nutrition, lifestyle)
+  const dietType = nutrition?.dietType ?? "vegetarian"
+  const days = generateWeek(dietType, goals.map((g: any) => g.goal))
+  const shoppingList = generateShoppingList(days)
+
+  const monday = getMonday(new Date())
+  const sunday = new Date(monday)
+  sunday.setDate(sunday.getDate() + 6)
+
+  return {
+    weekStart: monday.toISOString().slice(0, 10),
+    weekEnd: sunday.toISOString().slice(0, 10),
+    days,
+    dailyTargets: targets,
+    shoppingList,
+  }
+}
+
+// ─── Target Computation ─────────────────────────────────────────
+
+function computeTargets(
+  profile: any | null,
+  goals: any[],
+  nutrition: any | null,
+  lifestyle: any | null
+): DailyTargets {
+  const weightKg = profile?.weightKg ? Number(profile.weightKg) : 70
+  const goalIds = goals.map((g) => g.goal)
+  const exerciseFreq = lifestyle?.exerciseFreq ?? "rarely"
+
+  // BMR estimate using Mifflin-St Jeor (assumes male if no sex data)
+  const isFemale = profile?.biologicalSex === "female"
+  const heightCm = profile?.heightCm ? Number(profile.heightCm) : 170
+  const age = profile?.dateOfBirth ? Math.floor((Date.now() - new Date(profile.dateOfBirth).getTime()) / 31557600000) : 30
+  let bmr = isFemale
+    ? 447.6 + 9.25 * weightKg + 3.1 * heightCm - 4.33 * age
+    : 88.36 + 13.4 * weightKg + 4.8 * heightCm - 5.68 * age
+
+  // Activity multiplier
+  const activityMult: Record<string, number> = {
+    daily: 1.725, "4-6 times/week": 1.55, "2-3 times/week": 1.375,
+    "once/week": 1.2, rarely: 1.2, never: 1.15,
+  }
+  const tdee = Math.round(bmr * (activityMult[exerciseFreq] ?? 1.2))
+
+  // Adjust for goals
+  let calories = tdee
+  let proteinGPerKg = 1.6
+  if (goalIds.includes("lose_weight")) { calories -= 350; proteinGPerKg = 2.0 }
+  if (goalIds.includes("build_strength")) { calories += 200; proteinGPerKg = 2.2 }
+  if (goalIds.includes("build_routine") || goalIds.includes("increase_energy")) { proteinGPerKg = 1.8 }
+
+  const protein = Math.round(proteinGPerKg * weightKg)
+  const fat = Math.round((calories * 0.25) / 9)
+  const carbs = Math.round((calories - protein * 4 - fat * 9) / 4)
+  const fiber = isFemale ? 25 : 30
+
+  return { calories, protein: Math.min(protein, 250), carbs: Math.max(carbs, 100), fat: Math.max(fat, 30), fiber, water: 2.5 }
+}
+
+// ─── Week Generation ────────────────────────────────────────────
+
+const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+
+const MEAL_TEMPLATES = {
+  // ── Vegetarian meals ──
+  "veg-breakfast-1": { name: "Oats & Berry Bowl", timing: "7:30 AM", cuisine: "Continental", tags: ["vegetarian", "high-fiber"], cal: 385, p: 14, c: 58, f: 12, fib: 9, prep: 5, cook: 5, ingredients: [{ name: "Rolled Oats", qty: 50, unit: "g" }, { name: "Milk", qty: 200, unit: "ml" }, { name: "Mixed Berries", qty: 80, unit: "g" }, { name: "Honey", qty: 15, unit: "ml" }, { name: "Chia Seeds", qty: 10, unit: "g" }, { name: "Mixed Nuts", qty: 15, unit: "g" }], instructions: ["Bring milk to a gentle simmer in a saucepan.", "Add oats, reduce heat, cook 4-5 min stirring occasionally.", "Top with berries, nuts, chia seeds, and honey."], tips: ["For creamier oats, use half milk and half water."] },
+  "veg-breakfast-2": { name: "Scrambled Eggs on Toast", timing: "7:30 AM", cuisine: "Continental", tags: ["high-protein"], cal: 340, p: 22, c: 26, f: 17, fib: 3, prep: 3, cook: 8, ingredients: [{ name: "Eggs", qty: 3, unit: "units" }, { name: "Whole Wheat Bread", qty: 2, unit: "slices" }, { name: "Butter", qty: 10, unit: "g" }, { name: "Milk", qty: 15, unit: "ml" }], instructions: ["Whisk eggs with milk, salt, and pepper.", "Melt butter in a non-stick pan over medium-low heat.", "Pour in eggs, push gently with spatula until just set.", "Serve over toasted bread."], tips: ["Remove from heat just before done — residual heat finishes cooking."] },
+  "veg-breakfast-3": { name: "Banana Oat Pancakes", timing: "7:30 AM", cuisine: "Continental", tags: ["vegetarian", "high-fiber"], cal: 365, p: 18, c: 48, f: 12, fib: 5, prep: 5, cook: 10, ingredients: [{ name: "Banana", qty: 1, unit: "unit" }, { name: "Eggs", qty: 2, unit: "units" }, { name: "Rolled Oats", qty: 30, unit: "g" }, { name: "Butter", qty: 5, unit: "g" }, { name: "Honey", qty: 10, unit: "ml" }], instructions: ["Blend oats into flour. Mash banana, mix with eggs and oat flour.", "Cook small pancakes in buttered pan, 2-3 min per side.", "Stack and drizzle with honey."], tips: ["Add cinnamon to batter for extra flavor."] },
+  "veg-breakfast-4": { name: "Veggie Avocado Toast", timing: "8:00 AM", cuisine: "Continental", tags: ["vegetarian", "vegan", "high-fiber"], cal: 285, p: 8, c: 32, f: 15, fib: 9, prep: 5, cook: 5, ingredients: [{ name: "Whole Wheat Bread", qty: 2, unit: "slices" }, { name: "Avocado", qty: 0.5, unit: "unit" }, { name: "Cherry Tomatoes", qty: 4, unit: "units" }, { name: "Lemon Juice", qty: 5, unit: "ml" }], instructions: ["Toast bread. Mash avocado with lemon juice, salt, pepper.", "Spread on toast, top with sliced tomatoes."], tips: ["Add a poached egg for extra protein."] },
+  "veg-breakfast-5": { name: "Chia Pudding with Mango", timing: "8:30 AM", cuisine: "Continental", tags: ["vegetarian", "vegan", "high-fiber"], cal: 310, p: 10, c: 38, f: 14, fib: 14, prep: 5, cook: 0, ingredients: [{ name: "Chia Seeds", qty: 30, unit: "g" }, { name: "Milk", qty: 150, unit: "ml" }, { name: "Mango", qty: 0.5, unit: "unit" }, { name: "Honey", qty: 10, unit: "ml" }], instructions: ["Mix chia seeds with milk and honey. Refrigerate 4+ hours or overnight.", "Top with diced mango and serve."], tips: ["Make 3-4 jars at once for grab-and-go breakfasts."] },
+  // Non-veg additional breakfast
+  "nv-breakfast-1": { name: "Masala Omelette with Toast", timing: "7:30 AM", cuisine: "Indian", tags: ["high-protein"], cal: 320, p: 20, c: 18, f: 19, fib: 3, prep: 5, cook: 8, ingredients: [{ name: "Eggs", qty: 3, unit: "units" }, { name: "Onion", qty: 0.25, unit: "unit" }, { name: "Tomato", qty: 0.5, unit: "unit" }, { name: "Whole Wheat Bread", qty: 1, unit: "slice" }, { name: "Butter", qty: 10, unit: "g" }], instructions: ["Whisk eggs with salt. Mix in chopped onion and tomato.", "Cook in buttered pan 3-4 min, fold, serve with toast."], tips: ["Add turmeric for color and anti-inflammatory benefits."] },
+  // Snacks
+  "snack-1": { name: "Apple with Peanut Butter", timing: "10:30 AM", cuisine: "Continental", tags: ["vegetarian", "high-protein"], cal: 210, p: 8, c: 28, f: 9, fib: 5, prep: 2, cook: 0, ingredients: [{ name: "Apple", qty: 1, unit: "unit" }, { name: "Peanut Butter", qty: 30, unit: "g" }], instructions: ["Slice apple into wedges. Serve with peanut butter."], tips: [] },
+  "snack-2": { name: "Greek Yogurt with Nuts", timing: "4:30 PM", cuisine: "Continental", tags: ["vegetarian", "high-protein"], cal: 195, p: 12, c: 18, f: 9, fib: 2, prep: 2, cook: 0, ingredients: [{ name: "Greek Yogurt", qty: 150, unit: "g" }, { name: "Mixed Nuts", qty: 20, unit: "g" }, { name: "Honey", qty: 10, unit: "ml" }], instructions: ["Spoon yogurt into a bowl. Top with nuts and honey."], tips: [] },
+  "snack-3": { name: "Mixed Nuts & Seeds", timing: "4:30 PM", cuisine: "Continental", tags: ["vegetarian", "vegan", "high-protein"], cal: 160, p: 5, c: 6, f: 14, fib: 3, prep: 1, cook: 0, ingredients: [{ name: "Mixed Nuts", qty: 25, unit: "g" }, { name: "Chia Seeds", qty: 5, unit: "g" }], instructions: ["Mix nuts and seeds together. Enjoy as a crunchy snack."], tips: [] },
+  "snack-4": { name: "Cucumber & Hummus", timing: "4:30 PM", cuisine: "Mediterranean", tags: ["vegetarian", "vegan", "gluten-free"], cal: 115, p: 4, c: 10, f: 7, fib: 3, prep: 3, cook: 0, ingredients: [{ name: "Cucumber", qty: 1, unit: "unit" }, { name: "Hummus", qty: 50, unit: "g" }], instructions: ["Slice cucumber into sticks. Serve with hummus."], tips: [] },
+  "snack-5": { name: "Banana Smoothie", timing: "10:30 AM", cuisine: "Continental", tags: ["vegetarian"], cal: 265, p: 10, c: 48, f: 4, fib: 3, prep: 5, cook: 0, ingredients: [{ name: "Banana", qty: 1, unit: "unit" }, { name: "Greek Yogurt", qty: 100, unit: "g" }, { name: "Milk", qty: 150, unit: "ml" }, { name: "Honey", qty: 10, unit: "ml" }], instructions: ["Blend all ingredients until smooth. Serve immediately."], tips: ["Use frozen banana for a thicker smoothie."] },
+  // Lunch (veg)
+  "veg-lunch-1": { name: "Dal Tadka with Roti & Salad", timing: "1:00 PM", cuisine: "Indian", tags: ["vegetarian", "high-protein", "high-fiber"], cal: 495, p: 22, c: 72, f: 12, fib: 14, prep: 10, cook: 25, ingredients: [{ name: "Lentils (Masoor Dal)", qty: 60, unit: "g" }, { name: "Whole Wheat Roti Flour", qty: 60, unit: "g" }, { name: "Onion", qty: 0.5, unit: "unit" }, { name: "Tomato", qty: 1, unit: "unit" }, { name: "Cumin Seeds", qty: 5, unit: "g" }, { name: "Butter", qty: 10, unit: "g" }], instructions: ["Cook lentils with turmeric until soft.", "Knead dough, roll rotis, cook on griddle.", "Prepare tadka with cumin, garlic, onion, tomato.", "Pour tadka over dal. Serve with roti and salad."], tips: ["Pressure cook dal for 3-4 whistles to save time."] },
+  "veg-lunch-2": { name: "Chickpea & Spinach Curry", timing: "1:00 PM", cuisine: "Indian", tags: ["vegetarian", "vegan", "high-fiber"], cal: 455, p: 18, c: 68, f: 12, fib: 16, prep: 10, cook: 20, ingredients: [{ name: "Chickpeas (canned)", qty: 200, unit: "g" }, { name: "Spinach", qty: 60, unit: "g" }, { name: "Onion", qty: 0.5, unit: "unit" }, { name: "Brown Rice", qty: 60, unit: "g" }], instructions: ["Cook brown rice. Sauté onion, garlic, ginger.", "Add tomato puree and spices, cook 3 min.", "Add chickpeas, simmer 10 min. Add spinach, cook 2 min.", "Serve over rice."], tips: ["Add lemon juice for brightness."] },
+  "veg-lunch-3": { name: "Quinoa Buddha Bowl", timing: "1:00 PM", cuisine: "Fusion", tags: ["vegetarian", "vegan-option", "gluten-free", "high-fiber"], cal: 445, p: 16, c: 52, f: 20, fib: 14, prep: 10, cook: 15, ingredients: [{ name: "Quinoa", qty: 60, unit: "g" }, { name: "Chickpeas (canned)", qty: 100, unit: "g" }, { name: "Avocado", qty: 0.5, unit: "unit" }, { name: "Carrot", qty: 1, unit: "unit" }, { name: "Spinach", qty: 40, unit: "g" }], instructions: ["Cook quinoa. Prepare lemon-olive oil dressing.", "Arrange quinoa, chickpeas, avocado, carrot, spinach in bowl.", "Drizzle dressing and serve."], tips: ["Roast chickpeas with spices for extra crunch."] },
+  "veg-lunch-4": { name: "Whole Wheat Pasta Primavera", timing: "1:00 PM", cuisine: "Italian", tags: ["vegetarian", "high-fiber"], cal: 430, p: 14, c: 62, f: 16, fib: 10, prep: 10, cook: 15, ingredients: [{ name: "Whole Wheat Pasta", qty: 75, unit: "g" }, { name: "Garlic Cloves", qty: 2, unit: "units" }, { name: "Bell Pepper", qty: 0.5, unit: "unit" }, { name: "Cherry Tomatoes", qty: 6, unit: "units" }, { name: "Spinach", qty: 40, unit: "g" }, { name: "Olive Oil", qty: 15, unit: "ml" }], instructions: ["Cook pasta. Sauté garlic and chili flakes in olive oil.", "Add bell pepper, then tomatoes, then spinach.", "Toss with pasta. Serve with parmesan."], tips: ["Reserve pasta water — it helps sauce cling to pasta."] },
+  // Non-veg lunch
+  "nv-lunch-1": { name: "Grilled Chicken Salad", timing: "1:00 PM", cuisine: "Mediterranean", tags: ["high-protein", "low-carb"], cal: 420, p: 42, c: 12, f: 24, fib: 7, prep: 15, cook: 12, ingredients: [{ name: "Chicken Breast", qty: 150, unit: "g" }, { name: "Spinach", qty: 60, unit: "g" }, { name: "Avocado", qty: 0.5, unit: "unit" }, { name: "Cucumber", qty: 0.5, unit: "unit" }, { name: "Olive Oil", qty: 15, unit: "ml" }, { name: "Lemon Juice", qty: 15, unit: "ml" }], instructions: ["Season and grill chicken 5-6 min per side.", "Rest, slice, and serve over mixed vegetables with lemon dressing."], tips: ["Marinate chicken in lemon and herbs for 30 min before cooking."] },
+  "nv-lunch-2": { name: "Masoor Dal Khichdi with Raita", timing: "1:00 PM", cuisine: "Indian", tags: ["gluten-free", "high-fiber"], cal: 425, p: 18, c: 64, f: 10, fib: 9, prep: 10, cook: 25, ingredients: [{ name: "Lentils", qty: 40, unit: "g" }, { name: "Brown Rice", qty: 40, unit: "g" }, { name: "Butter", qty: 10, unit: "g" }, { name: "Greek Yogurt", qty: 60, unit: "g" }], instructions: ["Cook dal and rice together until soft.", "Prepare tadka with cumin, garlic, onion.", "Serve khichdi with cucumber raita."], tips: ["Khichdi is a complete protein — perfect for recovery!"] },
+  // Dinner (veg)
+  "veg-dinner-1": { name: "Paneer Bhurji with Quinoa", timing: "7:30 PM", cuisine: "Indian", tags: ["vegetarian", "high-protein", "gluten-free"], cal: 480, p: 28, c: 38, f: 24, fib: 5, prep: 10, cook: 15, ingredients: [{ name: "Paneer", qty: 150, unit: "g" }, { name: "Quinoa", qty: 50, unit: "g" }, { name: "Onion", qty: 0.5, unit: "unit" }, { name: "Bell Pepper", qty: 0.5, unit: "unit" }, { name: "Tomato", qty: 1, unit: "unit" }], instructions: ["Cook quinoa. Sauté cumin, garlic, onion, bell pepper.", "Add crumbled paneer and spices, cook 3-4 min.", "Serve paneer bhurji over quinoa with lemon juice."], tips: ["Toast quinoa for 2 min before adding water for nuttier flavor."] },
+  "veg-dinner-2": { name: "Brown Rice Veg Pulao with Salad", timing: "7:30 PM", cuisine: "Indian", tags: ["vegetarian", "vegan", "gluten-free", "high-fiber"], cal: 430, p: 10, c: 74, f: 11, fib: 9, prep: 10, cook: 25, ingredients: [{ name: "Brown Rice", qty: 60, unit: "g" }, { name: "Carrot", qty: 0.5, unit: "unit" }, { name: "Green Peas", qty: 30, unit: "g" }, { name: "Cinnamon Stick", qty: 1, unit: "unit" }, { name: "Cumin Seeds", qty: 3, unit: "g" }], instructions: ["Soak rice. Sauté whole spices, onion, veggies.", "Add rice and water, cover and simmer 18-20 min.", "Serve with fresh salad."], tips: ["Toast whole spices first for maximum flavor."] },
+  "veg-dinner-3": { name: "Hearty Lentil Soup with Garlic Bread", timing: "7:30 PM", cuisine: "Mediterranean", tags: ["vegetarian", "vegan", "high-fiber", "high-protein"], cal: 440, p: 20, c: 62, f: 13, fib: 16, prep: 10, cook: 30, ingredients: [{ name: "Lentils", qty: 60, unit: "g" }, { name: "Onion", qty: 0.5, unit: "unit" }, { name: "Carrot", qty: 1, unit: "unit" }, { name: "Garlic Cloves", qty: 3, unit: "units" }, { name: "Tomato", qty: 1, unit: "unit" }, { name: "Whole Wheat Bread", qty: 1, unit: "slice" }], instructions: ["Sauté onion, carrot, garlic. Add tomato and lentils.", "Simmer 20-25 min. Blend partially. Serve with garlic toast."], tips: ["Freezes well — make a double batch."] },
+  // Non-veg dinner
+  "nv-dinner-1": { name: "Lemon Herb Grilled Fish with Veggies", timing: "7:30 PM", cuisine: "Mediterranean", tags: ["high-protein", "low-carb", "gluten-free"], cal: 380, p: 36, c: 14, f: 20, fib: 5, prep: 10, cook: 15, ingredients: [{ name: "Fish Fillet", qty: 150, unit: "g" }, { name: "Lemon Juice", qty: 15, unit: "ml" }, { name: "Olive Oil", qty: 15, unit: "ml" }, { name: "Bell Pepper", qty: 0.5, unit: "unit" }, { name: "Zucchini", qty: 0.5, unit: "unit" }], instructions: ["Marinate fish with lemon, garlic, herbs.", "Grill vegetables 3-4 min per side.", "Cook fish 3-4 min per side. Serve together."], tips: ["Don't overcook fish — it's done when it flakes easily."] },
+  "nv-dinner-2": { name: "Chicken Tikka with Mint Chutney", timing: "7:30 PM", cuisine: "Indian", tags: ["high-protein"], cal: 465, p: 40, c: 42, f: 15, fib: 6, prep: 15, cook: 15, ingredients: [{ name: "Chicken Breast", qty: 150, unit: "g" }, { name: "Greek Yogurt", qty: 30, unit: "g" }, { name: "Whole Wheat Roti Flour", qty: 60, unit: "g" }, { name: "Mint Leaves", qty: 15, unit: "g" }], instructions: ["Marinate chicken in yogurt and spices 30+ min.", "Grill 12-15 min. Make mint chutney.", "Serve with hot rotis."], tips: ["Soak skewers in water 30 min before grilling."] },
+}
+
+function generateWeek(dietType: string, goals: string[]): DayPlan[] {
+  const isVeg = dietType === "vegetarian" || dietType === "vegan" || dietType === "eggetarian"
+  const today = new Date()
+  const monday = getMonday(today)
+  const days: DayPlan[] = []
+
+  const breakfastKeys = isVeg
+    ? ["veg-breakfast-1", "veg-breakfast-2", "veg-breakfast-3", "veg-breakfast-4", "veg-breakfast-5", "veg-breakfast-1", "veg-breakfast-5"]
+    : ["nv-breakfast-1", "veg-breakfast-2", "veg-breakfast-3", "veg-breakfast-4", "veg-breakfast-1", "nv-breakfast-1", "veg-breakfast-5"]
+
+  const lunchKeys = isVeg
+    ? ["veg-lunch-1", "veg-lunch-2", "veg-lunch-3", "veg-lunch-4", "veg-lunch-1", "veg-lunch-2", "veg-lunch-3"]
+    : ["nv-lunch-1", "veg-lunch-2", "nv-lunch-1", "veg-lunch-4", "nv-lunch-2", "veg-lunch-3", "nv-lunch-1"]
+
+  const dinnerKeys = isVeg
+    ? ["veg-dinner-1", "veg-dinner-2", "veg-dinner-3", "veg-dinner-1", "veg-dinner-2", "veg-dinner-3", "veg-dinner-1"]
+    : ["nv-dinner-1", "nv-dinner-2", "veg-dinner-1", "nv-dinner-1", "veg-dinner-2", "nv-dinner-2", "nv-dinner-1"]
+
+  const snackOpts = ["snack-1", "snack-2", "snack-3", "snack-4", "snack-5"]
+
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(monday)
+    date.setDate(date.getDate() + i)
+    const dateStr = date.toISOString().slice(0, 10)
+    const dayName = DAY_NAMES[date.getDay()]
+
+    const amSnack = snackOpts[i % snackOpts.length]
+    const pmSnack = snackOpts[(i + 2) % snackOpts.length]
+    const prevDinner = i > 0 ? dinnerKeys[i - 1] : dinnerKeys[6]
+
+    const breakfast = MEAL_TEMPLATES[breakfastKeys[i] as keyof typeof MEAL_TEMPLATES]
+    const lunch = MEAL_TEMPLATES[lunchKeys[i] as keyof typeof MEAL_TEMPLATES]
+    const dinner = MEAL_TEMPLATES[dinnerKeys[i] as keyof typeof MEAL_TEMPLATES]
+    const morningSnack = MEAL_TEMPLATES[amSnack as keyof typeof MEAL_TEMPLATES]
+    const eveningSnack = MEAL_TEMPLATES[pmSnack as keyof typeof MEAL_TEMPLATES]
+
+    // Avoid repeating dinner from previous day
+    const finalDinner = dinnerKeys[i] === prevDinner && i > 0
+      ? MEAL_TEMPLATES[dinnerKeys[(i + 2) % 7] as keyof typeof MEAL_TEMPLATES]
+      : dinner
+
+    days.push(buildDay(dateStr, dayName, i, breakfast, morningSnack, lunch, eveningSnack, finalDinner))
   }
 
-  return NextResponse.json({ data: plan })
+  return days
+}
+
+function buildDay(
+  date: string, dayName: string, _idx: number,
+  b: any, ms: any, l: any, es: any, d: any
+): DayPlan {
+  return {
+    date,
+    dayName,
+    meals: {
+      breakfast: makeMeal(`b-${date}`, b, b.timing),
+      morningSnack: makeMeal(`ms-${date}`, ms, ms.timing),
+      lunch: makeMeal(`l-${date}`, l, l.timing),
+      eveningSnack: makeMeal(`es-${date}`, es, es.timing),
+      dinner: makeMeal(`d-${date}`, d, d.timing.replace("7:", i18nTiming(_idx))),
+    },
+  }
+}
+
+function i18nTiming(idx: number): string {
+  // Slightly vary dinner times
+  return ["7", "7", "7", "7", "8", "8", "7"][idx] + ":"
+}
+
+function makeMeal(id: string, t: any, timing: string): MealSlot {
+  return {
+    mealId: id,
+    name: t.name,
+    timing: timing || t.timing,
+    recipe: {
+      id: `r-${id}`,
+      name: t.name,
+      prepTime: t.prep,
+      cookTime: t.cook,
+      servings: 1,
+      difficulty: t.cook > 20 ? "medium" : "easy",
+      cuisine: t.cuisine,
+      dietaryTags: t.tags,
+      ingredients: t.ingredients.map((i: any) => ({ name: i.name, quantity: i.qty, unit: i.unit, notes: undefined })),
+      instructions: t.instructions,
+      tips: t.tips,
+      nutritionalInfo: { calories: t.cal, protein: t.p, carbs: t.c, fat: t.f, fiber: t.fib },
+    },
+  }
+}
+
+// ─── Shopping List Generator ─────────────────────────────────────
+
+function generateShoppingList(days: DayPlan[]): ShoppingItem[] {
+  const itemMap = new Map<string, { qty: number; unit: string; category: string }>()
+
+  const CATEGORIES: Record<string, string> = {
+    oats: "Grains", rice: "Grains", quinoa: "Grains", bread: "Grains", flour: "Grains", pasta: "Grains", roti: "Grains",
+    chicken: "Protein", fish: "Protein", eggs: "Protein", lentils: "Protein", chickpeas: "Protein", nuts: "Protein",
+    banana: "Produce", apple: "Produce", berries: "Produce", spinach: "Produce", tomato: "Produce", onion: "Produce",
+    garlic: "Produce", ginger: "Produce", lemon: "Produce", carrot: "Produce", pepper: "Produce", avocado: "Produce",
+    cucumber: "Produce", mango: "Produce", papaya: "Produce", zucchini: "Produce", peas: "Produce", coriander: "Produce", mint: "Produce",
+    yogurt: "Dairy", milk: "Dairy", butter: "Dairy", cheese: "Dairy", paneer: "Dairy",
+    oil: "Pantry", "olive oil": "Pantry", honey: "Pantry", salt: "Pantry", cumin: "Pantry",
+    turmeric: "Pantry", cinnamon: "Pantry", chia: "Pantry", hummus: "Pantry", soy: "Pantry",
+  }
+
+  for (const day of days) {
+    for (const meal of Object.values(day.meals)) {
+      for (const ing of meal.recipe.ingredients) {
+        const key = ing.name.toLowerCase()
+        const existing = itemMap.get(key)
+        if (existing) {
+          existing.qty += ing.quantity
+        } else {
+          const cat = Object.entries(CATEGORIES).find(([k]) => key.includes(k))?.[1] ?? "Other"
+          itemMap.set(key, { qty: ing.quantity, unit: ing.unit, category: cat })
+        }
+      }
+    }
+  }
+
+  return Array.from(itemMap.entries())
+    .filter(([_, v]) => v.qty > 0)
+    .map(([name, data]) => ({
+      name: name.charAt(0).toUpperCase() + name.slice(1),
+      quantity: Math.round(data.qty * 2) / 2,
+      unit: data.unit,
+      category: data.category,
+      checked: false,
+    }))
+}
+
+// ─── Helpers ─────────────────────────────────────────────────────
+
+function getMonday(date: Date): Date {
+  const d = new Date(date)
+  const day = d.getDay()
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1)
+  d.setDate(diff)
+  d.setHours(0, 0, 0, 0)
+  return d
 }

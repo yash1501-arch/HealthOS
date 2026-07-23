@@ -105,8 +105,9 @@ export async function GET() {
       )
     }
 
-    const [profile, occupation, lifestyle, nutritionProfile, medicalHistory, painAssessments, goals] =
+    const [user, profile, occupation, lifestyle, nutritionProfile, medicalHistory, painAssessments, goals] =
       await Promise.all([
+        prisma.user.findUnique({ where: { id: userId }, select: { onboardingComplete: true, email: true } }),
         prisma.profile.findUnique({ where: { userId } }),
         prisma.occupation.findUnique({ where: { userId } }),
         prisma.lifestyle.findUnique({ where: { userId } }),
@@ -118,7 +119,8 @@ export async function GET() {
 
     return NextResponse.json({
       data: {
-        profile,
+        onboardingComplete: user?.onboardingComplete ?? false,
+        email: user?.email ?? null,
         occupation,
         lifestyle,
         nutrition: nutritionProfile,
@@ -158,7 +160,7 @@ export async function POST(request: Request) {
     const { profile, occupation, lifestyle, nutrition, medicalHistory, painAssessments, goals } = parsed.data
 
     // Use a transaction so everything is atomic
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: any) => {
       // Profile
       if (profile) {
         await tx.profile.upsert({
@@ -292,19 +294,47 @@ export async function POST(request: Request) {
         }
       }
 
-      // Mark onboarding as complete if all core sections have data
+      // Mark onboarding as complete if profile + at least one goal exists
       const hasProfile = await tx.profile.findUnique({ where: { userId } })
-      const hasOccupation = await tx.occupation.findUnique({ where: { userId } })
-      const hasLifestyle = await tx.lifestyle.findUnique({ where: { userId } })
-      const hasNutrition = await tx.nutritionProfile.findUnique({ where: { userId } })
-      const hasMedical = await tx.medicalHistory.findUnique({ where: { userId } })
       const activeGoals = await tx.goal.findFirst({ where: { userId, isActive: true } })
 
-      if (hasProfile && hasOccupation && hasLifestyle && hasNutrition && hasMedical && activeGoals) {
+      if (hasProfile && activeGoals) {
         await tx.user.update({
           where: { id: userId },
           data: { onboardingComplete: true },
         })
+      }
+
+      // Auto-populate medications from medical history
+      const currentMeds = (medicalHistory as Record<string, unknown> | undefined)?.currentMedications
+      if (Array.isArray(currentMeds) && currentMeds.length > 0) {
+        const existingMeds = await tx.healthTimelineEntry.findMany({
+          where: { userId, eventType: "medication_def" },
+        })
+        if (existingMeds.length === 0) {
+          for (const medName of currentMeds) {
+            await tx.healthTimelineEntry.create({
+              data: {
+                userId,
+                eventType: "medication_def",
+                title: `Medication: ${medName}`,
+                description: "Added from health assessment",
+                eventDate: new Date(),
+                metadata: {
+                  id: `med-auto-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+                  name: medName,
+                  dosage: "1",
+                  unit: "dose",
+                  frequency: "daily",
+                  timeOfDay: ["08:00"],
+                  notes: "Added from assessment",
+                  isActive: true,
+                  createdAt: new Date().toISOString(),
+                },
+              },
+            })
+          }
+        }
       }
     })
 

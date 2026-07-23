@@ -169,6 +169,26 @@ export async function POST(request: Request) {
         })
       }
 
+      // Log to health timeline
+      const detectedCount = parsed.data.postureCharacteristics?.filter(
+        (pc) => pc.severity !== "none"
+      ).length ?? 0
+      await prisma.healthTimelineEntry.create({
+        data: {
+          userId,
+          eventType: "vision_analysis",
+          referenceId: analysis.id,
+          title: "Posture analysis completed",
+          description: `Found ${detectedCount} area${detectedCount !== 1 ? "s" : ""} to address. ${parsed.data.summary ?? ""}`.slice(0, 280),
+          eventDate: new Date(),
+          metadata: {
+            analysisId: analysis.id,
+            characteristicCount: parsed.data.postureCharacteristics?.length ?? 0,
+            detectedCount,
+          },
+        },
+      })
+
       // Mark onboarding complete
       await prisma.user.update({
         where: { id: userId },

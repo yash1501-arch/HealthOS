@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { api } from "@/lib/api-client"
+import { toastError, toastSuccess } from "@/stores/toast"
 import DatePicker from "@/components/ui/date-picker"
 
 // ─── Helpers ────────────────────────────────────────────────────
@@ -259,7 +260,7 @@ function Input({ label, type = "text", value, onChange, placeholder, min, max, s
         step={step}
         required={required}
         className="w-full h-10 px-3 rounded-lg border border-gray-300 text-sm
-          focus:outline-none focus:ring-2 focus:ring-[#0F6CBF]/20 focus:border-[#0F6CBF]
+          focus:outline-none focus:ring-2 focus:ring-[#176B63]/20 focus:border-[#176B63]
           transition-all duration-200"
       />
     </div>
@@ -285,7 +286,7 @@ function Select({ label, value, onChange, options, required = false, placeholder
         onChange={(e) => onChange(e.target.value)}
         required={required}
         className="w-full h-10 px-3 rounded-lg border border-gray-300 text-sm bg-white
-          focus:outline-none focus:ring-2 focus:ring-[#0F6CBF]/20 focus:border-[#0F6CBF]
+          focus:outline-none focus:ring-2 focus:ring-[#176B63]/20 focus:border-[#176B63]
           transition-all duration-200 appearance-none
           bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%236B7280%22%20stroke-width%3D%222%22%3E%3Cpath%20d%3D%22M6%209l6%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:12px] bg-[right_12px_center] bg-no-repeat pr-10"
       >
@@ -315,7 +316,7 @@ function Slider({ label, value, onChange, min = 0, max = 10, showValue = true, u
       <div className="flex items-center justify-between mb-1.5">
         <label className="text-sm font-medium text-gray-700">{label}</label>
         {showValue && (
-          <span className="text-sm font-semibold text-[#0F6CBF]">
+          <span className="text-sm font-semibold text-[#176B63]">
             {numValue}{unit}
           </span>
         )}
@@ -327,13 +328,13 @@ function Slider({ label, value, onChange, min = 0, max = 10, showValue = true, u
         value={value || min}
         onChange={(e) => onChange(e.target.value)}
         className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer
-          accent-[#0F6CBF] [&::-webkit-slider-thumb]:appearance-none
+          accent-[#176B63] [&::-webkit-slider-thumb]:appearance-none
           [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5
-          [&::-webkit-slider-thumb]:bg-[#0F6CBF] [&::-webkit-slider-thumb]:rounded-full
+          [&::-webkit-slider-thumb]:bg-[#176B63] [&::-webkit-slider-thumb]:rounded-full
           [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-pointer
           [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-110"
         style={{
-          background: `linear-gradient(to right, #0F6CBF 0%, #0F6CBF ${percentage}%, #E5E7EB ${percentage}%, #E5E7EB 100%)`,
+          background: `linear-gradient(to right, #176B63 0%, #176B63 ${percentage}%, #E5E7EB ${percentage}%, #E5E7EB 100%)`,
         }}
       />
       <div className="flex justify-between text-xs text-gray-400 mt-1">
@@ -371,7 +372,7 @@ function TagInput({ label, tags, onChange, placeholder = "Type and press Enter" 
         {tags.map((tag) => (
           <span
             key={tag}
-            className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#E8F2FB] text-[#0F6CBF] text-xs font-medium rounded-full"
+            className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#E8F2FB] text-[#176B63] text-xs font-medium rounded-full"
           >
             {tag}
             <button
@@ -392,7 +393,7 @@ function TagInput({ label, tags, onChange, placeholder = "Type and press Enter" 
           onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addTag() } }}
           placeholder={placeholder}
           className="flex-1 h-10 px-3 rounded-lg border border-gray-300 text-sm
-            focus:outline-none focus:ring-2 focus:ring-[#0F6CBF]/20 focus:border-[#0F6CBF]"
+            focus:outline-none focus:ring-2 focus:ring-[#176B63]/20 focus:border-[#176B63]"
         />
         <button
           type="button"
@@ -421,7 +422,7 @@ function Step1PersonalInfo({ data, onChange }: {
         <p className="text-sm text-gray-500 mt-1">Let's start with the basics about you</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Input label="Full Name" value={data.fullName} onChange={(v) => onChange({ ...data, fullName: v })} placeholder="John Doe" required />
         <DatePicker label="Date of Birth" value={data.dateOfBirth} onChange={(v) => onChange({ ...data, dateOfBirth: v })} required />
         <div>
@@ -430,7 +431,7 @@ function Step1PersonalInfo({ data, onChange }: {
           </label>
           <div className={`w-full h-10 px-3 rounded-lg border text-sm flex items-center gap-2 transition-all duration-200
             ${data.dateOfBirth
-              ? "border-[#0F6CBF]/30 bg-[#F0F7FF] text-[#0F6CBF] font-semibold"
+              ? "border-[#176B63]/30 bg-[#F0F7FF] text-[#176B63] font-semibold"
               : "border-gray-200 bg-gray-50 text-gray-400"
             }`}
           >
@@ -459,7 +460,7 @@ function Step1PersonalInfo({ data, onChange }: {
         required
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Input label="Height (cm)" type="number" value={data.heightCm} onChange={(v) => onChange({ ...data, heightCm: v })} placeholder="175" min={50} max={300} />
         <Input label="Weight (kg)" type="number" value={data.weightKg} onChange={(v) => onChange({ ...data, weightKg: v })} placeholder="72" min={10} max={500} />
         <Input label="Waist (cm)" type="number" value={data.waistCm} onChange={(v) => onChange({ ...data, waistCm: v })} placeholder="88" min={30} max={200} />
@@ -492,12 +493,12 @@ function Step2Occupation({ data, onChange }: {
         <p className="text-sm text-gray-500 mt-1">Your work routine helps us personalize recommendations</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input label="Job Title" value={data.jobTitle} onChange={(v) => onChange({ ...data, jobTitle: v })} placeholder="Software Engineer" />
         <Input label="Industry" value={data.industry} onChange={(v) => onChange({ ...data, industry: v })} placeholder="Technology" />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input label="Weekly Working Hours" type="number" value={data.workingHours} onChange={(v) => onChange({ ...data, workingHours: v })} placeholder="40" min={0} max={168} />
         <Select
           label="Shift Schedule"
@@ -527,7 +528,7 @@ function Step2Occupation({ data, onChange }: {
         placeholder="Select work type"
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Input label="Sitting (hrs/day)" type="number" value={data.sittingHours} onChange={(v) => onChange({ ...data, sittingHours: v })} placeholder="8" min={0} max={24} />
         <Input label="Standing (hrs/day)" type="number" value={data.standingHours} onChange={(v) => onChange({ ...data, standingHours: v })} placeholder="2" min={0} max={24} />
         <Input label="Driving (hrs/day)" type="number" value={data.drivingHours} onChange={(v) => onChange({ ...data, drivingHours: v })} placeholder="1" min={0} max={24} />
@@ -547,30 +548,30 @@ function Step3Lifestyle({ data, onChange }: {
         <p className="text-sm text-gray-500 mt-1">Daily habits that affect your health</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input label="Wake-up Time" type="time" value={data.wakeUpTime} onChange={(v) => onChange({ ...data, wakeUpTime: v })} />
         <Input label="Bed Time" type="time" value={data.bedTime} onChange={(v) => onChange({ ...data, bedTime: v })} />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input label="Avg. Sleep (hours)" type="number" value={data.avgSleepHours} onChange={(v) => onChange({ ...data, avgSleepHours: v })} placeholder="7" min={0} max={24} step={0.5} />
         <Select label="Sleep Quality" value={data.sleepQuality} onChange={(v) => onChange({ ...data, sleepQuality: v })} options={SLEEP_QUALITIES} placeholder="How well do you sleep?" />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Input label="Water (L/day)" type="number" value={data.waterIntakeL} onChange={(v) => onChange({ ...data, waterIntakeL: v })} placeholder="2" min={0} max={20} step={0.1} />
         <Input label="Sunlight (min/day)" type="number" value={data.sunlightMinutes} onChange={(v) => onChange({ ...data, sunlightMinutes: v })} placeholder="20" min={0} />
         <Input label="Screen Time (hrs/day)" type="number" value={data.screenTimeHours} onChange={(v) => onChange({ ...data, screenTimeHours: v })} placeholder="6" min={0} />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input label="Daily Steps" type="number" value={data.walkingSteps} onChange={(v) => onChange({ ...data, walkingSteps: v })} placeholder="8000" min={0} />
         <Select label="Exercise Frequency" value={data.exerciseFreq} onChange={(v) => onChange({ ...data, exerciseFreq: v })} options={EXERCISE_FREQ} placeholder="How often do you exercise?" />
       </div>
 
       <Slider label="Stress Level" value={data.stressLevel} onChange={(v) => onChange({ ...data, stressLevel: v })} unit="/10" />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Select label="Smoking" value={data.smoking} onChange={(v) => onChange({ ...data, smoking: v })} options={SMOKING_OPTIONS} placeholder="Select" />
         <Select label="Alcohol" value={data.alcohol} onChange={(v) => onChange({ ...data, alcohol: v })} options={ALCOHOL_OPTIONS} placeholder="Select" />
         <Input label="Caffeine (cups/day)" type="number" value={data.caffeineIntake} onChange={(v) => onChange({ ...data, caffeineIntake: v })} placeholder="2" min={0} />
@@ -598,7 +599,7 @@ function Step4Nutrition({ data, onChange }: {
       <TagInput label="Dietary Restrictions" tags={data.dietaryRestrictions} onChange={(tags) => onChange({ ...data, dietaryRestrictions: tags })} placeholder="e.g. gluten-free, low-carb" />
       <TagInput label="Religious Preferences" tags={data.religiousPreferences} onChange={(tags) => onChange({ ...data, religiousPreferences: tags })} placeholder="e.g. halal, kosher" />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input label="Cooking Time (min/day)" type="number" value={data.cookingTimeMin} onChange={(v) => onChange({ ...data, cookingTimeMin: v })} placeholder="30" min={0} />
         <Input label="Monthly Food Budget" type="number" value={data.monthlyBudget} onChange={(v) => onChange({ ...data, monthlyBudget: v })} placeholder="5000" min={0} />
       </div>
@@ -635,7 +636,7 @@ function Step5MedicalHistory({ data, onChange }: {
           placeholder="e.g. Father: Diabetes, Mother: Hypertension"
           rows={3}
           className="w-full px-3 py-2.5 rounded-lg border border-gray-300 text-sm
-            focus:outline-none focus:ring-2 focus:ring-[#0F6CBF]/20 focus:border-[#0F6CBF] resize-none"
+            focus:outline-none focus:ring-2 focus:ring-[#176B63]/20 focus:border-[#176B63] resize-none"
         />
       </div>
 
@@ -702,7 +703,7 @@ function Step6PainAssessment({ assessments, onChange }: {
       </div>
 
       {/* Body area selector */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {BODY_AREAS.map((area) => {
           const isSelected = selectedAreas.includes(area.id)
           const isActive = selectedArea === area.id
@@ -713,22 +714,24 @@ function Step6PainAssessment({ assessments, onChange }: {
               onClick={() => selectArea(area.id)}
               className={`flex flex-col items-center gap-1 p-3 rounded-xl text-sm font-medium transition-all duration-200
                 ${isActive
-                  ? "bg-[#0F6CBF] text-white shadow-md scale-105"
+                  ? "bg-[#176B63] text-white shadow-md scale-105"
                   : isSelected
-                    ? "bg-[#E8F2FB] text-[#0F6CBF] border border-[#0F6CBF]/30"
+                    ? "bg-[#E8F2FB] text-[#176B63] border border-[#176B63]/30"
                     : "bg-gray-50 text-gray-500 border border-gray-200 hover:bg-gray-100"
                 }`}
             >
               <span className="text-lg">{area.emoji}</span>
               <span>{area.label}</span>
               {isSelected && (
-                <button
-                  type="button"
+                <span
                   onClick={(e) => { e.stopPropagation(); removeArea(area.id) }}
-                  className="text-xs text-red-400 hover:text-red-600"
+                  className="text-xs text-red-400 hover:text-red-600 cursor-pointer"
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.stopPropagation(); removeArea(area.id) } }}
                 >
                   Remove
-                </button>
+                </span>
               )}
             </button>
           )
@@ -750,7 +753,7 @@ function Step6PainAssessment({ assessments, onChange }: {
 
           <Slider label="Pain Severity" value={String(currentAssessment.severity)} onChange={(v) => updateCurrentAssessment({ severity: parseInt(v) || 0 })} min={0} max={10} unit="/10" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Select label="Duration" value={currentAssessment.duration} onChange={(v) => updateCurrentAssessment({ duration: v })} options={[
               { value: "days", label: "Days" },
               { value: "weeks", label: "Weeks" },
@@ -779,13 +782,13 @@ function Step6PainAssessment({ assessments, onChange }: {
           <TagInput label="Triggering Activities" tags={currentAssessment.triggeringActivities} onChange={(tags) => updateCurrentAssessment({ triggeringActivities: tags })} placeholder="e.g. sitting long, bending" />
           <TagInput label="Relieving Factors" tags={currentAssessment.relievingFactors} onChange={(tags) => updateCurrentAssessment({ relievingFactors: tags })} placeholder="e.g. stretching, walking" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <label className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 cursor-pointer hover:border-[#0F6CBF]/30 transition-colors">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <label className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 cursor-pointer hover:border-[#176B63]/30 transition-colors">
               <input
                 type="checkbox"
                 checked={currentAssessment.morningStiffness}
                 onChange={(e) => updateCurrentAssessment({ morningStiffness: e.target.checked })}
-                className="w-4 h-4 text-[#0F6CBF] rounded"
+                className="w-4 h-4 text-[#176B63] rounded"
               />
               <div>
                 <div className="text-sm font-medium text-gray-700">Morning Stiffness</div>
@@ -848,13 +851,13 @@ function Step7Goals({ data, onChange }: {
               onClick={() => toggleGoal(goal.id)}
               className={`flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all duration-200
                 ${isSelected
-                  ? "bg-[#E8F2FB] text-[#0F6CBF] border-2 border-[#0F6CBF]"
+                  ? "bg-[#E8F2FB] text-[#176B63] border-2 border-[#176B63]"
                   : "bg-gray-50 text-gray-600 border-2 border-gray-200 hover:bg-gray-100 hover:border-gray-300"
                 }`}
             >
               <span className="text-lg">{goal.icon}</span>
               <span>{goal.label}</span>
-              {isSelected && <span className="ml-auto text-[#0F6CBF]">✓</span>}
+              {isSelected && <span className="ml-auto text-[#176B63]">✓</span>}
             </button>
           )
         })}
@@ -867,7 +870,7 @@ function Step7Goals({ data, onChange }: {
           <div className="space-y-1.5">
             {sortedGoals.map((goal, idx) => (
               <div key={goal.goal} className="flex items-center gap-3 p-2 bg-white rounded-lg border border-gray-200">
-                <span className="w-6 h-6 rounded-full bg-[#0F6CBF] text-white text-xs flex items-center justify-center font-medium">
+                <span className="w-6 h-6 rounded-full bg-[#176B63] text-white text-xs flex items-center justify-center font-medium">
                   {idx + 1}
                 </span>
                 <span className="text-sm text-gray-700">{PREDEFINED_GOALS.find((g) => g.id === goal.goal)?.label || goal.goal}</span>
@@ -896,14 +899,14 @@ function Step7Goals({ data, onChange }: {
             onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustomGoal() } }}
             placeholder="e.g. Run a 5K in 3 months"
             className="flex-1 h-10 px-3 rounded-lg border border-gray-300 text-sm
-              focus:outline-none focus:ring-2 focus:ring-[#0F6CBF]/20 focus:border-[#0F6CBF]"
+              focus:outline-none focus:ring-2 focus:ring-[#176B63]/20 focus:border-[#176B63]"
           />
           <button
             type="button"
             onClick={addCustomGoal}
             disabled={!customGoal.trim()}
-            className="px-4 h-10 bg-[#0F6CBF] text-white text-sm rounded-lg
-              hover:bg-[#0A4F8A] disabled:opacity-40 transition-colors font-medium"
+            className="px-4 h-10 bg-[#176B63] text-white text-sm rounded-lg
+              hover:bg-[#10554F] disabled:opacity-40 transition-colors font-medium"
           >
             Add
           </button>
@@ -1209,10 +1212,13 @@ export default function AssessmentPage() {
       // Clear draft
       localStorage.removeItem(DRAFT_KEY)
 
-      router.push("/dashboard")
+      toastSuccess("Assessment saved!", "Your personalized health plan is ready.")
+      router.push("/plan")
     } catch (err: unknown) {
       const error = err as { message?: string }
-      setError(error.message || "Failed to save assessment. Please try again.")
+      const msg = error.message || "Failed to save assessment. Please try again."
+      setError(msg)
+      toastError("Save failed", msg)
     } finally {
       setSubmitting(false)
     }
@@ -1224,7 +1230,7 @@ export default function AssessmentPage() {
         <h1 className="text-2xl font-bold">Health Assessment</h1>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <div className="w-8 h-8 border-4 border-[#0F6CBF] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+            <div className="w-8 h-8 border-4 border-[#176B63] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
             <p className="text-sm text-gray-500">Loading your assessment...</p>
           </div>
         </div>
@@ -1249,26 +1255,26 @@ export default function AssessmentPage() {
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-medium text-gray-500">Step {step} of 7</span>
-          <span className="text-xs font-medium text-[#0F6CBF]">{Math.round(stepProgress)}% complete</span>
+          <span className="text-xs font-medium text-[#176B63]">{Math.round(stepProgress)}% complete</span>
         </div>
         <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-[#0F6CBF] to-[#2E7D6F] rounded-full transition-all duration-500 ease-out"
+            className="h-full bg-gradient-to-r from-[#176B63] to-[#2E7D6F] rounded-full transition-all duration-500 ease-out"
             style={{ width: `${stepProgress}%` }}
           />
         </div>
         {/* Step labels */}
-        <div className="flex justify-between mt-3">
+        <div className="flex justify-between mt-3 overflow-x-auto gap-1 pb-1">
           {STEPS.map((s) => (
             <button
               key={s.id}
               type="button"
               onClick={() => s.id < step && setStep(s.id)}
-              className={`flex flex-col items-center gap-1 transition-all duration-200
+              className={`flex flex-col items-center gap-1 transition-all duration-200 shrink-0
                 ${s.id === step ? "opacity-100" : s.id < step ? "opacity-60 hover:opacity-100 cursor-pointer" : "opacity-30"}`}
             >
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold
-                ${s.id === step ? "bg-[#0F6CBF] text-white shadow-md" :
+              <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold
+                ${s.id === step ? "bg-[#176B63] text-white shadow-md" :
                   s.id < step ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-400"}`}>
                 {s.id < step ? "✓" : s.emoji}
               </div>
@@ -1286,7 +1292,7 @@ export default function AssessmentPage() {
       )}
 
       {/* Step content */}
-      <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6 min-h-[400px]">
+      <div className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 mb-6 min-h-[300px] sm:min-h-[400px]">
         {step === 1 && <Step1PersonalInfo data={form.profile} onChange={(d) => setForm({ ...form, profile: d })} />}
         {step === 2 && <Step2Occupation data={form.occupation} onChange={(d) => setForm({ ...form, occupation: d })} />}
         {step === 3 && <Step3Lifestyle data={form.lifestyle} onChange={(d) => setForm({ ...form, lifestyle: d })} />}
@@ -1323,8 +1329,8 @@ export default function AssessmentPage() {
           <button
             type="button"
             onClick={nextStep}
-            className="px-5 h-10 text-sm font-medium text-white bg-[#0F6CBF] rounded-lg
-              hover:bg-[#0A4F8A] transition-all duration-200 shadow-sm hover:shadow-md"
+            className="px-5 h-10 text-sm font-medium text-white bg-[#176B63] rounded-lg
+              hover:bg-[#10554F] transition-all duration-200 shadow-sm hover:shadow-md"
           >
             Continue →
           </button>
@@ -1332,8 +1338,8 @@ export default function AssessmentPage() {
           <button
             type="button"
             onClick={handleReview}
-            className="px-5 h-10 text-sm font-medium text-white bg-[#0F6CBF] rounded-lg
-              hover:bg-[#0A4F8A] transition-all duration-200 shadow-sm hover:shadow-md"
+            className="px-5 h-10 text-sm font-medium text-white bg-[#176B63] rounded-lg
+              hover:bg-[#10554F] transition-all duration-200 shadow-sm hover:shadow-md"
           >
             Review & Submit →
           </button>
@@ -1342,8 +1348,8 @@ export default function AssessmentPage() {
             type="button"
             onClick={handleSubmit}
             disabled={submitting || form.goals.length === 0}
-            className="px-6 h-10 text-sm font-medium text-white bg-gradient-to-r from-[#0F6CBF] to-[#2E7D6F] rounded-lg
-              hover:from-[#0A4F8A] hover:to-[#1E5A4F] disabled:opacity-50 transition-all duration-200 shadow-sm hover:shadow-md"
+            className="px-6 h-10 text-sm font-medium text-white bg-gradient-to-r from-[#176B63] to-[#2E7D6F] rounded-lg
+              hover:from-[#10554F] hover:to-[#1E5A4F] disabled:opacity-50 transition-all duration-200 shadow-sm hover:shadow-md"
           >
             {submitting ? (
               <span className="flex items-center gap-2">

@@ -2,7 +2,13 @@ import { SignJWT, jwtVerify, type JWTPayload } from "jose"
 import bcrypt from "bcryptjs"
 import { cookies } from "next/headers"
 
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || "fallback-secret-change-in-production")
+const JWT_SECRET = (() => {
+  const secret = process.env.JWT_SECRET
+  if (!secret || secret === "fallback-secret-change-in-production-min-32-chars-long") {
+    throw new Error("JWT_SECRET environment variable is not set. Generate one with: openssl rand -base64 32")
+  }
+  return new TextEncoder().encode(secret)
+})()
 const ACCESS_TOKEN_EXPIRY = "15m"
 const REFRESH_TOKEN_EXPIRY = "7d"
 

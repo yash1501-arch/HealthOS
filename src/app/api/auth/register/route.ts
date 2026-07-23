@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { hashPassword, createAccessToken, createRefreshToken, setAuthCookies } from "@/lib/auth"
+import { checkRateLimit, checkLoginRateLimit, validateOrigin } from "@/lib/security"
 import { z } from "zod"
 
 const registerSchema = z.object({
@@ -13,12 +14,30 @@ const registerSchema = z.object({
 
 export async function POST(request: Request) {
   try {
+    // CSRF check
+    if (!validateOrigin(request)) {
+      return NextResponse.json(
+        { error: { code: "FORBIDDEN", message: "Invalid request origin" } },
+        { status: 403 }
+      )
+    }
+
     const body = await request.json()
     const parsed = registerSchema.safeParse(body)
     if (!parsed.success) {
       return NextResponse.json(
         { error: { code: "VALIDATION_ERROR", message: "Invalid input", details: parsed.error.issues } },
         { status: 422 }
+      )
+    }
+
+    // Rate limiting — per IP (max 3 registrations per hour)
+    const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown"
+    const rateResult = await checkRateLimit(`register:${ip}`, 3, 3_600_000)
+    if (!rateResult.allowed) {
+      return NextResponse.json(
+        { error: { code: "RATE_LIMITED", message: "Too many registration attempts. Try again later." } },
+        { status: 429 }
       )
     }
 

@@ -59,21 +59,21 @@ const MOVEMENT_META = {
     icon: "🚶",
     description: "Walking pattern, stride, and arm swing symmetry",
     tip: "Walk naturally at a comfortable pace. Look straight ahead.",
-    color: "from-[#2FE6C4] to-[#1CAF92]",
+    color: "from-[#176B63] to-[#10554F]",
   },
   squatting: {
     label: "Squat Analysis",
     icon: "🏋️",
     description: "Squat depth, knee tracking, and torso stability",
     tip: "Perform slow, controlled squats. Keep your chest up.",
-    color: "from-[#8B7FFF] to-[#6B5FE6]",
+    color: "from-[#476A91] to-[#36536F]",
   },
   bending: {
     label: "Bending Analysis",
     icon: "🤸",
     description: "Forward bend range of motion and hip hinge mechanics",
     tip: "Bend at the hips, keep your back straight, and go only as far as comfortable.",
-    color: "from-[#FFB86B] to-[#E69950]",
+    color: "from-[#9B651B] to-[#7A4E13]",
   },
 }
 
@@ -87,10 +87,10 @@ const CHARACTERISTIC_META_LOOKUP: Record<string, { icon: string; explanation: st
 }
 
 const SEVERITY_COLORS: Record<string, { dot: string; bg: string; text: string; bar: string; border: string }> = {
-  none: { dot: "bg-[#2FE6C4]", bg: "bg-[#2FE6C4]/5", text: "text-[#2FE6C4]", bar: "bg-[#2FE6C4]", border: "border-[#2FE6C4]/20" },
-  mild: { dot: "bg-[#FFB86B]", bg: "bg-[#FFB86B]/5", text: "text-[#FFB86B]", bar: "bg-[#FFB86B]", border: "border-[#FFB86B]/20" },
+  none: { dot: "bg-[#176B63]", bg: "bg-[#176B63]/5", text: "text-[#176B63]", bar: "bg-[#176B63]", border: "border-[#176B63]/20" },
+  mild: { dot: "bg-[#9B651B]", bg: "bg-[#9B651B]/5", text: "text-[#9B651B]", bar: "bg-[#9B651B]", border: "border-[#9B651B]/20" },
   moderate: { dot: "bg-[#FF8B6B]", bg: "bg-[#FF8B6B]/5", text: "text-[#FF8B6B]", bar: "bg-[#FF8B6B]", border: "border-[#FF8B6B]/20" },
-  severe: { dot: "bg-[#FF6B6B]", bg: "bg-[#FF6B6B]/5", text: "text-[#FF6B6B]", bar: "bg-[#FF6B6B]", border: "border-[#FF6B6B]/20" },
+  severe: { dot: "bg-[#B53A45]", bg: "bg-[#B53A45]/5", text: "text-[#B53A45]", bar: "bg-[#B53A45]", border: "border-[#B53A45]/20" },
 }
 
 // ─── Easing ────────────────────────────────────────────────────
@@ -167,7 +167,7 @@ function CameraCapture({ onCapture, onClose }: { onCapture: (blob: Blob) => void
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 bg-[#05060A]/95 flex items-center justify-center p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 bg-gray-50/95 flex items-center justify-center p-4 backdrop-blur-sm"
     >
       <motion.div
         initial={{ scale: 0.95, opacity: 0 }}
@@ -175,16 +175,16 @@ function CameraCapture({ onCapture, onClose }: { onCapture: (blob: Blob) => void
         transition={{ duration: 0.3, ease }}
         className="relative w-full max-w-lg"
       >
-        <div className="bg-[#0D0E14] rounded-2xl border border-white/[0.06] overflow-hidden shadow-2xl">
+        <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-2xl">
           {error ? (
             <div className="text-center p-10">
               <div className="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">📷</span>
               </div>
-              <p className="text-[#FF6B6B] mb-6 text-sm">{error}</p>
+              <p className="text-[#B53A45] mb-6 text-sm">{error}</p>
               <button
                 onClick={onClose}
-                className="px-6 py-2.5 bg-white/[0.06] text-[#F5F7FA] rounded-xl text-sm font-medium hover:bg-white/[0.10] transition-all"
+                className="px-6 py-2.5 bg-white/[0.06] text-gray-900 rounded-xl text-sm font-medium hover:bg-white/[0.10] transition-all"
               >
                 Close
               </button>
@@ -200,13 +200,13 @@ function CameraCapture({ onCapture, onClose }: { onCapture: (blob: Blob) => void
                 />
                 <canvas ref={canvasRef} className="hidden" />
                 {/* Corner accents */}
-                <div className="absolute top-3 left-3 w-6 h-6 border-t-2 border-l-2 border-[#2FE6C4]/40 rounded-tl" />
-                <div className="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-[#2FE6C4]/40 rounded-tr" />
-                <div className="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-[#2FE6C4]/40 rounded-bl" />
-                <div className="absolute bottom-3 right-3 w-6 h-6 border-b-2 border-r-2 border-[#2FE6C4]/40 rounded-br" />
+                <div className="absolute top-3 left-3 w-6 h-6 border-t-2 border-l-2 border-[#176B63]/40 rounded-tl" />
+                <div className="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-[#176B63]/40 rounded-tr" />
+                <div className="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-[#176B63]/40 rounded-bl" />
+                <div className="absolute bottom-3 right-3 w-6 h-6 border-b-2 border-r-2 border-[#176B63]/40 rounded-br" />
                 {captured && (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 rounded-full bg-[#2FE6C4] flex items-center justify-center shadow-lg shadow-[#2FE6C4]/30 animate-in zoom-in">
+                    <div className="w-16 h-16 rounded-full bg-[#176B63] flex items-center justify-center shadow-lg shadow-[#176B63]/30 animate-in zoom-in">
                       <span className="text-3xl">✓</span>
                     </div>
                   </div>
@@ -216,13 +216,13 @@ function CameraCapture({ onCapture, onClose }: { onCapture: (blob: Blob) => void
                 <button
                   onClick={capture}
                   disabled={captured}
-                  className="px-8 py-3 bg-[#2FE6C4] text-[#05060A] rounded-xl font-semibold text-sm hover:shadow-lg hover:shadow-[#2FE6C4]/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-8 py-3 bg-[#176B63] text-gray-900 rounded-xl font-semibold text-sm hover:shadow-lg hover:shadow-[#176B63]/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {captured ? "Captured!" : "📸 Capture Photo"}
                 </button>
                 <button
                   onClick={() => { stream?.getTracks().forEach((t) => t.stop()); onClose() }}
-                  className="px-6 py-3 bg-white/[0.06] text-[#F5F7FA] rounded-xl text-sm font-medium hover:bg-white/[0.10] transition-all"
+                  className="px-6 py-3 bg-white/[0.06] text-gray-900 rounded-xl text-sm font-medium hover:bg-white/[0.10] transition-all"
                 >
                   Cancel
                 </button>
@@ -282,23 +282,23 @@ function UploadDropzone({
         onDrop={handleDrop}
         className={`relative group rounded-xl border border-dashed transition-all duration-300 overflow-hidden ${
           preview
-            ? "border-[#2FE6C4]/30 bg-[#2FE6C4]/3"
+            ? "border-[#176B63]/30 bg-[#176B63]/3"
             : isDragging
-              ? "border-[#2FE6C4] bg-[#2FE6C4]/5 scale-[1.02]"
-              : "border-white/[0.06] bg-[#0D0E14] hover:border-[#2FE6C4]/20 hover:bg-[#0D0E14]"
+              ? "border-[#176B63] bg-[#176B63]/5 scale-[1.02]"
+              : "border-gray-200 bg-white hover:border-[#176B63]/20 hover:bg-white"
         }`}
       >
         {preview ? (
           <div className="relative">
             <img src={preview} alt={label} className="w-full h-40 object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#05060A]/60 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
             <button
               onClick={onRemove}
               className="absolute top-2 right-2 w-7 h-7 bg-red-500/80 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-red-500 shadow-lg backdrop-blur-sm text-xs"
             >
               ✕
             </button>
-            <div className="absolute bottom-2 left-2 px-2.5 py-1 bg-[#05060A]/70 text-[#F5F7FA] text-[10px] rounded-lg backdrop-blur-sm border border-white/[0.06]">
+            <div className="absolute bottom-2 left-2 px-2.5 py-1 bg-gray-50/70 text-gray-900 text-[10px] rounded-lg backdrop-blur-sm border border-gray-200">
               {label}
             </div>
           </div>
@@ -307,18 +307,18 @@ function UploadDropzone({
             onClick={() => inputRef.current?.click()}
             className="flex flex-col items-center justify-center h-40 cursor-pointer p-4"
           >
-            <div className="w-11 h-11 rounded-full bg-[#2FE6C4]/5 border border-[#2FE6C4]/10 flex items-center justify-center mb-2 group-hover:scale-110 group-hover:bg-[#2FE6C4]/10 transition-all duration-300">
+            <div className="w-11 h-11 rounded-full bg-[#176B63]/5 border border-[#176B63]/10 flex items-center justify-center mb-2 group-hover:scale-110 group-hover:bg-[#176B63]/10 transition-all duration-300">
               <span className="text-lg">{icon}</span>
             </div>
-            <p className="text-sm font-medium text-[#F5F7FA]">{label}</p>
-            <p className="text-xs text-[#8B93A1] text-center mt-1 max-w-[200px]">{description}</p>
+            <p className="text-sm font-medium text-gray-900">{label}</p>
+            <p className="text-xs text-gray-500 text-center mt-1 max-w-[200px]">{description}</p>
             <div className="flex gap-2 mt-3">
-              <span className="text-[10px] px-2 py-0.5 bg-white/[0.04] text-[#8B93A1] rounded-full border border-white/[0.04]">Click to browse</span>
-              <span className="text-[10px] px-2 py-0.5 bg-white/[0.04] text-[#8B93A1] rounded-full border border-white/[0.04]">Drag & drop</span>
+              <span className="text-[10px] px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full border border-gray-100">Click to browse</span>
+              <span className="text-[10px] px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full border border-gray-100">Drag & drop</span>
               {canUseCamera && accept === "image/*" && (
                 <button
                   onClick={(e) => { e.stopPropagation(); setShowCamera(true) }}
-                  className="text-[10px] px-2 py-0.5 bg-[#2FE6C4]/10 text-[#2FE6C4] rounded-full border border-[#2FE6C4]/20 hover:bg-[#2FE6C4]/20 transition-colors"
+                  className="text-[10px] px-2 py-0.5 bg-[#176B63]/10 text-[#176B63] rounded-full border border-[#176B63]/20 hover:bg-[#176B63]/20 transition-colors"
                 >
                   📷 Camera
                 </button>
@@ -354,40 +354,40 @@ function ProcessingAnimation({ progress, status }: { progress: number; status: s
       {/* Body scan visual */}
       <div className="relative w-40 h-56 mb-8">
         {/* Body outline */}
-        <div className="absolute inset-0 border border-white/[0.06] rounded-2xl">
+        <div className="absolute inset-0 border border-gray-200 rounded-2xl">
           {/* Scan line */}
           <motion.div
-            className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#2FE6C4] to-transparent shadow-lg shadow-[#2FE6C4]/30"
+            className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#176B63] to-transparent shadow-lg shadow-[#176B63]/30"
             animate={{ top: `${progress}%` }}
             transition={{ duration: 0.3, ease }}
           />
         </div>
         {/* Body silhouette */}
         <svg viewBox="0 0 120 200" className="w-full h-full opacity-[0.04]">
-          <ellipse cx="60" cy="30" rx="25" ry="30" fill="#F5F7FA" />
-          <rect x="42" y="55" width="36" height="50" rx="10" fill="#F5F7FA" />
-          <rect x="25" y="55" width="15" height="40" rx="7" fill="#F5F7FA" />
-          <rect x="80" y="55" width="15" height="40" rx="7" fill="#F5F7FA" />
-          <rect x="42" y="100" width="36" height="60" rx="10" fill="#F5F7FA" />
-          <rect x="25" y="120" width="15" height="50" rx="7" fill="#F5F7FA" />
-          <rect x="80" y="120" width="15" height="50" rx="7" fill="#F5F7FA" />
+          <ellipse cx="60" cy="30" rx="25" ry="30" fill="#172033" />
+          <rect x="42" y="55" width="36" height="50" rx="10" fill="#172033" />
+          <rect x="25" y="55" width="15" height="40" rx="7" fill="#172033" />
+          <rect x="80" y="55" width="15" height="40" rx="7" fill="#172033" />
+          <rect x="42" y="100" width="36" height="60" rx="10" fill="#172033" />
+          <rect x="25" y="120" width="15" height="50" rx="7" fill="#172033" />
+          <rect x="80" y="120" width="15" height="50" rx="7" fill="#172033" />
         </svg>
         {/* Corner accents */}
-        <div className="absolute top-2 left-2 w-4 h-4 border-t border-l border-[#2FE6C4]/30 rounded-tl" />
-        <div className="absolute top-2 right-2 w-4 h-4 border-t border-r border-[#2FE6C4]/30 rounded-tr" />
-        <div className="absolute bottom-2 left-2 w-4 h-4 border-b border-l border-[#2FE6C4]/30 rounded-bl" />
-        <div className="absolute bottom-2 right-2 w-4 h-4 border-b border-r border-[#2FE6C4]/30 rounded-br" />
+        <div className="absolute top-2 left-2 w-4 h-4 border-t border-l border-[#176B63]/30 rounded-tl" />
+        <div className="absolute top-2 right-2 w-4 h-4 border-t border-r border-[#176B63]/30 rounded-tr" />
+        <div className="absolute bottom-2 left-2 w-4 h-4 border-b border-l border-[#176B63]/30 rounded-bl" />
+        <div className="absolute bottom-2 right-2 w-4 h-4 border-b border-r border-[#176B63]/30 rounded-br" />
       </div>
 
       {/* Progress bar */}
       <div className="w-64 mb-3">
-        <div className="flex justify-between text-xs text-[#8B93A1] mb-1.5">
+        <div className="flex justify-between text-xs text-gray-500 mb-1.5">
           <span>Analyzing</span>
           <span className="font-mono">{Math.round(progress)}%</span>
         </div>
-        <div className="w-full h-1.5 bg-white/[0.04] rounded-full overflow-hidden">
+        <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
           <motion.div
-            className="h-full bg-gradient-to-r from-[#2FE6C4] to-[#1CAF92] rounded-full"
+            className="h-full bg-gradient-to-r from-[#176B63] to-[#10554F] rounded-full"
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.5, ease }}
           />
@@ -397,11 +397,11 @@ function ProcessingAnimation({ progress, status }: { progress: number; status: s
       {/* Status text with animated dots */}
       <div className="flex items-center gap-1.5">
         <motion.div
-          className="w-1.5 h-1.5 rounded-full bg-[#2FE6C4]"
+          className="w-1.5 h-1.5 rounded-full bg-[#176B63]"
           animate={{ opacity: [0.3, 1, 0.3] }}
           transition={{ duration: 1.5, repeat: Infinity }}
         />
-        <p className="text-sm text-[#8B93A1]">{status}</p>
+        <p className="text-sm text-gray-500">{status}</p>
       </div>
     </div>
   )
@@ -429,18 +429,18 @@ function PostureCard({ finding, index }: { finding: PostureFinding; index: numbe
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-[#F5F7FA] text-sm">{finding.characteristic}</span>
+            <span className="font-semibold text-gray-900 text-sm">{finding.characteristic}</span>
             <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${colors.bg} ${colors.text} border ${colors.border}`}>
               {finding.severity === "none" ? "✓ Normal" : finding.severity.charAt(0).toUpperCase() + finding.severity.slice(1)}
             </span>
           </div>
-          <p className="text-xs text-[#8B93A1] mt-0.5 line-clamp-1">{finding.description}</p>
+          <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{finding.description}</p>
         </div>
         <div className="flex items-center gap-3 shrink-0">
           <div className="w-16 h-1.5 bg-white/[0.06] rounded-full overflow-hidden hidden sm:block">
             <div className={`h-full ${colors.bar} rounded-full opacity-60`} style={{ width: `${finding.confidence * 100}%` }} />
           </div>
-          <span className={`text-xs transition-colors ${expanded ? "text-[#2FE6C4]" : "text-[#8B93A1]/40"}`}>
+          <span className={`text-xs transition-colors ${expanded ? "text-[#176B63]" : "text-gray-500/40"}`}>
             <svg className={`w-3.5 h-3.5 transition-transform duration-300 ${expanded ? "rotate-180" : ""}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M6 9l6 6 6-6" />
             </svg>
@@ -457,12 +457,12 @@ function PostureCard({ finding, index }: { finding: PostureFinding; index: numbe
             transition={{ duration: 0.3, ease }}
             className="overflow-hidden"
           >
-            <div className="px-4 pb-4 pt-0 border-t border-white/[0.04]">
+            <div className="px-4 pb-4 pt-0 border-t border-gray-100">
               <div className="pt-3 space-y-3">
-                <div className="bg-white/[0.03] rounded-lg p-3 text-xs text-[#8B93A1] leading-relaxed border border-white/[0.04]">
+                <div className="bg-gray-50 rounded-lg p-3 text-xs text-gray-500 leading-relaxed border border-gray-100">
                   {finding.explanation}
                 </div>
-                <div className="flex items-center justify-between text-[10px] text-[#8B93A1]/60">
+                <div className="flex items-center justify-between text-[10px] text-gray-500/60">
                   <span>AI Confidence: {Math.round(finding.confidence * 100)}%</span>
                   <span>Severity: {finding.severity.charAt(0).toUpperCase() + finding.severity.slice(1)}</span>
                 </div>
@@ -479,15 +479,15 @@ function PostureCard({ finding, index }: { finding: PostureFinding; index: numbe
 
 function ScoreBar({ label, score }: { label: string; score: number }) {
   const color =
-    score >= 0.7 ? "bg-[#2FE6C4]" :
-    score >= 0.5 ? "bg-[#FFB86B]" :
+    score >= 0.7 ? "bg-[#176B63]" :
+    score >= 0.5 ? "bg-[#9B651B]" :
     score >= 0.3 ? "bg-[#FF8B6B]" :
-    "bg-[#FF6B6B]"
+    "bg-[#B53A45]"
 
   return (
     <div className="flex items-center gap-3">
-      <span className="text-xs text-[#8B93A1] w-28 shrink-0">{label}</span>
-      <div className="flex-1 h-1.5 bg-white/[0.04] rounded-full overflow-hidden">
+      <span className="text-xs text-gray-500 w-28 shrink-0">{label}</span>
+      <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${score * 100}%` }}
@@ -495,7 +495,7 @@ function ScoreBar({ label, score }: { label: string; score: number }) {
           className={`h-full ${color} rounded-full`}
         />
       </div>
-      <span className="text-xs font-mono text-[#8B93A1] w-10 text-right tabular-nums">{Math.round(score * 100)}%</span>
+      <span className="text-xs font-mono text-gray-500 w-10 text-right tabular-nums">{Math.round(score * 100)}%</span>
     </div>
   )
 }
@@ -518,10 +518,10 @@ function MovementCard({
   const isBend = type === "bending"
 
   const severityColors: Record<string, { bg: string; text: string; border: string }> = {
-    none: { bg: "bg-[#2FE6C4]/5", text: "text-[#2FE6C4]", border: "border-[#2FE6C4]/20" },
-    mild: { bg: "bg-[#FFB86B]/5", text: "text-[#FFB86B]", border: "border-[#FFB86B]/20" },
+    none: { bg: "bg-[#176B63]/5", text: "text-[#176B63]", border: "border-[#176B63]/20" },
+    mild: { bg: "bg-[#9B651B]/5", text: "text-[#9B651B]", border: "border-[#9B651B]/20" },
     moderate: { bg: "bg-[#FF8B6B]/5", text: "text-[#FF8B6B]", border: "border-[#FF8B6B]/20" },
-    severe: { bg: "bg-[#FF6B6B]/5", text: "text-[#FF6B6B]", border: "border-[#FF6B6B]/20" },
+    severe: { bg: "bg-[#B53A45]/5", text: "text-[#B53A45]", border: "border-[#B53A45]/20" },
   }
   const sc = severityColors[metrics.severity] || severityColors.moderate
 
@@ -530,7 +530,7 @@ function MovementCard({
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease, delay: index * 0.1 }}
-      className="bg-[#0D0E14] rounded-xl border border-white/[0.06] overflow-hidden hover:border-white/[0.10] transition-all duration-300"
+      className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:border-gray-300 transition-all duration-300"
     >
       {/* Header */}
       <button
@@ -542,19 +542,19 @@ function MovementCard({
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-[#F5F7FA]">{meta.label}</span>
+            <span className="font-bold text-gray-900">{meta.label}</span>
             <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-semibold ${sc.bg} ${sc.text} border ${sc.border}`}>
               {metrics.severity === "none" ? "✓ Good" : metrics.severity.charAt(0).toUpperCase() + metrics.severity.slice(1)}
             </span>
           </div>
-          <p className="text-xs text-[#8B93A1] mt-1">{meta.description}</p>
+          <p className="text-xs text-gray-500 mt-1">{meta.description}</p>
         </div>
         <div className="flex items-center gap-3 shrink-0">
           <div className="text-right">
-            <div className="text-lg font-bold text-[#F5F7FA] tabular-nums">{Math.round(metrics.overallScore * 100)}%</div>
-            <div className="text-[10px] text-[#8B93A1]/60">Overall</div>
+            <div className="text-lg font-bold text-gray-900 tabular-nums">{Math.round(metrics.overallScore * 100)}%</div>
+            <div className="text-[10px] text-gray-500/60">Overall</div>
           </div>
-          <span className={`text-sm transition-colors ${expanded ? "text-[#2FE6C4]" : "text-[#8B93A1]/30"}`}>
+          <span className={`text-sm transition-colors ${expanded ? "text-[#176B63]" : "text-gray-500/30"}`}>
             <svg className={`w-4 h-4 transition-transform duration-300 ${expanded ? "rotate-180" : ""}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M6 9l6 6 6-6" />
             </svg>
@@ -572,7 +572,7 @@ function MovementCard({
             transition={{ duration: 0.3, ease }}
             className="overflow-hidden"
           >
-            <div className="px-5 pb-5 pt-0 border-t border-white/[0.04]">
+            <div className="px-5 pb-5 pt-0 border-t border-gray-100">
               <div className="pt-4 space-y-4">
                 {/* Score bars */}
                 <div className="space-y-2.5">
@@ -603,18 +603,18 @@ function MovementCard({
 
                 {/* Findings */}
                 <div className="space-y-1.5">
-                  <p className="text-xs font-semibold text-[#F5F7FA]/70">Findings</p>
+                  <p className="text-xs font-semibold text-gray-900/70">Findings</p>
                   {metrics.findings.map((finding, i) => (
-                    <div key={i} className="flex items-start gap-2 text-xs text-[#8B93A1]">
-                      <span className="text-[#2FE6C4]/50 mt-0.5">◆</span>
+                    <div key={i} className="flex items-start gap-2 text-xs text-gray-500">
+                      <span className="text-[#176B63]/50 mt-0.5">◆</span>
                       <span>{finding}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* Tips */}
-                <div className="bg-[#2FE6C4]/5 border border-[#2FE6C4]/10 rounded-xl p-3">
-                  <p className="text-xs text-[#8B93A1] flex items-center gap-1.5">
+                <div className="bg-[#176B63]/5 border border-[#176B63]/10 rounded-xl p-3">
+                  <p className="text-xs text-gray-500 flex items-center gap-1.5">
                     <span>💡</span>
                     <span>{meta.tip}</span>
                   </p>
@@ -951,11 +951,11 @@ export default function VisionPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-[#F5F7FA]">Vision Analysis</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Vision Analysis</h1>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <div className="w-8 h-8 border-2 border-[#2FE6C4] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-            <p className="text-sm text-[#8B93A1]">Loading...</p>
+            <div className="w-8 h-8 border-2 border-[#176B63] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+            <p className="text-sm text-gray-500">Loading...</p>
           </div>
         </div>
       </div>
@@ -991,23 +991,23 @@ export default function VisionPage() {
   function renderConsent() {
     return (
       <motion.div variants={stagger} initial="initial" animate="animate" className="space-y-6">
-        <motion.div variants={fadeUp} className="bg-[#0D0E14] rounded-2xl border border-white/[0.06] p-8">
+        <motion.div variants={fadeUp} className="bg-white rounded-2xl border border-gray-200 p-8">
           <div className="text-center mb-6">
-            <div className="w-20 h-20 rounded-full bg-[#2FE6C4]/5 border border-[#2FE6C4]/10 flex items-center justify-center mx-auto mb-4">
+            <div className="w-20 h-20 rounded-full bg-[#176B63]/5 border border-[#176B63]/10 flex items-center justify-center mx-auto mb-4">
               <span className="text-3xl">🔒</span>
             </div>
-            <h2 className="text-xl font-bold text-[#F5F7FA]">Privacy & Consent</h2>
-            <p className="text-sm text-[#8B93A1] mt-2 max-w-md mx-auto">
+            <h2 className="text-xl font-bold text-gray-900">Privacy & Consent</h2>
+            <p className="text-sm text-gray-500 mt-2 max-w-md mx-auto">
               We take your privacy seriously. Please review how your data will be used.
             </p>
           </div>
 
           <div className="space-y-3 mb-6">
             {[
-              { icon: "🔐", label: "End-to-End Encryption", desc: "All photos and videos are encrypted in transit and at rest.", color: "border-[#2FE6C4]/10 bg-[#2FE6C4]/3" },
-              { icon: "🤖", label: "AI Analysis Only", desc: "Your images are used solely for posture analysis. They are not shared with third parties.", color: "border-[#8B7FFF]/10 bg-[#8B7FFF]/3" },
-              { icon: "⚕️", label: "Not a Medical Diagnosis", desc: "Posture analysis results are AI-generated observations, not medical diagnoses. Always consult a healthcare professional.", color: "border-[#FFB86B]/10 bg-[#FFB86B]/3" },
-              { icon: "🗑️", label: "You're in Control", desc: "You can delete your photos and analysis data at any time.", color: "border-[#2FE6C4]/10 bg-[#2FE6C4]/3" },
+              { icon: "🔐", label: "End-to-End Encryption", desc: "All photos and videos are encrypted in transit and at rest.", color: "border-[#176B63]/10 bg-[#176B63]/3" },
+              { icon: "🤖", label: "AI Analysis Only", desc: "Your images are used solely for posture analysis. They are not shared with third parties.", color: "border-[#476A91]/10 bg-[#476A91]/3" },
+              { icon: "⚕️", label: "Not a Medical Diagnosis", desc: "Posture analysis results are AI-generated observations, not medical diagnoses. Always consult a healthcare professional.", color: "border-[#9B651B]/10 bg-[#9B651B]/3" },
+              { icon: "🗑️", label: "You're in Control", desc: "You can delete your photos and analysis data at any time.", color: "border-[#176B63]/10 bg-[#176B63]/3" },
             ].map((item, i) => (
               <motion.div
                 key={item.label}
@@ -1016,8 +1016,8 @@ export default function VisionPage() {
               >
                 <span className="text-lg shrink-0">{item.icon}</span>
                 <div className="text-sm">
-                  <p className="font-medium text-[#F5F7FA] mb-0.5">{item.label}</p>
-                  <p className="text-[#8B93A1]">{item.desc}</p>
+                  <p className="font-medium text-gray-900 mb-0.5">{item.label}</p>
+                  <p className="text-gray-500">{item.desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -1025,35 +1025,35 @@ export default function VisionPage() {
 
           {/* Model loading indicator */}
           {modelLoading && (
-            <motion.div variants={fadeUpFast} className="mb-4 flex items-center gap-2 p-3 bg-[#2FE6C4]/5 rounded-xl border border-[#2FE6C4]/10">
-              <div className="w-4 h-4 border-2 border-[#2FE6C4] border-t-transparent rounded-full animate-spin shrink-0" />
-              <p className="text-xs text-[#8B93A1]">Loading AI pose model in background for faster analysis...</p>
+            <motion.div variants={fadeUpFast} className="mb-4 flex items-center gap-2 p-3 bg-[#176B63]/5 rounded-xl border border-[#176B63]/10">
+              <div className="w-4 h-4 border-2 border-[#176B63] border-t-transparent rounded-full animate-spin shrink-0" />
+              <p className="text-xs text-gray-500">Loading AI pose model in background for faster analysis...</p>
             </motion.div>
           )}
           {modelLoadError && !modelLoading && (
-            <motion.div variants={fadeUpFast} className="mb-4 p-3 bg-[#FFB86B]/5 rounded-xl border border-[#FFB86B]/10">
-              <p className="text-xs text-[#FFB86B]">⚠️ {modelLoadError} Analysis may still work but could be slower.</p>
+            <motion.div variants={fadeUpFast} className="mb-4 p-3 bg-[#9B651B]/5 rounded-xl border border-[#9B651B]/10">
+              <p className="text-xs text-[#9B651B]">⚠️ {modelLoadError} Analysis may still work but could be slower.</p>
             </motion.div>
           )}
 
-          <motion.div variants={fadeUp} className="border-t border-white/[0.04] pt-6">
+          <motion.div variants={fadeUp} className="border-t border-gray-100 pt-6">
             {isExisting ? (
               <div className="space-y-3">
                 <button
                   onClick={viewExistingResults}
-                  className="w-full py-3 bg-[#2FE6C4] text-[#05060A] rounded-xl font-semibold text-sm hover:shadow-lg hover:shadow-[#2FE6C4]/20 transition-all"
+                  className="w-full py-3 bg-[#176B63] text-gray-900 rounded-xl font-semibold text-sm hover:shadow-lg hover:shadow-[#176B63]/20 transition-all"
                 >
                   📊 View Previous Analysis
                 </button>
                 <button
                   onClick={() => setStep("photos")}
-                  className="w-full py-3 bg-white/[0.04] text-[#F5F7FA] rounded-xl font-medium text-sm hover:bg-white/[0.08] transition-all border border-white/[0.06]"
+                  className="w-full py-3 bg-gray-100 text-gray-900 rounded-xl font-medium text-sm hover:bg-gray-200 transition-all border border-gray-200"
                 >
                   📸 Upload New Photos
                 </button>
                 <button
                   onClick={handleDelete}
-                  className="w-full py-2 text-sm text-[#FF6B6B] hover:text-[#FF8B6B] transition-colors"
+                  className="w-full py-2 text-sm text-[#B53A45] hover:text-[#FF8B6B] transition-colors"
                 >
                   Delete my vision data
                 </button>
@@ -1062,12 +1062,12 @@ export default function VisionPage() {
               <button
                 onClick={handleConsent}
                 disabled={saving}
-                className="w-full py-3 bg-gradient-to-r from-[#2FE6C4] to-[#1CAF92] text-[#05060A] rounded-xl font-semibold text-sm
-                  hover:shadow-lg hover:shadow-[#2FE6C4]/20 disabled:opacity-50 transition-all"
+                className="w-full py-3 bg-gradient-to-r from-[#176B63] to-[#10554F] text-gray-900 rounded-xl font-semibold text-sm
+                  hover:shadow-lg hover:shadow-[#176B63]/20 disabled:opacity-50 transition-all"
               >
                 {saving ? (
                   <span className="flex items-center justify-center gap-2">
-                    <div className="w-4 h-4 border-2 border-[#05060A] border-t-transparent rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
                     Saving...
                   </span>
                 ) : (
@@ -1086,9 +1086,9 @@ export default function VisionPage() {
   function renderPhotos() {
     return (
       <motion.div variants={stagger} initial="initial" animate="animate" className="space-y-6">
-        <motion.div variants={fadeUp} className="bg-[#0D0E14] rounded-2xl border border-white/[0.06] p-6">
-          <h2 className="text-lg font-bold text-[#F5F7FA] mb-1">Upload Body Photos</h2>
-          <p className="text-sm text-[#8B93A1] mb-6">
+        <motion.div variants={fadeUp} className="bg-white rounded-2xl border border-gray-200 p-6">
+          <h2 className="text-lg font-bold text-gray-900 mb-1">Upload Body Photos</h2>
+          <p className="text-sm text-gray-500 mb-6">
             Take or upload 3 photos for a complete posture analysis. Wear form-fitting clothing for best results.
           </p>
 
@@ -1096,8 +1096,8 @@ export default function VisionPage() {
             {photos.map((photo, index) => (
               <motion.div key={photo.angle} variants={fadeUpFast} className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-[#F5F7FA]">{photo.label}</span>
-                  {photo.file && <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-[#2FE6C4] text-xs">✓</motion.span>}
+                  <span className="text-sm font-medium text-gray-900">{photo.label}</span>
+                  {photo.file && <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-[#176B63] text-xs">✓</motion.span>}
                 </div>
                 <UploadDropzone
                   label={photo.label}
@@ -1115,7 +1115,7 @@ export default function VisionPage() {
         <motion.div variants={fadeUp} className="flex justify-between items-center">
           <button
             onClick={() => setStep("consent")}
-            className="px-5 h-10 text-sm font-medium text-[#8B93A1] hover:text-[#F5F7FA] transition-colors"
+            className="px-5 h-10 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
           >
             ← Back
           </button>
@@ -1126,8 +1126,8 @@ export default function VisionPage() {
             disabled={!allPhotosDone()}
             className={`px-6 h-10 text-sm font-medium rounded-xl transition-all duration-200 ${
               allPhotosDone()
-                ? "bg-gradient-to-r from-[#2FE6C4] to-[#1CAF92] text-[#05060A] shadow-sm hover:shadow-lg hover:shadow-[#2FE6C4]/20"
-                : "bg-white/[0.03] text-[#8B93A1]/40 cursor-not-allowed border border-white/[0.04]"
+                ? "bg-gradient-to-r from-[#176B63] to-[#10554F] text-gray-900 shadow-sm hover:shadow-lg hover:shadow-[#176B63]/20"
+                : "bg-gray-50 text-gray-500/40 cursor-not-allowed border border-gray-100"
             }`}
           >
             {allPhotosDone() ? "Next: Optional Videos →" : "Upload all 3 photos first"}
@@ -1142,12 +1142,12 @@ export default function VisionPage() {
   function renderVideos() {
     return (
       <motion.div variants={stagger} initial="initial" animate="animate" className="space-y-6">
-        <motion.div variants={fadeUp} className="bg-[#0D0E14] rounded-2xl border border-white/[0.06] p-6">
+        <motion.div variants={fadeUp} className="bg-white rounded-2xl border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-1">
-            <h2 className="text-lg font-bold text-[#F5F7FA]">Movement Videos</h2>
-            <span className="text-[10px] px-2 py-0.5 bg-[#2FE6C4]/5 text-[#2FE6C4] rounded-full border border-[#2FE6C4]/20">Optional</span>
+            <h2 className="text-lg font-bold text-gray-900">Movement Videos</h2>
+            <span className="text-[10px] px-2 py-0.5 bg-[#176B63]/5 text-[#176B63] rounded-full border border-[#176B63]/20">Optional</span>
           </div>
-          <p className="text-sm text-[#8B93A1] mb-6">
+          <p className="text-sm text-gray-500 mb-6">
             Upload short videos for dynamic movement analysis. This helps us assess your gait and mobility.
           </p>
 
@@ -1155,8 +1155,8 @@ export default function VisionPage() {
             {videos.map((video, index) => (
               <motion.div key={video.movementType} variants={fadeUpFast} className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-[#F5F7FA]">{video.label}</span>
-                  {video.file && <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-[#2FE6C4] text-xs">✓</motion.span>}
+                  <span className="text-sm font-medium text-gray-900">{video.label}</span>
+                  {video.file && <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-[#176B63] text-xs">✓</motion.span>}
                 </div>
                 <UploadDropzone
                   label={video.label}
@@ -1175,7 +1175,7 @@ export default function VisionPage() {
         <motion.div variants={fadeUp} className="flex justify-between items-center">
           <button
             onClick={() => setStep("photos")}
-            className="px-5 h-10 text-sm font-medium text-[#8B93A1] hover:text-[#F5F7FA] transition-colors"
+            className="px-5 h-10 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
           >
             ← Back
           </button>
@@ -1183,8 +1183,8 @@ export default function VisionPage() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={startProcessing}
-            className="px-8 h-10 bg-gradient-to-r from-[#2FE6C4] to-[#1CAF92] text-[#05060A] text-sm font-semibold rounded-xl
-              hover:shadow-lg hover:shadow-[#2FE6C4]/20 transition-all"
+            className="px-8 h-10 bg-gradient-to-r from-[#176B63] to-[#10554F] text-gray-900 text-sm font-semibold rounded-xl
+              hover:shadow-lg hover:shadow-[#176B63]/20 transition-all"
           >
             {videos.some((v) => v.file)
               ? "Submit Photos & Videos for Analysis →"
@@ -1203,15 +1203,15 @@ export default function VisionPage() {
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4, ease }}
-        className="bg-[#0D0E14] rounded-2xl border border-white/[0.06] p-8"
+        className="bg-white rounded-2xl border border-gray-200 p-8"
       >
         <ProcessingAnimation progress={processingProgress} status={processingStatus} />
         {processingStatus.includes("Failed") && (
           <div className="mt-6 text-center">
-            <p className="text-xs text-[#FF6B6B] mb-4">{modelLoadError || "Make sure your photos show your full body clearly."}</p>
+            <p className="text-xs text-[#B53A45] mb-4">{modelLoadError || "Make sure your photos show your full body clearly."}</p>
             <button
               onClick={() => setStep("videos")}
-              className="px-6 py-2.5 bg-white/[0.06] text-[#F5F7FA] rounded-xl text-sm font-medium hover:bg-white/[0.10] transition-all"
+              className="px-6 py-2.5 bg-white/[0.06] text-gray-900 rounded-xl text-sm font-medium hover:bg-white/[0.10] transition-all"
             >
               ← Go Back
             </button>
@@ -1231,26 +1231,26 @@ export default function VisionPage() {
           variants={fadeUp}
           className={`rounded-2xl p-6 text-white border ${
             findings.some((f) => f.severity !== "none")
-              ? "bg-gradient-to-br from-[#0A0E1A] via-[#0D1425] to-[#0E1A1A] border-[#2FE6C4]/10"
-              : "bg-gradient-to-br from-[#0E1A0E] via-[#0E1A0E] to-[#0E1A0E] border-[#2FE6C4]/10"
+              ? "bg-gradient-to-br from-[#0A0E1A] via-[#0D1425] to-[#0E1A1A] border-[#176B63]/10"
+              : "bg-gradient-to-br from-[#0E1A0E] via-[#0E1A0E] to-[#0E1A0E] border-[#176B63]/10"
           }`}
         >
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-[#F5F7FA]">Analysis Results</h2>
+            <h2 className="text-lg font-bold text-gray-900">Analysis Results</h2>
             {analysisResult && (
-              <span className="px-3 py-1 bg-[#2FE6C4]/10 text-[#2FE6C4] rounded-full text-[10px] font-medium border border-[#2FE6C4]/20">
+              <span className="px-3 py-1 bg-[#176B63]/10 text-[#176B63] rounded-full text-[10px] font-medium border border-[#176B63]/20">
                 AI Confidence: {Math.round(analysisResult.confidenceScore * 100)}%
               </span>
             )}
           </div>
-          <p className="text-sm text-[#8B93A1] leading-relaxed">
+          <p className="text-sm text-gray-500 leading-relaxed">
             {analysisResult?.summary || findings.map((f) => f.characteristic).join(", ")}
           </p>
           <div className="mt-4 flex gap-2 flex-wrap">
-            <span className="text-[10px] px-2 py-1 bg-white/[0.04] text-[#8B93A1] rounded-full border border-white/[0.04]">⚕️ Not a medical diagnosis</span>
-            <span className="text-[10px] px-2 py-1 bg-white/[0.04] text-[#8B93A1] rounded-full border border-white/[0.04]">📸 Based on {photos.filter((p) => p.file).length} photos</span>
+            <span className="text-[10px] px-2 py-1 bg-gray-100 text-gray-500 rounded-full border border-gray-100">⚕️ Not a medical diagnosis</span>
+            <span className="text-[10px] px-2 py-1 bg-gray-100 text-gray-500 rounded-full border border-gray-100">📸 Based on {photos.filter((p) => p.file).length} photos</span>
             {analysisResult && (
-              <span className="text-[10px] px-2 py-1 bg-white/[0.04] text-[#8B93A1] rounded-full border border-white/[0.04]">
+              <span className="text-[10px] px-2 py-1 bg-gray-100 text-gray-500 rounded-full border border-gray-100">
                 ⚡ Processed in {(analysisResult.processingTimeMs / 1000).toFixed(1)}s
               </span>
             )}
@@ -1259,15 +1259,15 @@ export default function VisionPage() {
 
         {/* Tab: Posture / Movement */}
         {movementResult && (movementResult.walking || movementResult.squatting || movementResult.bending) && (
-          <motion.div variants={fadeUp} className="flex gap-1 bg-[#0D0E14] rounded-xl p-1 border border-white/[0.06] w-fit">
+          <motion.div variants={fadeUp} className="flex gap-1 bg-white rounded-xl p-1 border border-gray-200 w-fit">
             {(["posture", "movement"] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setResultTab(tab)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   resultTab === tab
-                    ? "bg-[#2FE6C4] text-[#05060A]"
-                    : "text-[#8B93A1] hover:text-[#F5F7FA]"
+                    ? "bg-[#176B63] text-gray-900"
+                    : "text-gray-500 hover:text-gray-900"
                 }`}
               >
                 {tab === "posture" ? "🧍 Posture" : "🏃 Movement"}
@@ -1287,7 +1287,7 @@ export default function VisionPage() {
               transition={{ duration: 0.25, ease }}
               className="space-y-2"
             >
-              <h3 className="text-sm font-semibold text-[#F5F7FA]/70 mb-3">Detailed Findings</h3>
+              <h3 className="text-sm font-semibold text-gray-900/70 mb-3">Detailed Findings</h3>
               {findings.map((finding, index) => (
                 <PostureCard key={finding.characteristic} finding={finding} index={index} />
               ))}
@@ -1301,7 +1301,7 @@ export default function VisionPage() {
               transition={{ duration: 0.25, ease }}
               className="space-y-4"
             >
-              <h3 className="text-sm font-semibold text-[#F5F7FA]/70 mb-3">Movement Analysis</h3>
+              <h3 className="text-sm font-semibold text-gray-900/70 mb-3">Movement Analysis</h3>
               {movementResult?.walking && <MovementCard type="walking" metrics={movementResult.walking} index={0} />}
               {movementResult?.squatting && <MovementCard type="squatting" metrics={movementResult.squatting} index={1} />}
               {movementResult?.bending && <MovementCard type="bending" metrics={movementResult.bending} index={2} />}
@@ -1310,8 +1310,8 @@ export default function VisionPage() {
         </AnimatePresence>
 
         {/* Tips Section */}
-        <motion.div variants={fadeUp} className="bg-[#FFB86B]/3 border border-[#FFB86B]/10 rounded-xl p-5">
-          <h3 className="text-sm font-semibold text-[#FFB86B] mb-3">💡 What You Can Do</h3>
+        <motion.div variants={fadeUp} className="bg-[#9B651B]/3 border border-[#9B651B]/10 rounded-xl p-5">
+          <h3 className="text-sm font-semibold text-[#9B651B] mb-3">💡 What You Can Do</h3>
           <ul className="space-y-2">
             {[
               { icon: "🖥️", text: "Adjust your monitor height to eye level and use a chair with lumbar support" },
@@ -1324,7 +1324,7 @@ export default function VisionPage() {
                 initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 + i * 0.08, ease }}
-                className="flex items-start gap-2 text-sm text-[#8B93A1]"
+                className="flex items-start gap-2 text-sm text-gray-500"
               >
                 <span className="mt-0.5 shrink-0">{tip.icon}</span>
                 <span>{tip.text}</span>
@@ -1334,11 +1334,11 @@ export default function VisionPage() {
         </motion.div>
 
         {/* Medical Disclaimer */}
-        <motion.div variants={fadeUp} className="bg-[#FF6B6B]/3 border border-[#FF6B6B]/10 rounded-xl p-4 text-xs text-[#8B93A1]">
-          <p className="font-medium text-[#FF6B6B] mb-1">⚠️ Important Disclaimer</p>
+        <motion.div variants={fadeUp} className="bg-[#B53A45]/3 border border-[#B53A45]/10 rounded-xl p-4 text-xs text-gray-500">
+          <p className="font-medium text-[#B53A45] mb-1">⚠️ Important Disclaimer</p>
           <p>
             These results are AI-generated observations based on visual analysis of uploaded photos/videos.
-            They are <strong className="text-[#FF6B6B]">not a medical diagnosis</strong> and should not replace professional medical advice.
+            They are <strong className="text-[#B53A45]">not a medical diagnosis</strong> and should not replace professional medical advice.
             If you're experiencing pain or discomfort, please consult a qualified healthcare provider,
             physiotherapist, or orthopedic specialist.
           </p>
@@ -1353,13 +1353,13 @@ export default function VisionPage() {
               setFindings([])
               setStep("photos")
             }}
-            className="flex-1 py-3 bg-[#2FE6C4] text-[#05060A] rounded-xl font-semibold text-sm hover:shadow-lg hover:shadow-[#2FE6C4]/20 transition-all"
+            className="flex-1 py-3 bg-[#176B63] text-gray-900 rounded-xl font-semibold text-sm hover:shadow-lg hover:shadow-[#176B63]/20 transition-all"
           >
             📸 New Analysis
           </button>
           <button
             onClick={handleDelete}
-            className="flex-1 py-3 bg-[#FF6B6B]/5 text-[#FF6B6B] rounded-xl font-medium text-sm hover:bg-[#FF6B6B]/10 transition-all border border-[#FF6B6B]/10"
+            className="flex-1 py-3 bg-[#B53A45]/5 text-[#B53A45] rounded-xl font-medium text-sm hover:bg-[#B53A45]/10 transition-all border border-[#B53A45]/10"
           >
             🗑️ Delete My Data
           </button>
@@ -1379,8 +1379,8 @@ export default function VisionPage() {
         transition={{ duration: 0.4, ease }}
         className="mb-8"
       >
-        <h1 className="text-2xl font-bold text-[#F5F7FA]">Vision Analysis</h1>
-        <p className="text-sm text-[#8B93A1] mt-1">{getStepDescription(step)}</p>
+        <h1 className="text-2xl font-bold text-gray-900">Vision Analysis</h1>
+        <p className="text-sm text-gray-500 mt-1">{getStepDescription(step)}</p>
 
         {/* Step indicator */}
         <div className="flex items-center gap-2 mt-5">
@@ -1397,22 +1397,22 @@ export default function VisionPage() {
                   transition={{ duration: 0.5, repeat: isCurrent ? Infinity : 0, repeatDelay: 2 }}
                   className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300 ${
                     isCompleted
-                      ? "bg-[#2FE6C4] text-[#05060A]"
+                      ? "bg-[#176B63] text-gray-900"
                       : isCurrent
-                        ? "bg-[#2FE6C4]/10 text-[#2FE6C4] border border-[#2FE6C4]/30"
-                        : "bg-white/[0.03] text-[#8B93A1]/40 border border-white/[0.04]"
+                        ? "bg-[#176B63]/10 text-[#176B63] border border-[#176B63]/30"
+                        : "bg-gray-50 text-gray-500/40 border border-gray-100"
                   }`}
                 >
                   {isCompleted ? "✓" : i + 1}
                 </motion.div>
                 <span
                   className={`text-[10px] font-medium hidden sm:block transition-colors ${
-                    isCurrent ? "text-[#2FE6C4]" : isCompleted ? "text-[#8B93A1]" : "text-[#8B93A1]/30"
+                    isCurrent ? "text-[#176B63]" : isCompleted ? "text-gray-500" : "text-gray-500/30"
                   }`}
                 >
                   {stepNames[i]}
                 </span>
-                {i < 4 && <div className={`w-5 h-px transition-colors ${thisIdx < currentIdx ? "bg-[#2FE6C4]/30" : "bg-white/[0.04]"}`} />}
+                {i < 4 && <div className={`w-5 h-px transition-colors ${thisIdx < currentIdx ? "bg-[#176B63]/30" : "bg-gray-100"}`} />}
               </div>
             )
           })}

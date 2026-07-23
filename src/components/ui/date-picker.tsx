@@ -271,7 +271,7 @@ export default function DatePicker({
         className={`w-full h-10 px-3 rounded-lg border text-sm text-left flex items-center gap-2
           transition-all duration-200 cursor-pointer
           ${open
-            ? "border-[#0F6CBF] ring-2 ring-[#0F6CBF]/20"
+            ? "border-[#176B63] ring-2 ring-[#176B63]/20"
             : "border-gray-300 hover:border-gray-400"
           }
           ${value ? "text-gray-900" : "text-gray-400"}`}
@@ -402,9 +402,9 @@ export default function DatePicker({
                       }}
                       className={`h-9 text-sm rounded-lg transition-all duration-150
                         ${isSelected
-                          ? "bg-[#0F6CBF] text-white font-semibold shadow-sm"
+                          ? "bg-[#176B63] text-white font-semibold shadow-sm"
                           : isCurrent
-                            ? "text-[#0F6CBF] font-medium hover:bg-[#E8F2FB]"
+                            ? "text-[#176B63] font-medium hover:bg-[#E8F2FB]"
                             : "text-gray-600 hover:bg-gray-100"
                         }`}
                     >
@@ -431,7 +431,7 @@ export default function DatePicker({
                       }}
                       className={`h-10 text-sm rounded-lg transition-all duration-150
                         ${isSelected
-                          ? "bg-[#0F6CBF] text-white font-semibold shadow-sm"
+                          ? "bg-[#176B63] text-white font-semibold shadow-sm"
                           : "text-gray-600 hover:bg-gray-100"
                         }`}
                     >
@@ -462,7 +462,7 @@ export default function DatePicker({
                   <button
                     type="button"
                     onClick={() => setShowMonthPicker(true)}
-                    className="text-sm font-semibold text-gray-900 hover:text-[#0F6CBF] transition-colors
+                    className="text-sm font-semibold text-gray-900 hover:text-[#176B63] transition-colors
                       px-2 py-1 rounded-md hover:bg-[#E8F2FB] select-none"
                   >
                     {MONTH_NAMES[viewMonth]}
@@ -470,7 +470,7 @@ export default function DatePicker({
                   <button
                     type="button"
                     onClick={() => setShowYearPicker(true)}
-                    className="text-sm font-semibold text-gray-900 hover:text-[#0F6CBF] transition-colors
+                    className="text-sm font-semibold text-gray-900 hover:text-[#176B63] transition-colors
                       px-2 py-1 rounded-md hover:bg-[#E8F2FB] select-none"
                   >
                     {viewYear}
@@ -530,15 +530,15 @@ export default function DatePicker({
                         ${disabled
                           ? "text-gray-300 cursor-not-allowed"
                           : selected
-                            ? "bg-[#0F6CBF] text-white font-semibold shadow-sm hover:bg-[#0A4F8A]"
+                            ? "bg-[#176B63] text-white font-semibold shadow-sm hover:bg-[#10554F]"
                             : todayFlag
-                              ? "text-[#0F6CBF] font-semibold hover:bg-[#E8F2FB]"
+                              ? "text-[#176B63] font-semibold hover:bg-[#E8F2FB]"
                               : "text-gray-700 hover:bg-gray-100"
                         }`}
                     >
                       {day}
                       {todayFlag && !selected && (
-                        <span className="absolute bottom-1.5 w-1 h-1 rounded-full bg-[#0F6CBF]" />
+                        <span className="absolute bottom-1.5 w-1 h-1 rounded-full bg-[#176B63]" />
                       )}
                     </button>
                   )
@@ -552,7 +552,7 @@ export default function DatePicker({
             <button
               type="button"
               onClick={handleToday}
-              className="text-xs font-medium text-[#0F6CBF] hover:text-[#0A4F8A] transition-colors
+              className="text-xs font-medium text-[#176B63] hover:text-[#10554F] transition-colors
                 px-2.5 py-1.5 rounded-md hover:bg-[#E8F2FB]"
             >
               Today

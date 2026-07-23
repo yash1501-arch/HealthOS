@@ -21,8 +21,13 @@ export default function LandingPage() {
 
   useEffect(() => {
     let lenis: any
+    let ticking = true
+    let rafCallback: ((time: number) => void) | null = null
+
     const init = async () => {
       const Lenis = (await import("lenis")).default
+      if (!ticking) return // Component was unmounted during import
+
       lenis = new Lenis({
         duration: 1.2,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -30,18 +35,33 @@ export default function LandingPage() {
         smoothWheel: true,
         wheelMultiplier: 1,
       })
+
       lenis.on("scroll", ScrollTrigger.update)
-      gsap.ticker.add((time) => lenis.raf(time * 1000))
+
+      rafCallback = (time: number) => {
+        if (!ticking) return
+        lenis.raf(time * 1000)
+      }
+
+      gsap.ticker.add(rafCallback)
       gsap.ticker.lagSmoothing(0)
     }
+
     init()
+
     return () => {
-      if (lenis) lenis.destroy()
+      ticking = false
+      if (rafCallback) {
+        gsap.ticker.remove(rafCallback)
+      }
+      if (lenis) {
+        lenis.destroy()
+      }
     }
   }, [])
 
   return (
-    <main ref={mainRef} className="min-h-screen bg-base">
+    <main ref={mainRef} className="health-marketing min-h-screen">
       <NavBar />
       <HeroSection />
       <TheShiftSection />

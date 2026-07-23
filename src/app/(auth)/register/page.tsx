@@ -4,6 +4,74 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { api } from "@/lib/api-client"
+import { toastError, toastSuccess } from "@/stores/toast"
+
+// ─── Password Strength ───────────────────────────────────────────
+
+function getPasswordStrength(password: string): { score: number; label: string; color: string; width: string } {
+  let score = 0
+  if (password.length >= 8) score += 25
+  if (password.length >= 12) score += 10
+  if (/[a-z]/.test(password)) score += 15
+  if (/[A-Z]/.test(password)) score += 15
+  if (/[0-9]/.test(password)) score += 15
+  if (/[^a-zA-Z0-9]/.test(password)) score += 20
+
+  if (score < 30) return { score, label: "Weak", color: "#B53A45", width: `${Math.max(score, 5)}%` }
+  if (score < 60) return { score, label: "Fair", color: "#9B651B", width: `${score}%` }
+  if (score < 80) return { score, label: "Good", color: "#476A91", width: `${score}%` }
+  return { score: Math.min(score, 100), label: "Strong", color: "#176B63", width: "100%" }
+}
+
+function PasswordStrengthBar({ password }: { password: string }) {
+  if (!password) return null
+  const strength = getPasswordStrength(password)
+
+  return (
+    <div className="mt-1.5 space-y-1">
+      <div className="h-1.5 bg-[#E2E8F0] rounded-full overflow-hidden">
+        <div
+          className="h-full rounded-full transition-all duration-300"
+          style={{ width: strength.width, backgroundColor: strength.color }}
+        />
+      </div>
+      <div className="flex justify-between items-center">
+        <span className="text-[10px] font-medium" style={{ color: strength.color }}>{strength.label}</span>
+        <div className="flex gap-2 text-[9px] text-[#4B5870]/50">
+          <span className={/[a-z]/.test(password) ? "text-[#176B63]" : ""}>a-z</span>
+          <span className={/[A-Z]/.test(password) ? "text-[#176B63]" : ""}>A-Z</span>
+          <span className={/[0-9]/.test(password) ? "text-[#176B63]" : ""}>0-9</span>
+          <span className={/[^a-zA-Z0-9]/.test(password) ? "text-[#176B63]" : ""}>!@#</span>
+          <span className={password.length >= 8 ? "text-[#176B63]" : ""}>8+</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Validation ──────────────────────────────────────────────────
+
+function validateEmail(email: string): string | null {
+  if (!email) return "Email is required"
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(email)) return "Please enter a valid email address"
+  if (email.length > 254) return "Email is too long"
+  return null
+}
+
+function validatePassword(password: string): string | null {
+  if (!password) return "Password is required"
+  if (password.length < 8) return "Password must be at least 8 characters"
+  return null
+}
+
+function validateName(name: string): string | null {
+  if (!name.trim()) return "Please enter your name"
+  if (name.trim().length < 2) return "Name should be at least 2 characters"
+  return null
+}
+
+// ─── Page ────────────────────────────────────────────────────────
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -15,21 +83,43 @@ export default function RegisterPage() {
     consentPrivacy: false,
     consentDisclaimer: false,
   })
-  const [error, setError] = useState("")
+  const [errors, setErrors] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)
 
   function update(field: string, value: string | boolean) {
     setForm((prev) => ({ ...prev, [field]: value }))
+    // Clear field error on change
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: "" }))
+    }
+  }
+
+  function validate(): boolean {
+    const newErrors: Record<string, string> = {}
+
+    const nameErr = validateName(form.fullName)
+    if (nameErr) newErrors.fullName = nameErr
+
+    const emailErr = validateEmail(form.email)
+    if (emailErr) newErrors.email = emailErr
+
+    const pwErr = validatePassword(form.password)
+    if (pwErr) newErrors.password = pwErr
+
+    if (form.password !== form.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match"
+    }
+
+    if (!form.consentPrivacy) newErrors.consentPrivacy = "You must accept the privacy policy"
+    if (!form.consentDisclaimer) newErrors.consentDisclaimer = "You must accept the medical disclaimer"
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setError("")
-
-    if (form.password !== form.confirmPassword) {
-      setError("Passwords do not match")
-      return
-    }
+    if (!validate()) return
 
     setLoading(true)
 
@@ -41,10 +131,13 @@ export default function RegisterPage() {
         consentPrivacy: form.consentPrivacy,
         consentDisclaimer: form.consentDisclaimer,
       })
-      router.push("/assessment")
+
+      toastSuccess("Account created!", "Redirecting to your health assessment...")
+      setTimeout(() => router.push("/assessment"), 800)
     } catch (err: unknown) {
       const error = err as { message?: string }
-      setError(error.message || "Registration failed")
+      const msg = error.message || "Registration failed"
+      toastError("Registration failed", msg)
     } finally {
       setLoading(false)
     }
@@ -53,171 +146,125 @@ export default function RegisterPage() {
   return (
     <div className="p-8">
       <div className="text-center mb-8">
-        <h1 className="text-2xl font-bold text-[#F5F7FA]">Create your account</h1>
-        <p className="text-[#8B93A1] mt-1 text-sm">Start your personalized health journey</p>
+        <h1 className="text-2xl font-bold text-[#172033]">Create your account</h1>
+        <p className="text-[#4B5870] mt-1 text-sm">Start your personalized health journey</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {error && (
-          <div className="bg-[#FF6B6B]/5 border border-[#FF6B6B]/10 text-[#FF6B6B] text-sm rounded-lg p-3">
-            {error}
-          </div>
-        )}
-
+        {/* Full Name */}
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-[#8B93A1] mb-1.5">
-            Full Name
-          </label>
+          <label htmlFor="reg-name" className="label-text">Full Name</label>
           <input
-            id="name"
+            id="reg-name"
             type="text"
             value={form.fullName}
             onChange={(e) => update("fullName", e.target.value)}
-            className="w-full h-11 px-3 rounded-lg outline-none transition-all duration-200 text-[#F5F7FA] placeholder:text-[#8B93A1]/30"
-            style={{
-              background: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.08)",
-            }}
-            onFocus={(e) => {
-              e.currentTarget.style.borderColor = "rgba(46,230,196,0.3)";
-              e.currentTarget.style.boxShadow = "0 0 16px rgba(46,230,196,0.06)";
-            }}
-            onBlur={(e) => {
-              e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-              e.currentTarget.style.boxShadow = "none";
-            }}
-            required
+            className={`input-field ${errors.fullName ? "input-field-error" : ""}`}
+            placeholder="Your full name"
+            autoComplete="name"
           />
+          {errors.fullName && <p className="text-xs text-[#B53A45] mt-1">{errors.fullName}</p>}
         </div>
 
+        {/* Email */}
         <div>
-          <label htmlFor="reg-email" className="block text-sm font-medium text-[#8B93A1] mb-1.5">
-            Email
-          </label>
+          <label htmlFor="reg-email" className="label-text">Email</label>
           <input
             id="reg-email"
             type="email"
             value={form.email}
             onChange={(e) => update("email", e.target.value)}
-            className="w-full h-11 px-3 rounded-lg outline-none transition-all duration-200 text-[#F5F7FA] placeholder:text-[#8B93A1]/30"
-            style={{
-              background: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.08)",
-            }}
-            onFocus={(e) => {
-              e.currentTarget.style.borderColor = "rgba(46,230,196,0.3)";
-              e.currentTarget.style.boxShadow = "0 0 16px rgba(46,230,196,0.06)";
-            }}
-            onBlur={(e) => {
-              e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-              e.currentTarget.style.boxShadow = "none";
-            }}
-            required
+            className={`input-field ${errors.email ? "input-field-error" : ""}`}
+            placeholder="you@example.com"
+            autoComplete="email"
           />
+          {errors.email && <p className="text-xs text-[#B53A45] mt-1">{errors.email}</p>}
         </div>
 
+        {/* Password */}
         <div>
-          <label htmlFor="reg-password" className="block text-sm font-medium text-[#8B93A1] mb-1.5">
-            Password
-          </label>
+          <label htmlFor="reg-password" className="label-text">Password</label>
           <input
             id="reg-password"
             type="password"
             value={form.password}
             onChange={(e) => update("password", e.target.value)}
-            className="w-full h-11 px-3 rounded-lg outline-none transition-all duration-200 text-[#F5F7FA] placeholder:text-[#8B93A1]/30"
-            style={{
-              background: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.08)",
-            }}
-            onFocus={(e) => {
-              e.currentTarget.style.borderColor = "rgba(46,230,196,0.3)";
-              e.currentTarget.style.boxShadow = "0 0 16px rgba(46,230,196,0.06)";
-            }}
-            onBlur={(e) => {
-              e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-              e.currentTarget.style.boxShadow = "none";
-            }}
+            className={`input-field ${errors.password ? "input-field-error" : ""}`}
             placeholder="Min 8 characters"
             minLength={8}
-            required
+            autoComplete="new-password"
           />
+          <PasswordStrengthBar password={form.password} />
+          {errors.password && <p className="text-xs text-[#B53A45] mt-1">{errors.password}</p>}
         </div>
 
+        {/* Confirm Password */}
         <div>
-          <label htmlFor="confirm" className="block text-sm font-medium text-[#8B93A1] mb-1.5">
-            Confirm Password
-          </label>
+          <label htmlFor="reg-confirm" className="label-text">Confirm Password</label>
           <input
-            id="confirm"
+            id="reg-confirm"
             type="password"
             value={form.confirmPassword}
             onChange={(e) => update("confirmPassword", e.target.value)}
-            className="w-full h-11 px-3 rounded-lg outline-none transition-all duration-200 text-[#F5F7FA] placeholder:text-[#8B93A1]/30"
-            style={{
-              background: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.08)",
-            }}
-            onFocus={(e) => {
-              e.currentTarget.style.borderColor = "rgba(46,230,196,0.3)";
-              e.currentTarget.style.boxShadow = "0 0 16px rgba(46,230,196,0.06)";
-            }}
-            onBlur={(e) => {
-              e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-              e.currentTarget.style.boxShadow = "none";
-            }}
-            required
+            className={`input-field ${errors.confirmPassword ? "input-field-error" : ""}`}
+            placeholder="Re-enter your password"
+            autoComplete="new-password"
           />
+          {errors.confirmPassword && <p className="text-xs text-[#B53A45] mt-1">{errors.confirmPassword}</p>}
         </div>
 
-        <div className="space-y-3 rounded-lg p-4 text-sm" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)" }}>
+        {/* Consent */}
+        <div className="space-y-3 rounded-xl p-4 border border-[#E2E8F0]">
           <label className="flex items-start gap-3 cursor-pointer">
             <input
               type="checkbox"
               checked={form.consentPrivacy}
               onChange={(e) => update("consentPrivacy", e.target.checked)}
-              className="mt-0.5 accent-[#2FE6C4]"
-              required
+              className="mt-0.5 accent-[#176B63] w-4 h-4"
             />
-            <span className="text-[#8B93A1] text-xs leading-relaxed">
-              I understand that my health data will be encrypted and stored securely in accordance with the{" "}
-              <Link href="#" className="text-[#2FE6C4] underline">
-                Privacy Policy
-              </Link>
-            </span>
+            <div>
+              <span className="text-[#4B5870] text-xs leading-relaxed">
+                I understand that my health data will be encrypted and stored securely.
+              </span>
+              {errors.consentPrivacy && <p className="text-xs text-[#B53A45] mt-0.5">{errors.consentPrivacy}</p>}
+            </div>
           </label>
           <label className="flex items-start gap-3 cursor-pointer">
             <input
               type="checkbox"
               checked={form.consentDisclaimer}
               onChange={(e) => update("consentDisclaimer", e.target.checked)}
-              className="mt-0.5 accent-[#2FE6C4]"
-              required
+              className="mt-0.5 accent-[#176B63] w-4 h-4"
             />
-            <span className="text-[#8B93A1] text-xs leading-relaxed">
-              I understand that HealthOS is not a medical device and does not diagnose diseases. I will consult a
-              healthcare professional for medical advice.
-            </span>
+            <div>
+              <span className="text-[#4B5870] text-xs leading-relaxed">
+                I understand that HealthOS is not a medical device and does not diagnose diseases.
+              </span>
+              {errors.consentDisclaimer && <p className="text-xs text-[#B53A45] mt-0.5">{errors.consentDisclaimer}</p>}
+            </div>
           </label>
         </div>
 
+        {/* Submit */}
         <button
           type="submit"
           disabled={loading}
-          className="w-full h-11 rounded-lg font-semibold text-sm transition-all duration-200"
-          style={{
-            background: "linear-gradient(135deg, #2FE6C4, #1CAF92)",
-            color: "#05060A",
-            boxShadow: "0 0 20px rgba(46,230,196,0.15)",
-          }}
+          className="w-full h-11 rounded-xl font-semibold text-sm btn-primary"
         >
-          {loading ? "Creating account..." : "Create account"}
+          {loading ? (
+            <span className="flex items-center justify-center gap-2">
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              Creating account...
+            </span>
+          ) : (
+            "Create account"
+          )}
         </button>
       </form>
 
-      <p className="text-center text-sm text-[#8B93A1]/60 mt-6">
+      <p className="text-center text-sm text-[#4B5870]/60 mt-6">
         Already have an account?{" "}
-        <Link href="/login" className="text-[#2FE6C4] font-medium hover:underline">
+        <Link href="/login" className="text-[#176B63] font-medium hover:underline">
           Sign in
         </Link>
       </p>
