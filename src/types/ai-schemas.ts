@@ -115,6 +115,35 @@ export const reportAnalysisInputSchema = z.object({
   ),
 })
 
+// ─── Lab Result Extraction (OCR pipeline) ─────────────────────────
+
+/**
+ * Zod schema for a single parsed lab result from the OCR+LLM pipeline.
+ * This is the output format expected from the LLM after PHI-stripped text is parsed.
+ */
+export const extractedLabResultSchema = z.object({
+  testName: z.string().min(1, "Test name is required"),
+  value: z.string().min(1, "Value is required"),
+  unit: z.string().optional().default(""),
+  referenceRange: z.string().optional().default(""),
+  isAbnormal: z.boolean().optional().default(false),
+  flag: z.enum(["normal", "low", "high", "critical", "unknown"]).optional().default("unknown"),
+  category: z.string().optional().default(""),
+})
+
+/**
+ * Zod schema for the full LLM response from the report parser.
+ */
+export const extractedLabResultsSchema = z.object({
+  labResults: z.array(extractedLabResultSchema).min(0),
+  summary: z.string().optional().default(""),
+  reportDate: z.string().optional().default(""),
+  institutionName: z.string().optional().default(""),
+})
+
+export type ExtractedLabResult = z.infer<typeof extractedLabResultSchema>
+export type ExtractedLabResults = z.infer<typeof extractedLabResultsSchema>
+
 export type LabValueExplanation = z.infer<typeof labValueExplanationSchema>
 export type LabTrend = z.infer<typeof labTrendSchema>
 export type ReportAnalysisOutput = z.infer<typeof reportAnalysisOutputSchema>
