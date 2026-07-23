@@ -105,3 +105,32 @@ export function convertAppleRecordsToMetrics(
       source: `apple_health:${r.sourceName}`,
     }))
 }
+
+/**
+ * Convert Apple Health records to WearableData entries for the wearable_data table.
+ */
+export function convertAppleRecordsToWearableData(
+  records: HealthRecord[],
+  userId: string
+): Array<{
+  userId: string
+  source: string
+  dataType: string
+  value: number
+  unit: string | null
+  recordedAt: Date
+  syncedAt: Date | null
+}> {
+  const now = new Date()
+  return records
+    .filter((r) => APPLE_TO_HEALTHOS_MAP[r.type])
+    .map((r) => ({
+      userId,
+      source: "apple_health",
+      dataType: APPLE_TO_HEALTHOS_MAP[r.type],
+      value: r.value,
+      unit: r.unit ?? null,
+      recordedAt: new Date(r.startDate),
+      syncedAt: now,
+    }))
+}

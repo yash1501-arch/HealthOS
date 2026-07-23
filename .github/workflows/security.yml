@@ -1,0 +1,70 @@
+name: Security Scan
+
+on:
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run every Monday at 8 AM UTC
+    - cron: "0 8 * * 1"
+
+env:
+  NODE_VERSION: "20"
+
+jobs:
+  audit:
+    name: npm Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
+  secrets-scan:
+    name: Secrets Detection
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for accidentally committed secrets
+        run: |
+          set +e
+
+          # Check for common secret patterns in staged changes
+          ISSUES=0
+
+          # Search for potential secrets in the codebase
+          echo "🔍 Scanning for potential secrets..."
+          SECRETS=$(grep -rnP '(?:^|[^A-Za-z0-9])(?:sk_live_|sk_test_|pk_live_|pk_test_|ghp_|gho_|ghu_|ghs_|ghr_|xox[bpsa]-|AKIA[0-9A-Z]{16}|KF[A-Z0-9]{16}|-----BEGIN (?:RSA |EC |DSA |OPENSSH )?PRIVATE KEY-----)' \
+            --include='*.ts' --include='*.tsx' --include='*.js' --include='*.json' --include='*.yml' \
+            --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=.git \
+            . 2>/dev/null)
+
+          if [ -n "$SECRETS" ]; then
+            echo "⚠️  Potential secrets found:"
+            echo "$SECRETS"
+            ISSUES=$((ISSUES + 1))
+          else
+            echo "✅ No potential secrets detected in source files."
+          fi
+
+          # Check for .env files committed
+          ENV_FILES=$(find . -maxdepth 1 -name '.env' -o -name '.env.*' ! -name '.env.example' 2>/dev/null)
+          if [ -n "$ENV_FILES" ]; then
+            echo "⚠️  Environment files committed:"
+            echo "$ENV_FILES"
+            ISSUES=$((ISSUES + 1))
+          fi
+
+          exit $ISSUES

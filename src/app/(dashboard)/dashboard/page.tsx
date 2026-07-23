@@ -1,17 +1,66 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { api } from "@/lib/api-client"
 import { motion, AnimatePresence } from "framer-motion"
+import Link from "next/link"
+import { api } from "@/lib/api-client"
 import { ScrollReveal } from "@/components/ui/scroll-reveal"
+import { HealthScoreGauge } from "@/components/dashboard/HealthScoreGauge"
+import { StatCard } from "@/components/dashboard/StatCard"
+import { ActivityChart } from "@/components/dashboard/ActivityChart"
+import { LabTrendChart } from "@/components/dashboard/LabTrendChart"
+import { RecommendationCard } from "@/components/dashboard/RecommendationCard"
+import { PostureSummary } from "@/components/dashboard/PostureSummary"
+import { TodayRoutine } from "@/components/dashboard/TodayRoutine"
 
 // ─── Types ───────────────────────────────────────────────────────
 
-type DashboardStats = {
-  current: Record<string, number>
-  trends: Record<string, { change: number; period: string } | null>
-  streak: { checkinStreak: number; longestStreak: number }
+type DashboardData = {
+  stats: {
+    current: Record<string, number | null>
+    trends: Record<string, { change: number; period: string } | null>
+    streak: { checkinStreak: number; longestStreak: number }
+  }
+  posture: {
+    characteristics: Array<{ characteristic: string; severity: string | null; description: string | null }>
+    latestAnalysisDate: string | null
+  }
+  activity: {
+    last7Days: Array<{ date: string; completed: number; planned: number }>
+    adherenceRate: number | null
+  }
+  labTrends: Array<{
+    testName: string
+    unit: string
+    values: Array<{ date: string; value: number | null; isAbnormal: boolean | null }>
+    referenceRange: string | null
+  }>
+  recommendations: Array<{
+    category: string
+    priority: "high" | "medium" | "low"
+    icon: string
+    title: string
+    description: string
+    action: string
+  }>
+  routine: {
+    schedule: Array<{ time: string; activity: string; category: string; duration: number; details: string; tips?: string }> | null
+  }
+  checkin: {
+    latest: {
+      weekStart: string
+      energyLevel: number | null
+      sleepHours: number | null
+      sleepQuality: number | null
+      mood: number | null
+      weightKg: number | null
+      dietAdherence: number | null
+      exerciseCompletion: number | null
+      aiSummary: string | null
+      notes: string | null
+    } | null
+  }
 }
 
 type CheckinPayload = {
@@ -37,26 +86,9 @@ type CheckinData = {
   canCheckin: boolean
 }
 
-type Recommendation = {
-  category: string
-  priority: "high" | "medium" | "low"
-  icon: string
-  title: string
-  description: string
-  action: string
-}
-
-// ─── Constants ───────────────────────────────────────────────────
-
 const EASE = [0.16, 1, 0.3, 1] as const
 
-const statCards = [
-  { key: "weightKg", label: "Weight", unit: "kg", color: "#176B63", trendKey: "weightKg" },
-  { key: "bmi", label: "BMI", unit: "", color: "#476A91", trendKey: null },
-  { key: "avgPainScore", label: "Pain", unit: "/10", color: "#B53A45", trendKey: "avgPainScore" },
-  { key: "avgSleepHours", label: "Sleep", unit: "h", color: "#476A91", trendKey: null },
-  { key: "healthScore", label: "Health Score", unit: "/100", color: "#9B651B", trendKey: "healthScore" },
-] as const
+// ─── Check-in Form Constants ──────────────────────────────────────
 
 const CHECKIN_FIELDS: {
   key: keyof CheckinPayload
@@ -85,225 +117,362 @@ export default function DashboardPage() {
   const [showCheckin, setShowCheckin] = useState(false)
   const queryClient = useQueryClient()
 
-  const { data: stats, isPending: statsPending } = useQuery<DashboardStats>({
-    queryKey: ["dashboard-stats"],
-    queryFn: () => api.get("/dashboard/stats"),
+  // ─── Fetch dashboard data ─────────────────────────────────────
+
+  const { data: dashData, isPending: dashPending } = useQuery<DashboardData>({
+    queryKey: ["dashboard-data"],
+    queryFn: () => api.get("/dashboard/data"),
+    staleTime: 2 * 60 * 1000, // 2 min cache
   })
 
   const { data: checkinData } = useQuery<CheckinData>({
     queryKey: ["checkin-data"],
     queryFn: () => api.get("/checkin"),
-    // Check-in query
-  })
-
-  const { data: recommendations } = useQuery<Recommendation[]>({
-    queryKey: ["recommendations"],
-    queryFn: () => api.get("/recommendations"),
-    staleTime: 10 * 60 * 1000, // 10 min cache
+    staleTime: 5 * 60 * 1000,
   })
 
   const canCheckin = checkinData?.canCheckin ?? true
   const latestCheckin = checkinData?.latest
-  const history = checkinData?.history ?? []
+  const painAreas = checkinData?.painAreas ?? []
+
+  // ─── Derived values ───────────────────────────────────────────
+
+  const healthScore = dashData?.stats?.current?.healthScore ?? 0
+  const streak = dashData?.stats?.streak
+  const hasAnyData = !!(
+    dashData?.stats?.current?.weightKg ||
+    dashData?.posture?.characteristics?.length ||
+    dashData?.labTrends?.length ||
+    dashData?.recommendations?.length ||
+    latestCheckin
+  )
+
+  // Check if user has enough data for the full dashboard
+  const isNewUser = !dashPending && !hasAnyData && !latestCheckin
+
+  // ─── Computed trend for health score ──────────────────────────
+
+  const healthScoreTrend = useMemo<"improving" | "stable" | "declining" | null>(() => {
+    const trend = dashData?.stats?.trends?.healthScore
+    if (!trend) return null
+    if (trend.change > 3) return "improving"
+    if (trend.change < -3) return "declining"
+    return "stable"
+  }, [dashData?.stats?.trends?.healthScore])
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* ── Header ──────────────────────────────────────────── */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-center justify-between"
+        className="flex items-center justify-between flex-wrap gap-3"
       >
-        <h1 className="text-2xl font-bold text-[#172033]">Dashboard</h1>
-        <button
-          onClick={() => setShowCheckin(true)}
-          disabled={!canCheckin}
-          className="h-10 px-4 bg-[#176B63] text-white rounded-xl text-sm font-medium hover:bg-[#10554F] disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm"
-        >
-          {canCheckin ? "📋 Weekly Check-in" : "✅ Checked in this week"}
-        </button>
+        <div>
+          <h1 className="text-2xl font-bold text-[#172033]">Dashboard</h1>                      <p className="text-sm text-[#4B5870]">Welcome back! Here is your health overview</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/reports"
+            className="h-10 px-4 border border-[#E2E8F0] text-[#4B5870] rounded-xl text-sm font-medium hover:bg-[#F8F9FB] hover:text-[#172033] transition-all"
+          >
+            📄 Upload Medical Report
+          </Link>
+          <button
+            onClick={() => setShowCheckin(true)}
+            disabled={!canCheckin}
+            className="h-10 px-4 bg-[#176B63] text-white rounded-xl text-sm font-medium hover:bg-[#10554F] disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm"
+          >
+            {canCheckin ? "📋 Weekly Check-in" : "✅ Checked in"}
+          </button>
+        </div>
       </motion.div>
 
-      {/* Streak */}
-      {stats?.streak && stats.streak.checkinStreak > 0 && (
+      {/* ── Streak Bar ──────────────────────────────────────── */}
+      {streak && streak.checkinStreak > 0 && (
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.05 }}
           className="flex items-center gap-2 text-sm text-[#4B5870]"
         >
           <span className="text-lg">🔥</span>
           <span>
-            <strong className="text-[#172033]">{stats.streak.checkinStreak} week streak</strong>
-            {stats.streak.longestStreak > stats.streak.checkinStreak && (
-              <> · Best: {stats.streak.longestStreak} weeks</>
+            <strong className="text-[#172033]">{streak.checkinStreak} week streak</strong>
+            {streak.longestStreak > streak.checkinStreak && (
+              <> · Best: {streak.longestStreak} weeks</>
             )}
           </span>
         </motion.div>
       )}
 
-      {/* Stat Cards */}
-      <ScrollReveal>
-      {statsPending ? (
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-          {[...Array(5)].map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: i * 0.08 }}
-              className="h-28 rounded-2xl bg-[#F5F7FA] animate-pulse"
-            />
-          ))}
-        </div>
+      {/* ── Main Dashboard Grid ─────────────────────────────── */}
+      {isNewUser ? (
+        <NewUserOnboarding onStartCheckin={() => setShowCheckin(true)} />
       ) : (
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-          {statCards.map((card, i) => {
-            const value = stats?.current?.[card.key]
-            const trend = card.trendKey ? stats?.trends?.[card.trendKey]?.change : null
-            return (
-              <motion.div
-                key={card.key}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 + i * 0.06, duration: 0.4, ease: EASE }}
-                className="rounded-2xl p-5 border border-[#E2E8F0] bg-white"
-              >
-                <p className="text-xs font-medium text-[#4B5870] uppercase tracking-wider mb-1.5">{card.label}</p>
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-xl md:text-2xl font-bold tabular-nums" style={{ color: card.color }}>
-                    {value ?? "—"}
-                  </span>
-                  {card.unit && <span className="text-sm text-[#4B5870]/60">{card.unit}</span>}
-                </div>
-                {trend !== undefined && trend !== null && (
-                  <p className="text-xs mt-1 flex items-center gap-1" style={{ color: trend > 0 && card.key !== "avgPainScore" ? "#176B63" : trend < 0 ? "#B53A45" : "#4B5870" }}>
-                    <span>{trend > 0 ? "↑" : trend < 0 ? "↓" : "—"}</span>
-                    <span>{Math.abs(trend).toFixed(1)}</span>
-                    {stats?.trends?.[card.trendKey!]?.period && (
-                      <span className="text-[#4B5870]/40">/{stats.trends[card.trendKey!]!.period}</span>
-                    )}
-                  </p>
-                )}
-              </motion.div>
-            )
-          })}
-        </div>
-      )}
-      </ScrollReveal>
+        <div className="space-y-6">
+          {/* ── Row 1: Health Score Gauge + Stat Cards (2x2) ── */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="lg:col-span-1">
+              <HealthScoreGauge
+                score={healthScore}
+                breakdown={dashData?.stats?.current?.healthScore != null ? {
+                  posture: dashData?.posture?.characteristics?.length
+                    ? Math.max(50 - dashData.posture.characteristics.reduce((s, c) => {
+                        if (c.severity?.includes("severe")) return s + 15
+                        if (c.severity?.includes("moderate")) return s + 10
+                        if (c.severity?.includes("mild")) return s + 5
+                        return s
+                      }, 0), 20)
+                    : dashData?.posture?.characteristics ? 70 : 0,
+                  nutrition: 60,
+                  activity: dashData?.activity?.adherenceRate ?? 50,
+                  sleep: dashData?.stats?.current?.avgSleepHours
+                    ? Math.min(100, Math.round((Number(dashData.stats.current.avgSleepHours) / 8) * 100))
+                    : 0,
+                  stress: dashData?.stats?.current?.healthScore
+                    ? Math.max(0, 100 - (dashData.stats.current.healthScore > 50 ? 0 : 30))
+                    : 0,
+                  vision: 60,
+                  labs: dashData?.labTrends?.length
+                    ? Math.min(100, 50 + dashData.labTrends.length * 5)
+                    : 0,
+                } as const : null}
+                trend={healthScoreTrend}
+                loading={dashPending}
+              />
+            </div>
 
-      {/* Recommendations */}
-      <ScrollReveal delay={0.1}>
-      {recommendations && recommendations.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25 }}
-          className="space-y-3"
-        >
-          <h2 className="text-sm font-semibold text-[#172033]">Recommendations</h2>
-          <div className="space-y-2">
-            {recommendations.slice(0, 4).map((rec, i) => (
-              <motion.div
-                key={rec.title}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 + i * 0.06 }}
-                className={`bg-white rounded-xl border border-[#E2E8F0] p-4 ${
-                  rec.priority === "high" ? "border-l-[3px] border-l-[#B53A45]" : "border-l-[3px] border-l-[#176B63]"
-                }`}
-              >
-                <div className="flex items-start gap-3">
-                  <span className="text-lg">{rec.icon}</span>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="text-sm font-medium text-[#172033]">{rec.title}</p>
-                      {rec.priority === "high" && (
-                        <span className="text-[10px] px-1.5 py-0.5 bg-[#B53A45]/10 text-[#B53A45] rounded-full font-medium">Important</span>
-                      )}
-                    </div>
-                    <p className="text-xs text-[#4B5870] mt-0.5">{rec.action}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+            <div className="lg:col-span-2 grid grid-cols-2 gap-3">
+              <StatCard
+                icon="⚖️"
+                label="Weight"
+                value={dashData?.stats?.current?.weightKg ?? null}
+                unit="kg"
+                trend={dashData?.stats?.trends?.weightKg ? {
+                  value: Math.abs(dashData.stats.trends.weightKg.change),
+                  isPositive: (dashData.stats.trends.weightKg.change || 0) < 0,
+                  period: dashData.stats.trends.weightKg.period,
+                } : null}
+                variant="default"
+                loading={dashPending}
+              />
+              <StatCard
+                icon="📐"
+                label="BMI"
+                value={dashData?.stats?.current?.bmi ?? null}
+                unit=""
+                variant={
+                  dashData?.stats?.current?.bmi != null
+                    ? (dashData.stats.current.bmi >= 18.5 && dashData.stats.current.bmi <= 24.9
+                      ? "positive"
+                      : "negative")
+                    : "default"
+                }
+                loading={dashPending}
+              />
+              <StatCard
+                icon="🔥"
+                label="Streak"
+                value={streak?.checkinStreak ?? 0}
+                unit={streak?.checkinStreak === 1 ? "week" : "weeks"}
+                variant={streak?.checkinStreak ? "positive" : "default"}
+                loading={dashPending}
+              />
+              <StatCard
+                icon="📅"
+                label="Last Check-in"
+                value={latestCheckin != null && latestCheckin.weekStart
+                  ? new Date(latestCheckin.weekStart).toLocaleDateString("en-US", { month: "short", day: "numeric" })
+                  : null}
+                unit=""
+                trend={null}
+                variant={latestCheckin ? "neutral" : "default"}
+                loading={dashPending}
+              />
+            </div>
           </div>
-        </motion.div>
-      )}
-      </ScrollReveal>
 
-      {/* Progress Charts */}
-      <ScrollReveal delay={0.2}>
-      {history.length >= 2 && (
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5">
-          <h2 className="text-sm font-semibold text-[#172033] mb-4">Progress</h2>
-          <ProgressCharts history={history} />
-        </div>
-      )}
-      </ScrollReveal>
+          {/* ── Row 2: Posture + Activity ────────────────────── */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <PostureSummary
+              characteristics={dashData?.posture?.characteristics ?? null}
+              latestAnalysisDate={dashData?.posture?.latestAnalysisDate ?? null}
+              loading={dashPending}
+            />
+            <ActivityChart
+              data={dashData?.activity?.last7Days}
+              loading={dashPending}
+            />
+          </div>
 
-      {/* Recent Checkins */}
-      {history.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35 }}
-          className="bg-white rounded-2xl border border-[#E2E8F0] p-5"
-        >
-          <h2 className="text-sm font-semibold text-[#172033] mb-4">Recent Check-ins</h2>
-          <div className="space-y-2">
-            {history.slice(0, 5).map((entry: any) => (
-              <div key={entry.id} className="flex items-center justify-between py-2 border-b border-[#E2E8F0]/60 last:border-b-0">
-                <span className="text-sm text-[#4B5870]">
-                  {new Date(entry.weekStart).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                </span>
-                <div className="flex items-center gap-4 text-xs">
-                  <span title="Energy">{entry.energyLevel ? `⚡${entry.energyLevel}` : ""}</span>
-                  <span title="Mood">{entry.mood ? `😊${entry.mood}` : ""}</span>
-                  <span title="Sleep">{entry.sleepHours ? `💤${entry.sleepHours}h` : ""}</span>
-                  {entry.weightKg && <span title="Weight">⚖️{Number(entry.weightKg).toFixed(1)}</span>}
+          {/* ── Row 3: Lab Trends ────────────────────────────── */}
+          <LabTrendChart
+            labTrends={dashData?.labTrends}
+            loading={dashPending}
+          />
+
+          {/* ── Row 4: Recommendations ───────────────────────── */}
+          {dashData?.recommendations && dashData.recommendations.length > 0 && (
+            <ScrollReveal delay={0.1}>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-sm font-semibold text-[#172033]">Top Recommendations</h2>
+                    <p className="text-xs text-[#4B5870]">Personalized based on your health data</p>
+                  </div>
+                  <Link
+                    href="/goals"
+                    className="text-xs font-medium text-[#176B63] hover:text-[#10554F] transition-colors"
+                  >
+                    View all →
+                  </Link>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {dashData.recommendations.slice(0, 3).map((rec, i) => (
+                    <RecommendationCard key={`${rec.category}-${i}`} recommendation={rec} index={i} />
+                  ))}
+                </div>
+                <div className="flex gap-3 flex-wrap">
+                  <Link
+                    href="/ai/recommendation"
+                    className="h-9 px-4 bg-[#176B63] text-white rounded-lg text-xs font-medium hover:bg-[#10554F] transition-all inline-flex items-center gap-1.5"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                    </svg>
+                    Generate New Recommendations
+                  </Link>
+                  <Link
+                    href="/reports"
+                    className="h-9 px-4 border border-[#E2E8F0] text-[#4B5870] rounded-lg text-xs font-medium hover:bg-[#F8F9FB] hover:text-[#172033] transition-all inline-flex items-center gap-1.5"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776" />
+                    </svg>
+                    Upload Medical Report
+                  </Link>
                 </div>
               </div>
-            ))}
+            </ScrollReveal>
+          )}
+
+          {/* ── Row 5: Today's Routine + Check-in Summary ────── */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <TodayRoutine
+              schedule={dashData?.routine?.schedule}
+              loading={dashPending}
+            />
+
+            {/* Latest Check-in Summary */}
+            {dashData?.checkin?.latest ? (
+              <ScrollReveal delay={0.2}>
+                <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 h-full">
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h3 className="text-sm font-semibold text-[#172033]">Latest Check-in</h3>
+                      <p className="text-xs text-[#4B5870]">
+                        {new Date(dashData.checkin.latest.weekStart).toLocaleDateString("en-US", {
+                          month: "long",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </p>
+                    </div>
+                    <span className="text-2xl">📋</span>
+                  </div>
+
+                  {/* Quick stats */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+                    <div className="text-center p-2 rounded-lg bg-[#F8F9FB]">
+                      <p className="text-lg font-bold text-[#176B63] tabular-nums">
+                        {dashData.checkin.latest.energyLevel ?? "—"}
+                      </p>
+                      <p className="text-[10px] text-[#4B5870]">Energy</p>
+                    </div>
+                    <div className="text-center p-2 rounded-lg bg-[#F8F9FB]">
+                      <p className="text-lg font-bold text-[#6B4C8A] tabular-nums">
+                        {dashData.checkin.latest.sleepHours ?? "—"}h
+                      </p>
+                      <p className="text-[10px] text-[#4B5870]">Sleep</p>
+                    </div>
+                    <div className="text-center p-2 rounded-lg bg-[#F8F9FB]">
+                      <p className="text-lg font-bold text-[#9B651B] tabular-nums">
+                        {dashData.checkin.latest.mood ?? "—"}
+                      </p>
+                      <p className="text-[10px] text-[#4B5870]">Mood</p>
+                    </div>
+                    <div className="text-center p-2 rounded-lg bg-[#F8F9FB]">
+                      <p className="text-lg font-bold text-[#B53A45] tabular-nums">
+                        {dashData.checkin.latest.dietAdherence ?? "—"}%
+                      </p>
+                      <p className="text-[10px] text-[#4B5870]">Diet</p>
+                    </div>
+                  </div>
+
+                  {/* AI Summary */}
+                  {dashData.checkin.latest.aiSummary && (
+                    <div className="p-3 rounded-lg bg-gradient-to-r from-[#176B63]/5 to-transparent border border-[#176B63]/10">
+                      <div className="flex items-start gap-2">
+                        <span className="text-sm mt-0.5">🤖</span>
+                        <div>
+                          <p className="text-[11px] font-medium text-[#172033] mb-0.5">AI Summary</p>
+                          <p className="text-[11px] text-[#4B5870] leading-relaxed">
+                            {dashData.checkin.latest.aiSummary}
+                          </p>
+                          <p className="text-[9px] text-[#4B5870]/40 mt-1">
+                            This is an AI-generated summary and not medical advice
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Notes */}
+                  {dashData.checkin.latest.notes && (
+                    <div className="mt-3 p-2.5 rounded-lg bg-[#F8F9FB]">
+                      <p className="text-[10px] font-medium text-[#4B5870] mb-0.5">Notes</p>
+                      <p className="text-[11px] text-[#4B5870]">{dashData.checkin.latest.notes}</p>
+                    </div>
+                  )}
+                </div>
+              </ScrollReveal>
+            ) : (
+              <ScrollReveal delay={0.2}>
+                <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 h-full">
+                  <div className="flex flex-col items-center justify-center h-full py-6 text-center">
+                    <div className="w-12 h-12 rounded-xl bg-[#176B63]/5 flex items-center justify-center mb-3">
+                      <svg className="w-6 h-6 text-[#176B63]/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                      </svg>
+                    </div>
+                    <p className="text-sm text-[#4B5870]">No check-ins yet</p>
+                    <p className="text-xs text-[#4B5870]/60 mt-1">
+                      Complete your first check-in to track weekly progress
+                    </p>
+                    <button
+                      onClick={() => setShowCheckin(true)}
+                      className="mt-4 h-9 px-4 bg-[#176B63] text-white rounded-lg text-xs font-medium hover:bg-[#10554F] transition-all"
+                    >
+                      Start Check-in
+                    </button>
+                  </div>
+                </div>
+              </ScrollReveal>
+            )}
           </div>
-        </motion.div>
+        </div>
       )}
 
-      {/* Empty state when no data */}
-      {!statsPending && !latestCheckin && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="rounded-2xl border border-[#E2E8F0] bg-white p-8 text-center"
-        >
-          <div className="w-14 h-14 rounded-xl bg-[#176B63]/10 flex items-center justify-center mx-auto mb-4">
-            <svg className="w-7 h-7 text-[#176B63]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-              <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-          </div>
-          <h3 className="text-lg font-semibold text-[#172033] mb-2">Start tracking your health</h3>
-          <p className="text-sm text-[#4B5870] mb-6 max-w-sm mx-auto">
-            Complete your first weekly check-in to see trends and track your progress over time.
-          </p>
-          <button
-            onClick={() => setShowCheckin(true)}
-            className="h-11 px-6 bg-[#176B63] text-white rounded-xl text-sm font-medium hover:bg-[#10554F] transition-all"
-          >
-            Start First Check-in
-          </button>
-        </motion.div>
-      )}
-
-      {/* Check-in Modal */}
+      {/* ── Check-in Modal ──────────────────────────────────── */}
       <AnimatePresence>
         {showCheckin && (
           <CheckinModal
-            painAreas={checkinData?.painAreas ?? []}
+            painAreas={painAreas}
             onClose={() => setShowCheckin(false)}
             onSubmitted={() => {
               setShowCheckin(false)
-              queryClient.invalidateQueries({ queryKey: ["dashboard-stats"] })
+              queryClient.invalidateQueries({ queryKey: ["dashboard-data"] })
               queryClient.invalidateQueries({ queryKey: ["checkin-data"] })
             }}
           />
@@ -313,7 +482,55 @@ export default function DashboardPage() {
   )
 }
 
-// ─── Progress Charts ────────────────────────────────────────────
+// ─── New User Onboarding ─────────────────────────────────────────
+
+function NewUserOnboarding({ onStartCheckin }: { onStartCheckin: () => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2 }}
+      className="rounded-2xl border border-[#E2E8F0] bg-white p-8 text-center max-w-lg mx-auto"
+    >
+      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#176B63] to-[#10554F] flex items-center justify-center mx-auto mb-5 shadow-lg shadow-[#176B63]/20">
+        <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+      </div>
+      <h2 className="text-xl font-bold text-[#172033] mb-2">Welcome to HealthOS</h2>
+      <p className="text-sm text-[#4B5870] mb-6 max-w-sm mx-auto">
+        Start tracking your health journey. Complete your first check-in to see personalized insights, recommendations, and progress tracking.
+      </p>
+      <div className="space-y-3">
+        <button
+          onClick={onStartCheckin}
+          className="w-full h-11 px-6 bg-[#176B63] text-white rounded-xl text-sm font-medium hover:bg-[#10554F] transition-all shadow-sm"
+        >
+          📋 Start First Check-in
+        </button>
+        <Link
+          href="/assessment"
+          className="block w-full h-11 px-6 border border-[#E2E8F0] text-[#4B5870] rounded-xl text-sm font-medium hover:bg-[#F8F9FB] hover:text-[#172033] transition-all leading-[44px]"
+        >
+          👤 Complete Health Assessment
+        </Link>
+        <Link
+          href="/vision"
+          className="block w-full h-11 px-6 border border-[#E2E8F0] text-[#4B5870] rounded-xl text-sm font-medium hover:bg-[#F8F9FB] hover:text-[#172033] transition-all leading-[44px]"
+        >
+          📸 Scan Your Posture
+        </Link>
+      </div>
+      <div className="flex items-center gap-4 mt-6 pt-4 border-t border-[#E2E8F0] text-[10px] text-[#4B5870]/60">
+        <span>⚡ Personalized plans</span>
+        <span>📊 Track progress</span>
+        <span>🤖 AI insights</span>
+      </div>
+    </motion.div>
+  )
+}
+
+// ─── Progress Charts (from original dashboard) ────────────────────
 
 function ProgressCharts({ history }: { history: any[] }) {
   const reversed = [...history].reverse()
@@ -385,7 +602,7 @@ function ProgressCharts({ history }: { history: any[] }) {
   )
 }
 
-// ─── Check-in Modal ──────────────────────────────────────────────
+// ─── Check-in Modal (from original dashboard) ─────────────────────
 
 function CheckinModal({
   painAreas,

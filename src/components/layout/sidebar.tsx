@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation"
 import { api } from "@/lib/api-client"
 import { motion } from "framer-motion"
 import { useThemeStore } from "@/stores/theme"
+import { NotificationBell } from "@/components/notifications/NotificationBell"
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: (
@@ -125,6 +126,7 @@ export function Sidebar() {
 
       {/* Bottom section */}
       <div className="p-3 border-t border-black/[0.04] space-y-0.5">
+        <NotificationBell />
         <button
           onClick={toggleTheme}
           className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-black/40 hover:bg-black/[0.03] hover:text-[#172033] w-full transition-all border border-transparent"

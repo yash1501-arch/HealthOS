@@ -9,6 +9,8 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/User'
+export type * from './models/Subscription'
+export type * from './models/PaymentHistory'
 export type * from './models/Session'
 export type * from './models/Profile'
 export type * from './models/Occupation'
@@ -32,4 +34,8 @@ export type * from './models/ProgressMetric'
 export type * from './models/HealthTimelineEntry'
 export type * from './models/AiAuditLog'
 export type * from './models/ConsentLog'
+export type * from './models/Practitioner'
+export type * from './models/PatientLink'
+export type * from './models/WearableData'
+export type * from './models/Notification'
 export type * from './commonInputTypes'

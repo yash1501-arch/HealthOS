@@ -7,7 +7,12 @@ const JWT_SECRET = (() => {
   if (!secret || secret === "fallback-secret-change-in-production-min-32-chars-long") {
     throw new Error("JWT_SECRET environment variable is not set. Generate one with: openssl rand -base64 32")
   }
-  return new TextEncoder().encode(secret)
+  // Use a cross-realm-safe Uint8Array by iterating characters
+  const bytes = new Uint8Array(secret.length)
+  for (let i = 0; i < secret.length; i++) {
+    bytes[i] = secret.charCodeAt(i)
+  }
+  return bytes
 })()
 const ACCESS_TOKEN_EXPIRY = "15m"
 const REFRESH_TOKEN_EXPIRY = "7d"
@@ -75,6 +80,21 @@ export async function getAuthUserId(): Promise<string | null> {
   if (!token) return null
   const payload = await verifyAccessToken(token)
   return payload?.userId ?? null
+}
+
+/**
+ * Resolves the authenticated user ID from a Bearer token or session cookie.
+ */
+export async function getAuthUserIdFromRequest(request: Request): Promise<string | null> {
+  const authHeader = request.headers.get("authorization")
+  if (authHeader?.startsWith("Bearer ")) {
+    const token = authHeader.slice(7).trim()
+    if (token) {
+      const payload = await verifyAccessToken(token)
+      return payload?.userId ?? null
+    }
+  }
+  return getAuthUserId()
 }
 
 export function generateSessionId(): string {

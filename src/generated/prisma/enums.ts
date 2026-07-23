@@ -16,3 +16,40 @@ export const UserStatus = {
 } as const
 
 export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus]
+
+
+export const Plan = {
+  FREE: 'FREE',
+  PRO: 'PRO',
+  CLINIC: 'CLINIC',
+  ENTERPRISE: 'ENTERPRISE'
+} as const
+
+export type Plan = (typeof Plan)[keyof typeof Plan]
+
+
+export const SubscriptionStatus = {
+  ACTIVE: 'ACTIVE',
+  PAST_DUE: 'PAST_DUE',
+  CANCELLED: 'CANCELLED',
+  TRIALING: 'TRIALING'
+} as const
+
+export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
+
+
+export const PractitionerSpecialty = {
+  PHYSIOTHERAPIST: 'PHYSIOTHERAPIST',
+  NUTRITIONIST: 'NUTRITIONIST',
+  GENERAL_PRACTITIONER: 'GENERAL_PRACTITIONER'
+} as const
+
+export type PractitionerSpecialty = (typeof PractitionerSpecialty)[keyof typeof PractitionerSpecialty]
+
+
+export const PatientLinkStatus = {
+  ACTIVE: 'ACTIVE',
+  REVOKED: 'REVOKED'
+} as const
+
+export type PatientLinkStatus = (typeof PatientLinkStatus)[keyof typeof PatientLinkStatus]

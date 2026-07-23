@@ -47,6 +47,16 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
+ * Model Subscription
+ * 
+ */
+export type Subscription = Prisma.SubscriptionModel
+/**
+ * Model PaymentHistory
+ * 
+ */
+export type PaymentHistory = Prisma.PaymentHistoryModel
+/**
  * Model Session
  * 
  */
@@ -161,3 +171,23 @@ export type AiAuditLog = Prisma.AiAuditLogModel
  * 
  */
 export type ConsentLog = Prisma.ConsentLogModel
+/**
+ * Model Practitioner
+ * 
+ */
+export type Practitioner = Prisma.PractitionerModel
+/**
+ * Model PatientLink
+ * 
+ */
+export type PatientLink = Prisma.PatientLinkModel
+/**
+ * Model WearableData
+ * 
+ */
+export type WearableData = Prisma.WearableDataModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel

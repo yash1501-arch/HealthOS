@@ -261,6 +261,12 @@ export type UserWhereInput = {
   sessions?: Prisma.SessionListRelationFilter
   aiAuditLogs?: Prisma.AiAuditLogListRelationFilter
   consentLogs?: Prisma.ConsentLogListRelationFilter
+  practitioner?: Prisma.XOR<Prisma.PractitionerNullableScalarRelationFilter, Prisma.PractitionerWhereInput> | null
+  patientLinks?: Prisma.PatientLinkListRelationFilter
+  wearableData?: Prisma.WearableDataListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
+  subscription?: Prisma.XOR<Prisma.SubscriptionNullableScalarRelationFilter, Prisma.SubscriptionWhereInput> | null
+  paymentHistory?: Prisma.PaymentHistoryListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -299,6 +305,12 @@ export type UserOrderByWithRelationInput = {
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   aiAuditLogs?: Prisma.AiAuditLogOrderByRelationAggregateInput
   consentLogs?: Prisma.ConsentLogOrderByRelationAggregateInput
+  practitioner?: Prisma.PractitionerOrderByWithRelationInput
+  patientLinks?: Prisma.PatientLinkOrderByRelationAggregateInput
+  wearableData?: Prisma.WearableDataOrderByRelationAggregateInput
+  notifications?: Prisma.NotificationOrderByRelationAggregateInput
+  subscription?: Prisma.SubscriptionOrderByWithRelationInput
+  paymentHistory?: Prisma.PaymentHistoryOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -340,6 +352,12 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   sessions?: Prisma.SessionListRelationFilter
   aiAuditLogs?: Prisma.AiAuditLogListRelationFilter
   consentLogs?: Prisma.ConsentLogListRelationFilter
+  practitioner?: Prisma.XOR<Prisma.PractitionerNullableScalarRelationFilter, Prisma.PractitionerWhereInput> | null
+  patientLinks?: Prisma.PatientLinkListRelationFilter
+  wearableData?: Prisma.WearableDataListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
+  subscription?: Prisma.XOR<Prisma.SubscriptionNullableScalarRelationFilter, Prisma.SubscriptionWhereInput> | null
+  paymentHistory?: Prisma.PaymentHistoryListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -414,6 +432,12 @@ export type UserCreateInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -452,6 +476,12 @@ export type UserUncheckedCreateInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -490,6 +520,12 @@ export type UserUpdateInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -528,6 +564,12 @@ export type UserUncheckedUpdateInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -643,6 +685,34 @@ export type DateTimeFieldUpdateOperationsInput = {
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
+}
+
+export type UserCreateNestedOneWithoutSubscriptionInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSubscriptionInput, Prisma.UserUncheckedCreateWithoutSubscriptionInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSubscriptionInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSubscriptionNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSubscriptionInput, Prisma.UserUncheckedCreateWithoutSubscriptionInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSubscriptionInput
+  upsert?: Prisma.UserUpsertWithoutSubscriptionInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSubscriptionInput, Prisma.UserUpdateWithoutSubscriptionInput>, Prisma.UserUncheckedUpdateWithoutSubscriptionInput>
+}
+
+export type UserCreateNestedOneWithoutPaymentHistoryInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPaymentHistoryInput, Prisma.UserUncheckedCreateWithoutPaymentHistoryInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaymentHistoryInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPaymentHistoryNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPaymentHistoryInput, Prisma.UserUncheckedCreateWithoutPaymentHistoryInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaymentHistoryInput
+  upsert?: Prisma.UserUpsertWithoutPaymentHistoryInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPaymentHistoryInput, Prisma.UserUpdateWithoutPaymentHistoryInput>, Prisma.UserUncheckedUpdateWithoutPaymentHistoryInput>
 }
 
 export type UserCreateNestedOneWithoutSessionsInput = {
@@ -967,6 +1037,438 @@ export type UserUpdateOneRequiredWithoutConsentLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutConsentLogsInput, Prisma.UserUpdateWithoutConsentLogsInput>, Prisma.UserUncheckedUpdateWithoutConsentLogsInput>
 }
 
+export type UserCreateNestedOneWithoutPractitionerInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPractitionerInput, Prisma.UserUncheckedCreateWithoutPractitionerInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPractitionerInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPractitionerNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPractitionerInput, Prisma.UserUncheckedCreateWithoutPractitionerInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPractitionerInput
+  upsert?: Prisma.UserUpsertWithoutPractitionerInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPractitionerInput, Prisma.UserUpdateWithoutPractitionerInput>, Prisma.UserUncheckedUpdateWithoutPractitionerInput>
+}
+
+export type UserCreateNestedOneWithoutPatientLinksInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPatientLinksInput, Prisma.UserUncheckedCreateWithoutPatientLinksInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPatientLinksInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPatientLinksNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPatientLinksInput, Prisma.UserUncheckedCreateWithoutPatientLinksInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPatientLinksInput
+  upsert?: Prisma.UserUpsertWithoutPatientLinksInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPatientLinksInput, Prisma.UserUpdateWithoutPatientLinksInput>, Prisma.UserUncheckedUpdateWithoutPatientLinksInput>
+}
+
+export type UserCreateNestedOneWithoutWearableDataInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWearableDataInput, Prisma.UserUncheckedCreateWithoutWearableDataInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWearableDataInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutWearableDataNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWearableDataInput, Prisma.UserUncheckedCreateWithoutWearableDataInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWearableDataInput
+  upsert?: Prisma.UserUpsertWithoutWearableDataInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWearableDataInput, Prisma.UserUpdateWithoutWearableDataInput>, Prisma.UserUncheckedUpdateWithoutWearableDataInput>
+}
+
+export type UserCreateNestedOneWithoutNotificationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutNotificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput
+  upsert?: Prisma.UserUpsertWithoutNotificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNotificationsInput, Prisma.UserUpdateWithoutNotificationsInput>, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type UserCreateWithoutSubscriptionInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  isVerified?: boolean
+  consentPrivacy?: boolean
+  consentDisclaimer?: boolean
+  consentVision?: boolean
+  status?: $Enums.UserStatus
+  onboardingComplete?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  occupation?: Prisma.OccupationCreateNestedOneWithoutUserInput
+  lifestyle?: Prisma.LifestyleCreateNestedOneWithoutUserInput
+  nutritionProfile?: Prisma.NutritionProfileCreateNestedOneWithoutUserInput
+  medicalHistory?: Prisma.MedicalHistoryCreateNestedOneWithoutUserInput
+  painAssessments?: Prisma.PainAssessmentCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalCreateNestedManyWithoutUserInput
+  visionMedia?: Prisma.VisionMediaCreateNestedManyWithoutUserInput
+  visionAnalyses?: Prisma.VisionAnalysisCreateNestedManyWithoutUserInput
+  postureCharacteristics?: Prisma.PostureCharacteristicCreateNestedManyWithoutUserInput
+  medicalReports?: Prisma.MedicalReportCreateNestedManyWithoutUserInput
+  reportAnalyses?: Prisma.ReportAnalysisCreateNestedManyWithoutUserInput
+  labResults?: Prisma.LabResultCreateNestedManyWithoutUserInput
+  recommendations?: Prisma.RecommendationCreateNestedManyWithoutUserInput
+  dietPlans?: Prisma.DietPlanCreateNestedManyWithoutUserInput
+  exercisePlans?: Prisma.ExercisePlanCreateNestedManyWithoutUserInput
+  routines?: Prisma.RoutineCreateNestedManyWithoutUserInput
+  weeklyCheckins?: Prisma.WeeklyCheckinCreateNestedManyWithoutUserInput
+  progressMetrics?: Prisma.ProgressMetricCreateNestedManyWithoutUserInput
+  healthTimeline?: Prisma.HealthTimelineEntryCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
+  consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSubscriptionInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  isVerified?: boolean
+  consentPrivacy?: boolean
+  consentDisclaimer?: boolean
+  consentVision?: boolean
+  status?: $Enums.UserStatus
+  onboardingComplete?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  occupation?: Prisma.OccupationUncheckedCreateNestedOneWithoutUserInput
+  lifestyle?: Prisma.LifestyleUncheckedCreateNestedOneWithoutUserInput
+  nutritionProfile?: Prisma.NutritionProfileUncheckedCreateNestedOneWithoutUserInput
+  medicalHistory?: Prisma.MedicalHistoryUncheckedCreateNestedOneWithoutUserInput
+  painAssessments?: Prisma.PainAssessmentUncheckedCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
+  visionMedia?: Prisma.VisionMediaUncheckedCreateNestedManyWithoutUserInput
+  visionAnalyses?: Prisma.VisionAnalysisUncheckedCreateNestedManyWithoutUserInput
+  postureCharacteristics?: Prisma.PostureCharacteristicUncheckedCreateNestedManyWithoutUserInput
+  medicalReports?: Prisma.MedicalReportUncheckedCreateNestedManyWithoutUserInput
+  reportAnalyses?: Prisma.ReportAnalysisUncheckedCreateNestedManyWithoutUserInput
+  labResults?: Prisma.LabResultUncheckedCreateNestedManyWithoutUserInput
+  recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutUserInput
+  dietPlans?: Prisma.DietPlanUncheckedCreateNestedManyWithoutUserInput
+  exercisePlans?: Prisma.ExercisePlanUncheckedCreateNestedManyWithoutUserInput
+  routines?: Prisma.RoutineUncheckedCreateNestedManyWithoutUserInput
+  weeklyCheckins?: Prisma.WeeklyCheckinUncheckedCreateNestedManyWithoutUserInput
+  progressMetrics?: Prisma.ProgressMetricUncheckedCreateNestedManyWithoutUserInput
+  healthTimeline?: Prisma.HealthTimelineEntryUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
+  consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSubscriptionInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSubscriptionInput, Prisma.UserUncheckedCreateWithoutSubscriptionInput>
+}
+
+export type UserUpsertWithoutSubscriptionInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSubscriptionInput, Prisma.UserUncheckedUpdateWithoutSubscriptionInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSubscriptionInput, Prisma.UserUncheckedCreateWithoutSubscriptionInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSubscriptionInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSubscriptionInput, Prisma.UserUncheckedUpdateWithoutSubscriptionInput>
+}
+
+export type UserUpdateWithoutSubscriptionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentDisclaimer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentVision?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  occupation?: Prisma.OccupationUpdateOneWithoutUserNestedInput
+  lifestyle?: Prisma.LifestyleUpdateOneWithoutUserNestedInput
+  nutritionProfile?: Prisma.NutritionProfileUpdateOneWithoutUserNestedInput
+  medicalHistory?: Prisma.MedicalHistoryUpdateOneWithoutUserNestedInput
+  painAssessments?: Prisma.PainAssessmentUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
+  visionMedia?: Prisma.VisionMediaUpdateManyWithoutUserNestedInput
+  visionAnalyses?: Prisma.VisionAnalysisUpdateManyWithoutUserNestedInput
+  postureCharacteristics?: Prisma.PostureCharacteristicUpdateManyWithoutUserNestedInput
+  medicalReports?: Prisma.MedicalReportUpdateManyWithoutUserNestedInput
+  reportAnalyses?: Prisma.ReportAnalysisUpdateManyWithoutUserNestedInput
+  labResults?: Prisma.LabResultUpdateManyWithoutUserNestedInput
+  recommendations?: Prisma.RecommendationUpdateManyWithoutUserNestedInput
+  dietPlans?: Prisma.DietPlanUpdateManyWithoutUserNestedInput
+  exercisePlans?: Prisma.ExercisePlanUpdateManyWithoutUserNestedInput
+  routines?: Prisma.RoutineUpdateManyWithoutUserNestedInput
+  weeklyCheckins?: Prisma.WeeklyCheckinUpdateManyWithoutUserNestedInput
+  progressMetrics?: Prisma.ProgressMetricUpdateManyWithoutUserNestedInput
+  healthTimeline?: Prisma.HealthTimelineEntryUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
+  consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSubscriptionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentDisclaimer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentVision?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  occupation?: Prisma.OccupationUncheckedUpdateOneWithoutUserNestedInput
+  lifestyle?: Prisma.LifestyleUncheckedUpdateOneWithoutUserNestedInput
+  nutritionProfile?: Prisma.NutritionProfileUncheckedUpdateOneWithoutUserNestedInput
+  medicalHistory?: Prisma.MedicalHistoryUncheckedUpdateOneWithoutUserNestedInput
+  painAssessments?: Prisma.PainAssessmentUncheckedUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
+  visionMedia?: Prisma.VisionMediaUncheckedUpdateManyWithoutUserNestedInput
+  visionAnalyses?: Prisma.VisionAnalysisUncheckedUpdateManyWithoutUserNestedInput
+  postureCharacteristics?: Prisma.PostureCharacteristicUncheckedUpdateManyWithoutUserNestedInput
+  medicalReports?: Prisma.MedicalReportUncheckedUpdateManyWithoutUserNestedInput
+  reportAnalyses?: Prisma.ReportAnalysisUncheckedUpdateManyWithoutUserNestedInput
+  labResults?: Prisma.LabResultUncheckedUpdateManyWithoutUserNestedInput
+  recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutUserNestedInput
+  dietPlans?: Prisma.DietPlanUncheckedUpdateManyWithoutUserNestedInput
+  exercisePlans?: Prisma.ExercisePlanUncheckedUpdateManyWithoutUserNestedInput
+  routines?: Prisma.RoutineUncheckedUpdateManyWithoutUserNestedInput
+  weeklyCheckins?: Prisma.WeeklyCheckinUncheckedUpdateManyWithoutUserNestedInput
+  progressMetrics?: Prisma.ProgressMetricUncheckedUpdateManyWithoutUserNestedInput
+  healthTimeline?: Prisma.HealthTimelineEntryUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPaymentHistoryInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  isVerified?: boolean
+  consentPrivacy?: boolean
+  consentDisclaimer?: boolean
+  consentVision?: boolean
+  status?: $Enums.UserStatus
+  onboardingComplete?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  occupation?: Prisma.OccupationCreateNestedOneWithoutUserInput
+  lifestyle?: Prisma.LifestyleCreateNestedOneWithoutUserInput
+  nutritionProfile?: Prisma.NutritionProfileCreateNestedOneWithoutUserInput
+  medicalHistory?: Prisma.MedicalHistoryCreateNestedOneWithoutUserInput
+  painAssessments?: Prisma.PainAssessmentCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalCreateNestedManyWithoutUserInput
+  visionMedia?: Prisma.VisionMediaCreateNestedManyWithoutUserInput
+  visionAnalyses?: Prisma.VisionAnalysisCreateNestedManyWithoutUserInput
+  postureCharacteristics?: Prisma.PostureCharacteristicCreateNestedManyWithoutUserInput
+  medicalReports?: Prisma.MedicalReportCreateNestedManyWithoutUserInput
+  reportAnalyses?: Prisma.ReportAnalysisCreateNestedManyWithoutUserInput
+  labResults?: Prisma.LabResultCreateNestedManyWithoutUserInput
+  recommendations?: Prisma.RecommendationCreateNestedManyWithoutUserInput
+  dietPlans?: Prisma.DietPlanCreateNestedManyWithoutUserInput
+  exercisePlans?: Prisma.ExercisePlanCreateNestedManyWithoutUserInput
+  routines?: Prisma.RoutineCreateNestedManyWithoutUserInput
+  weeklyCheckins?: Prisma.WeeklyCheckinCreateNestedManyWithoutUserInput
+  progressMetrics?: Prisma.ProgressMetricCreateNestedManyWithoutUserInput
+  healthTimeline?: Prisma.HealthTimelineEntryCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
+  consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPaymentHistoryInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  isVerified?: boolean
+  consentPrivacy?: boolean
+  consentDisclaimer?: boolean
+  consentVision?: boolean
+  status?: $Enums.UserStatus
+  onboardingComplete?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  occupation?: Prisma.OccupationUncheckedCreateNestedOneWithoutUserInput
+  lifestyle?: Prisma.LifestyleUncheckedCreateNestedOneWithoutUserInput
+  nutritionProfile?: Prisma.NutritionProfileUncheckedCreateNestedOneWithoutUserInput
+  medicalHistory?: Prisma.MedicalHistoryUncheckedCreateNestedOneWithoutUserInput
+  painAssessments?: Prisma.PainAssessmentUncheckedCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
+  visionMedia?: Prisma.VisionMediaUncheckedCreateNestedManyWithoutUserInput
+  visionAnalyses?: Prisma.VisionAnalysisUncheckedCreateNestedManyWithoutUserInput
+  postureCharacteristics?: Prisma.PostureCharacteristicUncheckedCreateNestedManyWithoutUserInput
+  medicalReports?: Prisma.MedicalReportUncheckedCreateNestedManyWithoutUserInput
+  reportAnalyses?: Prisma.ReportAnalysisUncheckedCreateNestedManyWithoutUserInput
+  labResults?: Prisma.LabResultUncheckedCreateNestedManyWithoutUserInput
+  recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutUserInput
+  dietPlans?: Prisma.DietPlanUncheckedCreateNestedManyWithoutUserInput
+  exercisePlans?: Prisma.ExercisePlanUncheckedCreateNestedManyWithoutUserInput
+  routines?: Prisma.RoutineUncheckedCreateNestedManyWithoutUserInput
+  weeklyCheckins?: Prisma.WeeklyCheckinUncheckedCreateNestedManyWithoutUserInput
+  progressMetrics?: Prisma.ProgressMetricUncheckedCreateNestedManyWithoutUserInput
+  healthTimeline?: Prisma.HealthTimelineEntryUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
+  consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPaymentHistoryInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPaymentHistoryInput, Prisma.UserUncheckedCreateWithoutPaymentHistoryInput>
+}
+
+export type UserUpsertWithoutPaymentHistoryInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPaymentHistoryInput, Prisma.UserUncheckedUpdateWithoutPaymentHistoryInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPaymentHistoryInput, Prisma.UserUncheckedCreateWithoutPaymentHistoryInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPaymentHistoryInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPaymentHistoryInput, Prisma.UserUncheckedUpdateWithoutPaymentHistoryInput>
+}
+
+export type UserUpdateWithoutPaymentHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentDisclaimer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentVision?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  occupation?: Prisma.OccupationUpdateOneWithoutUserNestedInput
+  lifestyle?: Prisma.LifestyleUpdateOneWithoutUserNestedInput
+  nutritionProfile?: Prisma.NutritionProfileUpdateOneWithoutUserNestedInput
+  medicalHistory?: Prisma.MedicalHistoryUpdateOneWithoutUserNestedInput
+  painAssessments?: Prisma.PainAssessmentUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
+  visionMedia?: Prisma.VisionMediaUpdateManyWithoutUserNestedInput
+  visionAnalyses?: Prisma.VisionAnalysisUpdateManyWithoutUserNestedInput
+  postureCharacteristics?: Prisma.PostureCharacteristicUpdateManyWithoutUserNestedInput
+  medicalReports?: Prisma.MedicalReportUpdateManyWithoutUserNestedInput
+  reportAnalyses?: Prisma.ReportAnalysisUpdateManyWithoutUserNestedInput
+  labResults?: Prisma.LabResultUpdateManyWithoutUserNestedInput
+  recommendations?: Prisma.RecommendationUpdateManyWithoutUserNestedInput
+  dietPlans?: Prisma.DietPlanUpdateManyWithoutUserNestedInput
+  exercisePlans?: Prisma.ExercisePlanUpdateManyWithoutUserNestedInput
+  routines?: Prisma.RoutineUpdateManyWithoutUserNestedInput
+  weeklyCheckins?: Prisma.WeeklyCheckinUpdateManyWithoutUserNestedInput
+  progressMetrics?: Prisma.ProgressMetricUpdateManyWithoutUserNestedInput
+  healthTimeline?: Prisma.HealthTimelineEntryUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
+  consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPaymentHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentDisclaimer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentVision?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  occupation?: Prisma.OccupationUncheckedUpdateOneWithoutUserNestedInput
+  lifestyle?: Prisma.LifestyleUncheckedUpdateOneWithoutUserNestedInput
+  nutritionProfile?: Prisma.NutritionProfileUncheckedUpdateOneWithoutUserNestedInput
+  medicalHistory?: Prisma.MedicalHistoryUncheckedUpdateOneWithoutUserNestedInput
+  painAssessments?: Prisma.PainAssessmentUncheckedUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
+  visionMedia?: Prisma.VisionMediaUncheckedUpdateManyWithoutUserNestedInput
+  visionAnalyses?: Prisma.VisionAnalysisUncheckedUpdateManyWithoutUserNestedInput
+  postureCharacteristics?: Prisma.PostureCharacteristicUncheckedUpdateManyWithoutUserNestedInput
+  medicalReports?: Prisma.MedicalReportUncheckedUpdateManyWithoutUserNestedInput
+  reportAnalyses?: Prisma.ReportAnalysisUncheckedUpdateManyWithoutUserNestedInput
+  labResults?: Prisma.LabResultUncheckedUpdateManyWithoutUserNestedInput
+  recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutUserNestedInput
+  dietPlans?: Prisma.DietPlanUncheckedUpdateManyWithoutUserNestedInput
+  exercisePlans?: Prisma.ExercisePlanUncheckedUpdateManyWithoutUserNestedInput
+  routines?: Prisma.RoutineUncheckedUpdateManyWithoutUserNestedInput
+  weeklyCheckins?: Prisma.WeeklyCheckinUncheckedUpdateManyWithoutUserNestedInput
+  progressMetrics?: Prisma.ProgressMetricUncheckedUpdateManyWithoutUserNestedInput
+  healthTimeline?: Prisma.HealthTimelineEntryUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+}
+
 export type UserCreateWithoutSessionsInput = {
   id?: string
   email: string
@@ -1002,6 +1504,12 @@ export type UserCreateWithoutSessionsInput = {
   healthTimeline?: Prisma.HealthTimelineEntryCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1039,6 +1547,12 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   healthTimeline?: Prisma.HealthTimelineEntryUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1092,6 +1606,12 @@ export type UserUpdateWithoutSessionsInput = {
   healthTimeline?: Prisma.HealthTimelineEntryUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1129,6 +1649,12 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   healthTimeline?: Prisma.HealthTimelineEntryUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProfileInput = {
@@ -1166,6 +1692,12 @@ export type UserCreateWithoutProfileInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProfileInput = {
@@ -1203,6 +1735,12 @@ export type UserUncheckedCreateWithoutProfileInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProfileInput = {
@@ -1256,6 +1794,12 @@ export type UserUpdateWithoutProfileInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileInput = {
@@ -1293,6 +1837,12 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutOccupationInput = {
@@ -1330,6 +1880,12 @@ export type UserCreateWithoutOccupationInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutOccupationInput = {
@@ -1367,6 +1923,12 @@ export type UserUncheckedCreateWithoutOccupationInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutOccupationInput = {
@@ -1420,6 +1982,12 @@ export type UserUpdateWithoutOccupationInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOccupationInput = {
@@ -1457,6 +2025,12 @@ export type UserUncheckedUpdateWithoutOccupationInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutLifestyleInput = {
@@ -1494,6 +2068,12 @@ export type UserCreateWithoutLifestyleInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLifestyleInput = {
@@ -1531,6 +2111,12 @@ export type UserUncheckedCreateWithoutLifestyleInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLifestyleInput = {
@@ -1584,6 +2170,12 @@ export type UserUpdateWithoutLifestyleInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLifestyleInput = {
@@ -1621,6 +2213,12 @@ export type UserUncheckedUpdateWithoutLifestyleInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutNutritionProfileInput = {
@@ -1658,6 +2256,12 @@ export type UserCreateWithoutNutritionProfileInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutNutritionProfileInput = {
@@ -1695,6 +2299,12 @@ export type UserUncheckedCreateWithoutNutritionProfileInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutNutritionProfileInput = {
@@ -1748,6 +2358,12 @@ export type UserUpdateWithoutNutritionProfileInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNutritionProfileInput = {
@@ -1785,6 +2401,12 @@ export type UserUncheckedUpdateWithoutNutritionProfileInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutMedicalHistoryInput = {
@@ -1822,6 +2444,12 @@ export type UserCreateWithoutMedicalHistoryInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMedicalHistoryInput = {
@@ -1859,6 +2487,12 @@ export type UserUncheckedCreateWithoutMedicalHistoryInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMedicalHistoryInput = {
@@ -1912,6 +2546,12 @@ export type UserUpdateWithoutMedicalHistoryInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMedicalHistoryInput = {
@@ -1949,6 +2589,12 @@ export type UserUncheckedUpdateWithoutMedicalHistoryInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPainAssessmentsInput = {
@@ -1986,6 +2632,12 @@ export type UserCreateWithoutPainAssessmentsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPainAssessmentsInput = {
@@ -2023,6 +2675,12 @@ export type UserUncheckedCreateWithoutPainAssessmentsInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPainAssessmentsInput = {
@@ -2076,6 +2734,12 @@ export type UserUpdateWithoutPainAssessmentsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPainAssessmentsInput = {
@@ -2113,6 +2777,12 @@ export type UserUncheckedUpdateWithoutPainAssessmentsInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutGoalsInput = {
@@ -2150,6 +2820,12 @@ export type UserCreateWithoutGoalsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGoalsInput = {
@@ -2187,6 +2863,12 @@ export type UserUncheckedCreateWithoutGoalsInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGoalsInput = {
@@ -2240,6 +2922,12 @@ export type UserUpdateWithoutGoalsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGoalsInput = {
@@ -2277,6 +2965,12 @@ export type UserUncheckedUpdateWithoutGoalsInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutVisionMediaInput = {
@@ -2314,6 +3008,12 @@ export type UserCreateWithoutVisionMediaInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutVisionMediaInput = {
@@ -2351,6 +3051,12 @@ export type UserUncheckedCreateWithoutVisionMediaInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutVisionMediaInput = {
@@ -2404,6 +3110,12 @@ export type UserUpdateWithoutVisionMediaInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVisionMediaInput = {
@@ -2441,6 +3153,12 @@ export type UserUncheckedUpdateWithoutVisionMediaInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutVisionAnalysesInput = {
@@ -2478,6 +3196,12 @@ export type UserCreateWithoutVisionAnalysesInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutVisionAnalysesInput = {
@@ -2515,6 +3239,12 @@ export type UserUncheckedCreateWithoutVisionAnalysesInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutVisionAnalysesInput = {
@@ -2568,6 +3298,12 @@ export type UserUpdateWithoutVisionAnalysesInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVisionAnalysesInput = {
@@ -2605,6 +3341,12 @@ export type UserUncheckedUpdateWithoutVisionAnalysesInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPostureCharacteristicsInput = {
@@ -2642,6 +3384,12 @@ export type UserCreateWithoutPostureCharacteristicsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPostureCharacteristicsInput = {
@@ -2679,6 +3427,12 @@ export type UserUncheckedCreateWithoutPostureCharacteristicsInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPostureCharacteristicsInput = {
@@ -2732,6 +3486,12 @@ export type UserUpdateWithoutPostureCharacteristicsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPostureCharacteristicsInput = {
@@ -2769,6 +3529,12 @@ export type UserUncheckedUpdateWithoutPostureCharacteristicsInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutMedicalReportsInput = {
@@ -2806,6 +3572,12 @@ export type UserCreateWithoutMedicalReportsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMedicalReportsInput = {
@@ -2843,6 +3615,12 @@ export type UserUncheckedCreateWithoutMedicalReportsInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMedicalReportsInput = {
@@ -2896,6 +3674,12 @@ export type UserUpdateWithoutMedicalReportsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMedicalReportsInput = {
@@ -2933,6 +3717,12 @@ export type UserUncheckedUpdateWithoutMedicalReportsInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutReportAnalysesInput = {
@@ -2970,6 +3760,12 @@ export type UserCreateWithoutReportAnalysesInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReportAnalysesInput = {
@@ -3007,6 +3803,12 @@ export type UserUncheckedCreateWithoutReportAnalysesInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReportAnalysesInput = {
@@ -3060,6 +3862,12 @@ export type UserUpdateWithoutReportAnalysesInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReportAnalysesInput = {
@@ -3097,6 +3905,12 @@ export type UserUncheckedUpdateWithoutReportAnalysesInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutLabResultsInput = {
@@ -3134,6 +3948,12 @@ export type UserCreateWithoutLabResultsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLabResultsInput = {
@@ -3171,6 +3991,12 @@ export type UserUncheckedCreateWithoutLabResultsInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLabResultsInput = {
@@ -3224,6 +4050,12 @@ export type UserUpdateWithoutLabResultsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLabResultsInput = {
@@ -3261,6 +4093,12 @@ export type UserUncheckedUpdateWithoutLabResultsInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutRecommendationsInput = {
@@ -3298,6 +4136,12 @@ export type UserCreateWithoutRecommendationsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRecommendationsInput = {
@@ -3335,6 +4179,12 @@ export type UserUncheckedCreateWithoutRecommendationsInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRecommendationsInput = {
@@ -3388,6 +4238,12 @@ export type UserUpdateWithoutRecommendationsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRecommendationsInput = {
@@ -3425,6 +4281,12 @@ export type UserUncheckedUpdateWithoutRecommendationsInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDietPlansInput = {
@@ -3462,6 +4324,12 @@ export type UserCreateWithoutDietPlansInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDietPlansInput = {
@@ -3499,6 +4367,12 @@ export type UserUncheckedCreateWithoutDietPlansInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDietPlansInput = {
@@ -3552,6 +4426,12 @@ export type UserUpdateWithoutDietPlansInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDietPlansInput = {
@@ -3589,6 +4469,12 @@ export type UserUncheckedUpdateWithoutDietPlansInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutExercisePlansInput = {
@@ -3626,6 +4512,12 @@ export type UserCreateWithoutExercisePlansInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutExercisePlansInput = {
@@ -3663,6 +4555,12 @@ export type UserUncheckedCreateWithoutExercisePlansInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutExercisePlansInput = {
@@ -3716,6 +4614,12 @@ export type UserUpdateWithoutExercisePlansInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutExercisePlansInput = {
@@ -3753,6 +4657,12 @@ export type UserUncheckedUpdateWithoutExercisePlansInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutRoutinesInput = {
@@ -3790,6 +4700,12 @@ export type UserCreateWithoutRoutinesInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRoutinesInput = {
@@ -3827,6 +4743,12 @@ export type UserUncheckedCreateWithoutRoutinesInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRoutinesInput = {
@@ -3880,6 +4802,12 @@ export type UserUpdateWithoutRoutinesInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRoutinesInput = {
@@ -3917,6 +4845,12 @@ export type UserUncheckedUpdateWithoutRoutinesInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutWeeklyCheckinsInput = {
@@ -3954,6 +4888,12 @@ export type UserCreateWithoutWeeklyCheckinsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutWeeklyCheckinsInput = {
@@ -3991,6 +4931,12 @@ export type UserUncheckedCreateWithoutWeeklyCheckinsInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutWeeklyCheckinsInput = {
@@ -4044,6 +4990,12 @@ export type UserUpdateWithoutWeeklyCheckinsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWeeklyCheckinsInput = {
@@ -4081,6 +5033,12 @@ export type UserUncheckedUpdateWithoutWeeklyCheckinsInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProgressMetricsInput = {
@@ -4118,6 +5076,12 @@ export type UserCreateWithoutProgressMetricsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProgressMetricsInput = {
@@ -4155,6 +5119,12 @@ export type UserUncheckedCreateWithoutProgressMetricsInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProgressMetricsInput = {
@@ -4208,6 +5178,12 @@ export type UserUpdateWithoutProgressMetricsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProgressMetricsInput = {
@@ -4245,6 +5221,12 @@ export type UserUncheckedUpdateWithoutProgressMetricsInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutHealthTimelineInput = {
@@ -4282,6 +5264,12 @@ export type UserCreateWithoutHealthTimelineInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutHealthTimelineInput = {
@@ -4319,6 +5307,12 @@ export type UserUncheckedCreateWithoutHealthTimelineInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutHealthTimelineInput = {
@@ -4372,6 +5366,12 @@ export type UserUpdateWithoutHealthTimelineInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutHealthTimelineInput = {
@@ -4409,6 +5409,12 @@ export type UserUncheckedUpdateWithoutHealthTimelineInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAiAuditLogsInput = {
@@ -4446,6 +5452,12 @@ export type UserCreateWithoutAiAuditLogsInput = {
   healthTimeline?: Prisma.HealthTimelineEntryCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAiAuditLogsInput = {
@@ -4483,6 +5495,12 @@ export type UserUncheckedCreateWithoutAiAuditLogsInput = {
   healthTimeline?: Prisma.HealthTimelineEntryUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAiAuditLogsInput = {
@@ -4536,6 +5554,12 @@ export type UserUpdateWithoutAiAuditLogsInput = {
   healthTimeline?: Prisma.HealthTimelineEntryUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAiAuditLogsInput = {
@@ -4573,6 +5597,12 @@ export type UserUncheckedUpdateWithoutAiAuditLogsInput = {
   healthTimeline?: Prisma.HealthTimelineEntryUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutConsentLogsInput = {
@@ -4610,6 +5640,12 @@ export type UserCreateWithoutConsentLogsInput = {
   healthTimeline?: Prisma.HealthTimelineEntryCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutConsentLogsInput = {
@@ -4647,6 +5683,12 @@ export type UserUncheckedCreateWithoutConsentLogsInput = {
   healthTimeline?: Prisma.HealthTimelineEntryUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutConsentLogsInput = {
@@ -4700,6 +5742,12 @@ export type UserUpdateWithoutConsentLogsInput = {
   healthTimeline?: Prisma.HealthTimelineEntryUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConsentLogsInput = {
@@ -4737,6 +5785,764 @@ export type UserUncheckedUpdateWithoutConsentLogsInput = {
   healthTimeline?: Prisma.HealthTimelineEntryUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPractitionerInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  isVerified?: boolean
+  consentPrivacy?: boolean
+  consentDisclaimer?: boolean
+  consentVision?: boolean
+  status?: $Enums.UserStatus
+  onboardingComplete?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  occupation?: Prisma.OccupationCreateNestedOneWithoutUserInput
+  lifestyle?: Prisma.LifestyleCreateNestedOneWithoutUserInput
+  nutritionProfile?: Prisma.NutritionProfileCreateNestedOneWithoutUserInput
+  medicalHistory?: Prisma.MedicalHistoryCreateNestedOneWithoutUserInput
+  painAssessments?: Prisma.PainAssessmentCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalCreateNestedManyWithoutUserInput
+  visionMedia?: Prisma.VisionMediaCreateNestedManyWithoutUserInput
+  visionAnalyses?: Prisma.VisionAnalysisCreateNestedManyWithoutUserInput
+  postureCharacteristics?: Prisma.PostureCharacteristicCreateNestedManyWithoutUserInput
+  medicalReports?: Prisma.MedicalReportCreateNestedManyWithoutUserInput
+  reportAnalyses?: Prisma.ReportAnalysisCreateNestedManyWithoutUserInput
+  labResults?: Prisma.LabResultCreateNestedManyWithoutUserInput
+  recommendations?: Prisma.RecommendationCreateNestedManyWithoutUserInput
+  dietPlans?: Prisma.DietPlanCreateNestedManyWithoutUserInput
+  exercisePlans?: Prisma.ExercisePlanCreateNestedManyWithoutUserInput
+  routines?: Prisma.RoutineCreateNestedManyWithoutUserInput
+  weeklyCheckins?: Prisma.WeeklyCheckinCreateNestedManyWithoutUserInput
+  progressMetrics?: Prisma.ProgressMetricCreateNestedManyWithoutUserInput
+  healthTimeline?: Prisma.HealthTimelineEntryCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
+  consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPractitionerInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  isVerified?: boolean
+  consentPrivacy?: boolean
+  consentDisclaimer?: boolean
+  consentVision?: boolean
+  status?: $Enums.UserStatus
+  onboardingComplete?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  occupation?: Prisma.OccupationUncheckedCreateNestedOneWithoutUserInput
+  lifestyle?: Prisma.LifestyleUncheckedCreateNestedOneWithoutUserInput
+  nutritionProfile?: Prisma.NutritionProfileUncheckedCreateNestedOneWithoutUserInput
+  medicalHistory?: Prisma.MedicalHistoryUncheckedCreateNestedOneWithoutUserInput
+  painAssessments?: Prisma.PainAssessmentUncheckedCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
+  visionMedia?: Prisma.VisionMediaUncheckedCreateNestedManyWithoutUserInput
+  visionAnalyses?: Prisma.VisionAnalysisUncheckedCreateNestedManyWithoutUserInput
+  postureCharacteristics?: Prisma.PostureCharacteristicUncheckedCreateNestedManyWithoutUserInput
+  medicalReports?: Prisma.MedicalReportUncheckedCreateNestedManyWithoutUserInput
+  reportAnalyses?: Prisma.ReportAnalysisUncheckedCreateNestedManyWithoutUserInput
+  labResults?: Prisma.LabResultUncheckedCreateNestedManyWithoutUserInput
+  recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutUserInput
+  dietPlans?: Prisma.DietPlanUncheckedCreateNestedManyWithoutUserInput
+  exercisePlans?: Prisma.ExercisePlanUncheckedCreateNestedManyWithoutUserInput
+  routines?: Prisma.RoutineUncheckedCreateNestedManyWithoutUserInput
+  weeklyCheckins?: Prisma.WeeklyCheckinUncheckedCreateNestedManyWithoutUserInput
+  progressMetrics?: Prisma.ProgressMetricUncheckedCreateNestedManyWithoutUserInput
+  healthTimeline?: Prisma.HealthTimelineEntryUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
+  consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPractitionerInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPractitionerInput, Prisma.UserUncheckedCreateWithoutPractitionerInput>
+}
+
+export type UserUpsertWithoutPractitionerInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPractitionerInput, Prisma.UserUncheckedUpdateWithoutPractitionerInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPractitionerInput, Prisma.UserUncheckedCreateWithoutPractitionerInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPractitionerInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPractitionerInput, Prisma.UserUncheckedUpdateWithoutPractitionerInput>
+}
+
+export type UserUpdateWithoutPractitionerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentDisclaimer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentVision?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  occupation?: Prisma.OccupationUpdateOneWithoutUserNestedInput
+  lifestyle?: Prisma.LifestyleUpdateOneWithoutUserNestedInput
+  nutritionProfile?: Prisma.NutritionProfileUpdateOneWithoutUserNestedInput
+  medicalHistory?: Prisma.MedicalHistoryUpdateOneWithoutUserNestedInput
+  painAssessments?: Prisma.PainAssessmentUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
+  visionMedia?: Prisma.VisionMediaUpdateManyWithoutUserNestedInput
+  visionAnalyses?: Prisma.VisionAnalysisUpdateManyWithoutUserNestedInput
+  postureCharacteristics?: Prisma.PostureCharacteristicUpdateManyWithoutUserNestedInput
+  medicalReports?: Prisma.MedicalReportUpdateManyWithoutUserNestedInput
+  reportAnalyses?: Prisma.ReportAnalysisUpdateManyWithoutUserNestedInput
+  labResults?: Prisma.LabResultUpdateManyWithoutUserNestedInput
+  recommendations?: Prisma.RecommendationUpdateManyWithoutUserNestedInput
+  dietPlans?: Prisma.DietPlanUpdateManyWithoutUserNestedInput
+  exercisePlans?: Prisma.ExercisePlanUpdateManyWithoutUserNestedInput
+  routines?: Prisma.RoutineUpdateManyWithoutUserNestedInput
+  weeklyCheckins?: Prisma.WeeklyCheckinUpdateManyWithoutUserNestedInput
+  progressMetrics?: Prisma.ProgressMetricUpdateManyWithoutUserNestedInput
+  healthTimeline?: Prisma.HealthTimelineEntryUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
+  consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPractitionerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentDisclaimer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentVision?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  occupation?: Prisma.OccupationUncheckedUpdateOneWithoutUserNestedInput
+  lifestyle?: Prisma.LifestyleUncheckedUpdateOneWithoutUserNestedInput
+  nutritionProfile?: Prisma.NutritionProfileUncheckedUpdateOneWithoutUserNestedInput
+  medicalHistory?: Prisma.MedicalHistoryUncheckedUpdateOneWithoutUserNestedInput
+  painAssessments?: Prisma.PainAssessmentUncheckedUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
+  visionMedia?: Prisma.VisionMediaUncheckedUpdateManyWithoutUserNestedInput
+  visionAnalyses?: Prisma.VisionAnalysisUncheckedUpdateManyWithoutUserNestedInput
+  postureCharacteristics?: Prisma.PostureCharacteristicUncheckedUpdateManyWithoutUserNestedInput
+  medicalReports?: Prisma.MedicalReportUncheckedUpdateManyWithoutUserNestedInput
+  reportAnalyses?: Prisma.ReportAnalysisUncheckedUpdateManyWithoutUserNestedInput
+  labResults?: Prisma.LabResultUncheckedUpdateManyWithoutUserNestedInput
+  recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutUserNestedInput
+  dietPlans?: Prisma.DietPlanUncheckedUpdateManyWithoutUserNestedInput
+  exercisePlans?: Prisma.ExercisePlanUncheckedUpdateManyWithoutUserNestedInput
+  routines?: Prisma.RoutineUncheckedUpdateManyWithoutUserNestedInput
+  weeklyCheckins?: Prisma.WeeklyCheckinUncheckedUpdateManyWithoutUserNestedInput
+  progressMetrics?: Prisma.ProgressMetricUncheckedUpdateManyWithoutUserNestedInput
+  healthTimeline?: Prisma.HealthTimelineEntryUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPatientLinksInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  isVerified?: boolean
+  consentPrivacy?: boolean
+  consentDisclaimer?: boolean
+  consentVision?: boolean
+  status?: $Enums.UserStatus
+  onboardingComplete?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  occupation?: Prisma.OccupationCreateNestedOneWithoutUserInput
+  lifestyle?: Prisma.LifestyleCreateNestedOneWithoutUserInput
+  nutritionProfile?: Prisma.NutritionProfileCreateNestedOneWithoutUserInput
+  medicalHistory?: Prisma.MedicalHistoryCreateNestedOneWithoutUserInput
+  painAssessments?: Prisma.PainAssessmentCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalCreateNestedManyWithoutUserInput
+  visionMedia?: Prisma.VisionMediaCreateNestedManyWithoutUserInput
+  visionAnalyses?: Prisma.VisionAnalysisCreateNestedManyWithoutUserInput
+  postureCharacteristics?: Prisma.PostureCharacteristicCreateNestedManyWithoutUserInput
+  medicalReports?: Prisma.MedicalReportCreateNestedManyWithoutUserInput
+  reportAnalyses?: Prisma.ReportAnalysisCreateNestedManyWithoutUserInput
+  labResults?: Prisma.LabResultCreateNestedManyWithoutUserInput
+  recommendations?: Prisma.RecommendationCreateNestedManyWithoutUserInput
+  dietPlans?: Prisma.DietPlanCreateNestedManyWithoutUserInput
+  exercisePlans?: Prisma.ExercisePlanCreateNestedManyWithoutUserInput
+  routines?: Prisma.RoutineCreateNestedManyWithoutUserInput
+  weeklyCheckins?: Prisma.WeeklyCheckinCreateNestedManyWithoutUserInput
+  progressMetrics?: Prisma.ProgressMetricCreateNestedManyWithoutUserInput
+  healthTimeline?: Prisma.HealthTimelineEntryCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
+  consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPatientLinksInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  isVerified?: boolean
+  consentPrivacy?: boolean
+  consentDisclaimer?: boolean
+  consentVision?: boolean
+  status?: $Enums.UserStatus
+  onboardingComplete?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  occupation?: Prisma.OccupationUncheckedCreateNestedOneWithoutUserInput
+  lifestyle?: Prisma.LifestyleUncheckedCreateNestedOneWithoutUserInput
+  nutritionProfile?: Prisma.NutritionProfileUncheckedCreateNestedOneWithoutUserInput
+  medicalHistory?: Prisma.MedicalHistoryUncheckedCreateNestedOneWithoutUserInput
+  painAssessments?: Prisma.PainAssessmentUncheckedCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
+  visionMedia?: Prisma.VisionMediaUncheckedCreateNestedManyWithoutUserInput
+  visionAnalyses?: Prisma.VisionAnalysisUncheckedCreateNestedManyWithoutUserInput
+  postureCharacteristics?: Prisma.PostureCharacteristicUncheckedCreateNestedManyWithoutUserInput
+  medicalReports?: Prisma.MedicalReportUncheckedCreateNestedManyWithoutUserInput
+  reportAnalyses?: Prisma.ReportAnalysisUncheckedCreateNestedManyWithoutUserInput
+  labResults?: Prisma.LabResultUncheckedCreateNestedManyWithoutUserInput
+  recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutUserInput
+  dietPlans?: Prisma.DietPlanUncheckedCreateNestedManyWithoutUserInput
+  exercisePlans?: Prisma.ExercisePlanUncheckedCreateNestedManyWithoutUserInput
+  routines?: Prisma.RoutineUncheckedCreateNestedManyWithoutUserInput
+  weeklyCheckins?: Prisma.WeeklyCheckinUncheckedCreateNestedManyWithoutUserInput
+  progressMetrics?: Prisma.ProgressMetricUncheckedCreateNestedManyWithoutUserInput
+  healthTimeline?: Prisma.HealthTimelineEntryUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
+  consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPatientLinksInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPatientLinksInput, Prisma.UserUncheckedCreateWithoutPatientLinksInput>
+}
+
+export type UserUpsertWithoutPatientLinksInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPatientLinksInput, Prisma.UserUncheckedUpdateWithoutPatientLinksInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPatientLinksInput, Prisma.UserUncheckedCreateWithoutPatientLinksInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPatientLinksInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPatientLinksInput, Prisma.UserUncheckedUpdateWithoutPatientLinksInput>
+}
+
+export type UserUpdateWithoutPatientLinksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentDisclaimer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentVision?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  occupation?: Prisma.OccupationUpdateOneWithoutUserNestedInput
+  lifestyle?: Prisma.LifestyleUpdateOneWithoutUserNestedInput
+  nutritionProfile?: Prisma.NutritionProfileUpdateOneWithoutUserNestedInput
+  medicalHistory?: Prisma.MedicalHistoryUpdateOneWithoutUserNestedInput
+  painAssessments?: Prisma.PainAssessmentUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
+  visionMedia?: Prisma.VisionMediaUpdateManyWithoutUserNestedInput
+  visionAnalyses?: Prisma.VisionAnalysisUpdateManyWithoutUserNestedInput
+  postureCharacteristics?: Prisma.PostureCharacteristicUpdateManyWithoutUserNestedInput
+  medicalReports?: Prisma.MedicalReportUpdateManyWithoutUserNestedInput
+  reportAnalyses?: Prisma.ReportAnalysisUpdateManyWithoutUserNestedInput
+  labResults?: Prisma.LabResultUpdateManyWithoutUserNestedInput
+  recommendations?: Prisma.RecommendationUpdateManyWithoutUserNestedInput
+  dietPlans?: Prisma.DietPlanUpdateManyWithoutUserNestedInput
+  exercisePlans?: Prisma.ExercisePlanUpdateManyWithoutUserNestedInput
+  routines?: Prisma.RoutineUpdateManyWithoutUserNestedInput
+  weeklyCheckins?: Prisma.WeeklyCheckinUpdateManyWithoutUserNestedInput
+  progressMetrics?: Prisma.ProgressMetricUpdateManyWithoutUserNestedInput
+  healthTimeline?: Prisma.HealthTimelineEntryUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
+  consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPatientLinksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentDisclaimer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentVision?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  occupation?: Prisma.OccupationUncheckedUpdateOneWithoutUserNestedInput
+  lifestyle?: Prisma.LifestyleUncheckedUpdateOneWithoutUserNestedInput
+  nutritionProfile?: Prisma.NutritionProfileUncheckedUpdateOneWithoutUserNestedInput
+  medicalHistory?: Prisma.MedicalHistoryUncheckedUpdateOneWithoutUserNestedInput
+  painAssessments?: Prisma.PainAssessmentUncheckedUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
+  visionMedia?: Prisma.VisionMediaUncheckedUpdateManyWithoutUserNestedInput
+  visionAnalyses?: Prisma.VisionAnalysisUncheckedUpdateManyWithoutUserNestedInput
+  postureCharacteristics?: Prisma.PostureCharacteristicUncheckedUpdateManyWithoutUserNestedInput
+  medicalReports?: Prisma.MedicalReportUncheckedUpdateManyWithoutUserNestedInput
+  reportAnalyses?: Prisma.ReportAnalysisUncheckedUpdateManyWithoutUserNestedInput
+  labResults?: Prisma.LabResultUncheckedUpdateManyWithoutUserNestedInput
+  recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutUserNestedInput
+  dietPlans?: Prisma.DietPlanUncheckedUpdateManyWithoutUserNestedInput
+  exercisePlans?: Prisma.ExercisePlanUncheckedUpdateManyWithoutUserNestedInput
+  routines?: Prisma.RoutineUncheckedUpdateManyWithoutUserNestedInput
+  weeklyCheckins?: Prisma.WeeklyCheckinUncheckedUpdateManyWithoutUserNestedInput
+  progressMetrics?: Prisma.ProgressMetricUncheckedUpdateManyWithoutUserNestedInput
+  healthTimeline?: Prisma.HealthTimelineEntryUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutWearableDataInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  isVerified?: boolean
+  consentPrivacy?: boolean
+  consentDisclaimer?: boolean
+  consentVision?: boolean
+  status?: $Enums.UserStatus
+  onboardingComplete?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  occupation?: Prisma.OccupationCreateNestedOneWithoutUserInput
+  lifestyle?: Prisma.LifestyleCreateNestedOneWithoutUserInput
+  nutritionProfile?: Prisma.NutritionProfileCreateNestedOneWithoutUserInput
+  medicalHistory?: Prisma.MedicalHistoryCreateNestedOneWithoutUserInput
+  painAssessments?: Prisma.PainAssessmentCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalCreateNestedManyWithoutUserInput
+  visionMedia?: Prisma.VisionMediaCreateNestedManyWithoutUserInput
+  visionAnalyses?: Prisma.VisionAnalysisCreateNestedManyWithoutUserInput
+  postureCharacteristics?: Prisma.PostureCharacteristicCreateNestedManyWithoutUserInput
+  medicalReports?: Prisma.MedicalReportCreateNestedManyWithoutUserInput
+  reportAnalyses?: Prisma.ReportAnalysisCreateNestedManyWithoutUserInput
+  labResults?: Prisma.LabResultCreateNestedManyWithoutUserInput
+  recommendations?: Prisma.RecommendationCreateNestedManyWithoutUserInput
+  dietPlans?: Prisma.DietPlanCreateNestedManyWithoutUserInput
+  exercisePlans?: Prisma.ExercisePlanCreateNestedManyWithoutUserInput
+  routines?: Prisma.RoutineCreateNestedManyWithoutUserInput
+  weeklyCheckins?: Prisma.WeeklyCheckinCreateNestedManyWithoutUserInput
+  progressMetrics?: Prisma.ProgressMetricCreateNestedManyWithoutUserInput
+  healthTimeline?: Prisma.HealthTimelineEntryCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
+  consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutWearableDataInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  isVerified?: boolean
+  consentPrivacy?: boolean
+  consentDisclaimer?: boolean
+  consentVision?: boolean
+  status?: $Enums.UserStatus
+  onboardingComplete?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  occupation?: Prisma.OccupationUncheckedCreateNestedOneWithoutUserInput
+  lifestyle?: Prisma.LifestyleUncheckedCreateNestedOneWithoutUserInput
+  nutritionProfile?: Prisma.NutritionProfileUncheckedCreateNestedOneWithoutUserInput
+  medicalHistory?: Prisma.MedicalHistoryUncheckedCreateNestedOneWithoutUserInput
+  painAssessments?: Prisma.PainAssessmentUncheckedCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
+  visionMedia?: Prisma.VisionMediaUncheckedCreateNestedManyWithoutUserInput
+  visionAnalyses?: Prisma.VisionAnalysisUncheckedCreateNestedManyWithoutUserInput
+  postureCharacteristics?: Prisma.PostureCharacteristicUncheckedCreateNestedManyWithoutUserInput
+  medicalReports?: Prisma.MedicalReportUncheckedCreateNestedManyWithoutUserInput
+  reportAnalyses?: Prisma.ReportAnalysisUncheckedCreateNestedManyWithoutUserInput
+  labResults?: Prisma.LabResultUncheckedCreateNestedManyWithoutUserInput
+  recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutUserInput
+  dietPlans?: Prisma.DietPlanUncheckedCreateNestedManyWithoutUserInput
+  exercisePlans?: Prisma.ExercisePlanUncheckedCreateNestedManyWithoutUserInput
+  routines?: Prisma.RoutineUncheckedCreateNestedManyWithoutUserInput
+  weeklyCheckins?: Prisma.WeeklyCheckinUncheckedCreateNestedManyWithoutUserInput
+  progressMetrics?: Prisma.ProgressMetricUncheckedCreateNestedManyWithoutUserInput
+  healthTimeline?: Prisma.HealthTimelineEntryUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
+  consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutWearableDataInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutWearableDataInput, Prisma.UserUncheckedCreateWithoutWearableDataInput>
+}
+
+export type UserUpsertWithoutWearableDataInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutWearableDataInput, Prisma.UserUncheckedUpdateWithoutWearableDataInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutWearableDataInput, Prisma.UserUncheckedCreateWithoutWearableDataInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutWearableDataInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutWearableDataInput, Prisma.UserUncheckedUpdateWithoutWearableDataInput>
+}
+
+export type UserUpdateWithoutWearableDataInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentDisclaimer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentVision?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  occupation?: Prisma.OccupationUpdateOneWithoutUserNestedInput
+  lifestyle?: Prisma.LifestyleUpdateOneWithoutUserNestedInput
+  nutritionProfile?: Prisma.NutritionProfileUpdateOneWithoutUserNestedInput
+  medicalHistory?: Prisma.MedicalHistoryUpdateOneWithoutUserNestedInput
+  painAssessments?: Prisma.PainAssessmentUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
+  visionMedia?: Prisma.VisionMediaUpdateManyWithoutUserNestedInput
+  visionAnalyses?: Prisma.VisionAnalysisUpdateManyWithoutUserNestedInput
+  postureCharacteristics?: Prisma.PostureCharacteristicUpdateManyWithoutUserNestedInput
+  medicalReports?: Prisma.MedicalReportUpdateManyWithoutUserNestedInput
+  reportAnalyses?: Prisma.ReportAnalysisUpdateManyWithoutUserNestedInput
+  labResults?: Prisma.LabResultUpdateManyWithoutUserNestedInput
+  recommendations?: Prisma.RecommendationUpdateManyWithoutUserNestedInput
+  dietPlans?: Prisma.DietPlanUpdateManyWithoutUserNestedInput
+  exercisePlans?: Prisma.ExercisePlanUpdateManyWithoutUserNestedInput
+  routines?: Prisma.RoutineUpdateManyWithoutUserNestedInput
+  weeklyCheckins?: Prisma.WeeklyCheckinUpdateManyWithoutUserNestedInput
+  progressMetrics?: Prisma.ProgressMetricUpdateManyWithoutUserNestedInput
+  healthTimeline?: Prisma.HealthTimelineEntryUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
+  consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutWearableDataInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentDisclaimer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentVision?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  occupation?: Prisma.OccupationUncheckedUpdateOneWithoutUserNestedInput
+  lifestyle?: Prisma.LifestyleUncheckedUpdateOneWithoutUserNestedInput
+  nutritionProfile?: Prisma.NutritionProfileUncheckedUpdateOneWithoutUserNestedInput
+  medicalHistory?: Prisma.MedicalHistoryUncheckedUpdateOneWithoutUserNestedInput
+  painAssessments?: Prisma.PainAssessmentUncheckedUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
+  visionMedia?: Prisma.VisionMediaUncheckedUpdateManyWithoutUserNestedInput
+  visionAnalyses?: Prisma.VisionAnalysisUncheckedUpdateManyWithoutUserNestedInput
+  postureCharacteristics?: Prisma.PostureCharacteristicUncheckedUpdateManyWithoutUserNestedInput
+  medicalReports?: Prisma.MedicalReportUncheckedUpdateManyWithoutUserNestedInput
+  reportAnalyses?: Prisma.ReportAnalysisUncheckedUpdateManyWithoutUserNestedInput
+  labResults?: Prisma.LabResultUncheckedUpdateManyWithoutUserNestedInput
+  recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutUserNestedInput
+  dietPlans?: Prisma.DietPlanUncheckedUpdateManyWithoutUserNestedInput
+  exercisePlans?: Prisma.ExercisePlanUncheckedUpdateManyWithoutUserNestedInput
+  routines?: Prisma.RoutineUncheckedUpdateManyWithoutUserNestedInput
+  weeklyCheckins?: Prisma.WeeklyCheckinUncheckedUpdateManyWithoutUserNestedInput
+  progressMetrics?: Prisma.ProgressMetricUncheckedUpdateManyWithoutUserNestedInput
+  healthTimeline?: Prisma.HealthTimelineEntryUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutNotificationsInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  isVerified?: boolean
+  consentPrivacy?: boolean
+  consentDisclaimer?: boolean
+  consentVision?: boolean
+  status?: $Enums.UserStatus
+  onboardingComplete?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  occupation?: Prisma.OccupationCreateNestedOneWithoutUserInput
+  lifestyle?: Prisma.LifestyleCreateNestedOneWithoutUserInput
+  nutritionProfile?: Prisma.NutritionProfileCreateNestedOneWithoutUserInput
+  medicalHistory?: Prisma.MedicalHistoryCreateNestedOneWithoutUserInput
+  painAssessments?: Prisma.PainAssessmentCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalCreateNestedManyWithoutUserInput
+  visionMedia?: Prisma.VisionMediaCreateNestedManyWithoutUserInput
+  visionAnalyses?: Prisma.VisionAnalysisCreateNestedManyWithoutUserInput
+  postureCharacteristics?: Prisma.PostureCharacteristicCreateNestedManyWithoutUserInput
+  medicalReports?: Prisma.MedicalReportCreateNestedManyWithoutUserInput
+  reportAnalyses?: Prisma.ReportAnalysisCreateNestedManyWithoutUserInput
+  labResults?: Prisma.LabResultCreateNestedManyWithoutUserInput
+  recommendations?: Prisma.RecommendationCreateNestedManyWithoutUserInput
+  dietPlans?: Prisma.DietPlanCreateNestedManyWithoutUserInput
+  exercisePlans?: Prisma.ExercisePlanCreateNestedManyWithoutUserInput
+  routines?: Prisma.RoutineCreateNestedManyWithoutUserInput
+  weeklyCheckins?: Prisma.WeeklyCheckinCreateNestedManyWithoutUserInput
+  progressMetrics?: Prisma.ProgressMetricCreateNestedManyWithoutUserInput
+  healthTimeline?: Prisma.HealthTimelineEntryCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  aiAuditLogs?: Prisma.AiAuditLogCreateNestedManyWithoutUserInput
+  consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutNotificationsInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  isVerified?: boolean
+  consentPrivacy?: boolean
+  consentDisclaimer?: boolean
+  consentVision?: boolean
+  status?: $Enums.UserStatus
+  onboardingComplete?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  occupation?: Prisma.OccupationUncheckedCreateNestedOneWithoutUserInput
+  lifestyle?: Prisma.LifestyleUncheckedCreateNestedOneWithoutUserInput
+  nutritionProfile?: Prisma.NutritionProfileUncheckedCreateNestedOneWithoutUserInput
+  medicalHistory?: Prisma.MedicalHistoryUncheckedCreateNestedOneWithoutUserInput
+  painAssessments?: Prisma.PainAssessmentUncheckedCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
+  visionMedia?: Prisma.VisionMediaUncheckedCreateNestedManyWithoutUserInput
+  visionAnalyses?: Prisma.VisionAnalysisUncheckedCreateNestedManyWithoutUserInput
+  postureCharacteristics?: Prisma.PostureCharacteristicUncheckedCreateNestedManyWithoutUserInput
+  medicalReports?: Prisma.MedicalReportUncheckedCreateNestedManyWithoutUserInput
+  reportAnalyses?: Prisma.ReportAnalysisUncheckedCreateNestedManyWithoutUserInput
+  labResults?: Prisma.LabResultUncheckedCreateNestedManyWithoutUserInput
+  recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutUserInput
+  dietPlans?: Prisma.DietPlanUncheckedCreateNestedManyWithoutUserInput
+  exercisePlans?: Prisma.ExercisePlanUncheckedCreateNestedManyWithoutUserInput
+  routines?: Prisma.RoutineUncheckedCreateNestedManyWithoutUserInput
+  weeklyCheckins?: Prisma.WeeklyCheckinUncheckedCreateNestedManyWithoutUserInput
+  progressMetrics?: Prisma.ProgressMetricUncheckedCreateNestedManyWithoutUserInput
+  healthTimeline?: Prisma.HealthTimelineEntryUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  aiAuditLogs?: Prisma.AiAuditLogUncheckedCreateNestedManyWithoutUserInput
+  consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutUserInput
+  practitioner?: Prisma.PractitionerUncheckedCreateNestedOneWithoutUserInput
+  patientLinks?: Prisma.PatientLinkUncheckedCreateNestedManyWithoutPatientInput
+  wearableData?: Prisma.WearableDataUncheckedCreateNestedManyWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutNotificationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+}
+
+export type UserUpsertWithoutNotificationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutNotificationsInput, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutNotificationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutNotificationsInput, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type UserUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentDisclaimer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentVision?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  occupation?: Prisma.OccupationUpdateOneWithoutUserNestedInput
+  lifestyle?: Prisma.LifestyleUpdateOneWithoutUserNestedInput
+  nutritionProfile?: Prisma.NutritionProfileUpdateOneWithoutUserNestedInput
+  medicalHistory?: Prisma.MedicalHistoryUpdateOneWithoutUserNestedInput
+  painAssessments?: Prisma.PainAssessmentUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
+  visionMedia?: Prisma.VisionMediaUpdateManyWithoutUserNestedInput
+  visionAnalyses?: Prisma.VisionAnalysisUpdateManyWithoutUserNestedInput
+  postureCharacteristics?: Prisma.PostureCharacteristicUpdateManyWithoutUserNestedInput
+  medicalReports?: Prisma.MedicalReportUpdateManyWithoutUserNestedInput
+  reportAnalyses?: Prisma.ReportAnalysisUpdateManyWithoutUserNestedInput
+  labResults?: Prisma.LabResultUpdateManyWithoutUserNestedInput
+  recommendations?: Prisma.RecommendationUpdateManyWithoutUserNestedInput
+  dietPlans?: Prisma.DietPlanUpdateManyWithoutUserNestedInput
+  exercisePlans?: Prisma.ExercisePlanUpdateManyWithoutUserNestedInput
+  routines?: Prisma.RoutineUpdateManyWithoutUserNestedInput
+  weeklyCheckins?: Prisma.WeeklyCheckinUpdateManyWithoutUserNestedInput
+  progressMetrics?: Prisma.ProgressMetricUpdateManyWithoutUserNestedInput
+  healthTimeline?: Prisma.HealthTimelineEntryUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  aiAuditLogs?: Prisma.AiAuditLogUpdateManyWithoutUserNestedInput
+  consentLogs?: Prisma.ConsentLogUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentDisclaimer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  consentVision?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  occupation?: Prisma.OccupationUncheckedUpdateOneWithoutUserNestedInput
+  lifestyle?: Prisma.LifestyleUncheckedUpdateOneWithoutUserNestedInput
+  nutritionProfile?: Prisma.NutritionProfileUncheckedUpdateOneWithoutUserNestedInput
+  medicalHistory?: Prisma.MedicalHistoryUncheckedUpdateOneWithoutUserNestedInput
+  painAssessments?: Prisma.PainAssessmentUncheckedUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
+  visionMedia?: Prisma.VisionMediaUncheckedUpdateManyWithoutUserNestedInput
+  visionAnalyses?: Prisma.VisionAnalysisUncheckedUpdateManyWithoutUserNestedInput
+  postureCharacteristics?: Prisma.PostureCharacteristicUncheckedUpdateManyWithoutUserNestedInput
+  medicalReports?: Prisma.MedicalReportUncheckedUpdateManyWithoutUserNestedInput
+  reportAnalyses?: Prisma.ReportAnalysisUncheckedUpdateManyWithoutUserNestedInput
+  labResults?: Prisma.LabResultUncheckedUpdateManyWithoutUserNestedInput
+  recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutUserNestedInput
+  dietPlans?: Prisma.DietPlanUncheckedUpdateManyWithoutUserNestedInput
+  exercisePlans?: Prisma.ExercisePlanUncheckedUpdateManyWithoutUserNestedInput
+  routines?: Prisma.RoutineUncheckedUpdateManyWithoutUserNestedInput
+  weeklyCheckins?: Prisma.WeeklyCheckinUncheckedUpdateManyWithoutUserNestedInput
+  progressMetrics?: Prisma.ProgressMetricUncheckedUpdateManyWithoutUserNestedInput
+  healthTimeline?: Prisma.HealthTimelineEntryUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  aiAuditLogs?: Prisma.AiAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutUserNestedInput
+  practitioner?: Prisma.PractitionerUncheckedUpdateOneWithoutUserNestedInput
+  patientLinks?: Prisma.PatientLinkUncheckedUpdateManyWithoutPatientNestedInput
+  wearableData?: Prisma.WearableDataUncheckedUpdateManyWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  paymentHistory?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -4763,6 +6569,10 @@ export type UserCountOutputType = {
   sessions: number
   aiAuditLogs: number
   consentLogs: number
+  patientLinks: number
+  wearableData: number
+  notifications: number
+  paymentHistory: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4784,6 +6594,10 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   aiAuditLogs?: boolean | UserCountOutputTypeCountAiAuditLogsArgs
   consentLogs?: boolean | UserCountOutputTypeCountConsentLogsArgs
+  patientLinks?: boolean | UserCountOutputTypeCountPatientLinksArgs
+  wearableData?: boolean | UserCountOutputTypeCountWearableDataArgs
+  notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
+  paymentHistory?: boolean | UserCountOutputTypeCountPaymentHistoryArgs
 }
 
 /**
@@ -4922,6 +6736,34 @@ export type UserCountOutputTypeCountConsentLogsArgs<ExtArgs extends runtime.Type
   where?: Prisma.ConsentLogWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPatientLinksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PatientLinkWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountWearableDataArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WearableDataWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPaymentHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentHistoryWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -4959,6 +6801,12 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   aiAuditLogs?: boolean | Prisma.User$aiAuditLogsArgs<ExtArgs>
   consentLogs?: boolean | Prisma.User$consentLogsArgs<ExtArgs>
+  practitioner?: boolean | Prisma.User$practitionerArgs<ExtArgs>
+  patientLinks?: boolean | Prisma.User$patientLinksArgs<ExtArgs>
+  wearableData?: boolean | Prisma.User$wearableDataArgs<ExtArgs>
+  notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
+  subscription?: boolean | Prisma.User$subscriptionArgs<ExtArgs>
+  paymentHistory?: boolean | Prisma.User$paymentHistoryArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -5032,6 +6880,12 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   aiAuditLogs?: boolean | Prisma.User$aiAuditLogsArgs<ExtArgs>
   consentLogs?: boolean | Prisma.User$consentLogsArgs<ExtArgs>
+  practitioner?: boolean | Prisma.User$practitionerArgs<ExtArgs>
+  patientLinks?: boolean | Prisma.User$patientLinksArgs<ExtArgs>
+  wearableData?: boolean | Prisma.User$wearableDataArgs<ExtArgs>
+  notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
+  subscription?: boolean | Prisma.User$subscriptionArgs<ExtArgs>
+  paymentHistory?: boolean | Prisma.User$paymentHistoryArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -5063,6 +6917,12 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     sessions: Prisma.$SessionPayload<ExtArgs>[]
     aiAuditLogs: Prisma.$AiAuditLogPayload<ExtArgs>[]
     consentLogs: Prisma.$ConsentLogPayload<ExtArgs>[]
+    practitioner: Prisma.$PractitionerPayload<ExtArgs> | null
+    patientLinks: Prisma.$PatientLinkPayload<ExtArgs>[]
+    wearableData: Prisma.$WearableDataPayload<ExtArgs>[]
+    notifications: Prisma.$NotificationPayload<ExtArgs>[]
+    subscription: Prisma.$SubscriptionPayload<ExtArgs> | null
+    paymentHistory: Prisma.$PaymentHistoryPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -5494,6 +7354,12 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   aiAuditLogs<T extends Prisma.User$aiAuditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$aiAuditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AiAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   consentLogs<T extends Prisma.User$consentLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$consentLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConsentLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  practitioner<T extends Prisma.User$practitionerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$practitionerArgs<ExtArgs>>): Prisma.Prisma__PractitionerClient<runtime.Types.Result.GetResult<Prisma.$PractitionerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  patientLinks<T extends Prisma.User$patientLinksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$patientLinksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PatientLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  wearableData<T extends Prisma.User$wearableDataArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$wearableDataArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WearableDataPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  subscription<T extends Prisma.User$subscriptionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$subscriptionArgs<ExtArgs>>): Prisma.Prisma__SubscriptionClient<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  paymentHistory<T extends Prisma.User$paymentHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$paymentHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6452,6 +8318,140 @@ export type User$consentLogsArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.ConsentLogScalarFieldEnum | Prisma.ConsentLogScalarFieldEnum[]
+}
+
+/**
+ * User.practitioner
+ */
+export type User$practitionerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Practitioner
+   */
+  select?: Prisma.PractitionerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Practitioner
+   */
+  omit?: Prisma.PractitionerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PractitionerInclude<ExtArgs> | null
+  where?: Prisma.PractitionerWhereInput
+}
+
+/**
+ * User.patientLinks
+ */
+export type User$patientLinksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PatientLink
+   */
+  select?: Prisma.PatientLinkSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PatientLink
+   */
+  omit?: Prisma.PatientLinkOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PatientLinkInclude<ExtArgs> | null
+  where?: Prisma.PatientLinkWhereInput
+  orderBy?: Prisma.PatientLinkOrderByWithRelationInput | Prisma.PatientLinkOrderByWithRelationInput[]
+  cursor?: Prisma.PatientLinkWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PatientLinkScalarFieldEnum | Prisma.PatientLinkScalarFieldEnum[]
+}
+
+/**
+ * User.wearableData
+ */
+export type User$wearableDataArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WearableData
+   */
+  select?: Prisma.WearableDataSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WearableData
+   */
+  omit?: Prisma.WearableDataOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WearableDataInclude<ExtArgs> | null
+  where?: Prisma.WearableDataWhereInput
+  orderBy?: Prisma.WearableDataOrderByWithRelationInput | Prisma.WearableDataOrderByWithRelationInput[]
+  cursor?: Prisma.WearableDataWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WearableDataScalarFieldEnum | Prisma.WearableDataScalarFieldEnum[]
+}
+
+/**
+ * User.notifications
+ */
+export type User$notificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null
+  where?: Prisma.NotificationWhereInput
+  orderBy?: Prisma.NotificationOrderByWithRelationInput | Prisma.NotificationOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
+}
+
+/**
+ * User.subscription
+ */
+export type User$subscriptionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Subscription
+   */
+  select?: Prisma.SubscriptionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Subscription
+   */
+  omit?: Prisma.SubscriptionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubscriptionInclude<ExtArgs> | null
+  where?: Prisma.SubscriptionWhereInput
+}
+
+/**
+ * User.paymentHistory
+ */
+export type User$paymentHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaymentHistory
+   */
+  select?: Prisma.PaymentHistorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaymentHistory
+   */
+  omit?: Prisma.PaymentHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentHistoryInclude<ExtArgs> | null
+  where?: Prisma.PaymentHistoryWhereInput
+  orderBy?: Prisma.PaymentHistoryOrderByWithRelationInput | Prisma.PaymentHistoryOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentHistoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentHistoryScalarFieldEnum | Prisma.PaymentHistoryScalarFieldEnum[]
 }
 
 /**

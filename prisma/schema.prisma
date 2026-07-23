@@ -50,8 +50,63 @@ model User {
   sessions            Session[]
   aiAuditLogs         AiAuditLog[]
   consentLogs         ConsentLog[]
+  practitioner        Practitioner?
+  patientLinks         PatientLink[]
+  wearableData        WearableData[]
+  notifications       Notification[]
+  subscription        Subscription?
+  paymentHistory      PaymentHistory[]
 
   @@map("users")
+}
+
+enum Plan {
+  FREE
+  PRO
+  CLINIC
+  ENTERPRISE
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+  TRIALING
+}
+
+model Subscription {
+  id                    String             @id @default(uuid())
+  userId                String             @unique @map("user_id")
+  plan                  Plan               @default(FREE)
+  status                SubscriptionStatus @default(TRIALING)
+  stripeCustomerId      String?            @map("stripe_customer_id")
+  stripeSubscriptionId  String?            @map("stripe_subscription_id")
+  currentPeriodEnd      DateTime?          @map("current_period_end")
+  aiCallsUsed           Int                @default(0) @map("ai_calls_used")
+  aiCallsLimit          Int                @default(10) @map("ai_calls_limit")
+  reportUploadsUsed     Int                @default(0) @map("report_uploads_used")
+  reportUploadsLimit    Int                @default(3) @map("report_uploads_limit")
+  createdAt             DateTime           @default(now()) @map("created_at")
+  updatedAt             DateTime           @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("subscriptions")
+}
+
+model PaymentHistory {
+  id              String   @id @default(uuid())
+  userId          String   @map("user_id")
+  amount          Int      @map("amount")
+  currency        String   @default("usd")
+  description     String?
+  stripePaymentId String?  @map("stripe_payment_id")
+  status          String   @default("completed")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("payment_history")
 }
 
 model Session {
@@ -60,6 +115,8 @@ model Session {
   refreshToken String   @unique @map("refresh_token")
   expiresAt    DateTime @map("expires_at")
   createdAt    DateTime @default(now()) @map("created_at")
+
+  revoked Boolean @default(false)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -477,4 +534,80 @@ model ConsentLog {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("consent_logs")
+}
+
+enum PractitionerSpecialty {
+  PHYSIOTHERAPIST
+  NUTRITIONIST
+  GENERAL_PRACTITIONER
+}
+
+enum PatientLinkStatus {
+  ACTIVE
+  REVOKED
+}
+
+model Practitioner {
+  id           String                @id @default(uuid())
+  userId       String                @unique @map("user_id")
+  specialty    PractitionerSpecialty @map("specialty")
+  clinicName   String?               @map("clinic_name")
+  licenseNumber String?              @map("license_number")
+  verified     Boolean               @default(false)
+  createdAt    DateTime              @default(now()) @map("created_at")
+
+  user     User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  patients PatientLink[] @relation("practitioner_links")
+
+  @@map("practitioners")
+}
+
+model PatientLink {
+  id              String            @id @default(uuid())
+  practitionerId  String            @map("practitioner_id")
+  patientId       String            @map("patient_id")
+  status          PatientLinkStatus @default(ACTIVE)
+  sharedData      String[]          @map("shared_data")
+  createdAt       DateTime          @default(now()) @map("created_at")
+
+  practitioner Practitioner @relation("practitioner_links", fields: [practitionerId], references: [id], onDelete: Cascade)
+  patient      User         @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@unique([practitionerId, patientId])
+  @@map("patient_links")
+}
+
+model WearableData {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  source     String   @map("source")
+  dataType   String   @map("data_type")
+  value      Float    @map("value")
+  unit       String?  @map("unit")
+  recordedAt DateTime @map("recorded_at")
+  syncedAt   DateTime? @map("synced_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, source, dataType, recordedAt])
+  @@map("wearable_data")
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  type      String   @map("type")
+  title     String
+  body      String?
+  read      Boolean  @default(false)
+  channel   String   @default("in_app")
+  link      String?  @map("link")
+  sentAt    DateTime? @map("sent_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, read, createdAt])
+  @@map("notifications")
 }

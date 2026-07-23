@@ -52,6 +52,8 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  Subscription: 'Subscription',
+  PaymentHistory: 'PaymentHistory',
   Session: 'Session',
   Profile: 'Profile',
   Occupation: 'Occupation',
@@ -74,7 +76,11 @@ export const ModelName = {
   ProgressMetric: 'ProgressMetric',
   HealthTimelineEntry: 'HealthTimelineEntry',
   AiAuditLog: 'AiAuditLog',
-  ConsentLog: 'ConsentLog'
+  ConsentLog: 'ConsentLog',
+  Practitioner: 'Practitioner',
+  PatientLink: 'PatientLink',
+  WearableData: 'WearableData',
+  Notification: 'Notification'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -111,12 +117,46 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const SubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  plan: 'plan',
+  status: 'status',
+  stripeCustomerId: 'stripeCustomerId',
+  stripeSubscriptionId: 'stripeSubscriptionId',
+  currentPeriodEnd: 'currentPeriodEnd',
+  aiCallsUsed: 'aiCallsUsed',
+  aiCallsLimit: 'aiCallsLimit',
+  reportUploadsUsed: 'reportUploadsUsed',
+  reportUploadsLimit: 'reportUploadsLimit',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum]
+
+
+export const PaymentHistoryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  amount: 'amount',
+  currency: 'currency',
+  description: 'description',
+  stripePaymentId: 'stripePaymentId',
+  status: 'status',
+  createdAt: 'createdAt'
+} as const
+
+export type PaymentHistoryScalarFieldEnum = (typeof PaymentHistoryScalarFieldEnum)[keyof typeof PaymentHistoryScalarFieldEnum]
+
+
 export const SessionScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   refreshToken: 'refreshToken',
   expiresAt: 'expiresAt',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  revoked: 'revoked'
 } as const
 
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
@@ -499,6 +539,61 @@ export const ConsentLogScalarFieldEnum = {
 } as const
 
 export type ConsentLogScalarFieldEnum = (typeof ConsentLogScalarFieldEnum)[keyof typeof ConsentLogScalarFieldEnum]
+
+
+export const PractitionerScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  specialty: 'specialty',
+  clinicName: 'clinicName',
+  licenseNumber: 'licenseNumber',
+  verified: 'verified',
+  createdAt: 'createdAt'
+} as const
+
+export type PractitionerScalarFieldEnum = (typeof PractitionerScalarFieldEnum)[keyof typeof PractitionerScalarFieldEnum]
+
+
+export const PatientLinkScalarFieldEnum = {
+  id: 'id',
+  practitionerId: 'practitionerId',
+  patientId: 'patientId',
+  status: 'status',
+  sharedData: 'sharedData',
+  createdAt: 'createdAt'
+} as const
+
+export type PatientLinkScalarFieldEnum = (typeof PatientLinkScalarFieldEnum)[keyof typeof PatientLinkScalarFieldEnum]
+
+
+export const WearableDataScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  source: 'source',
+  dataType: 'dataType',
+  value: 'value',
+  unit: 'unit',
+  recordedAt: 'recordedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type WearableDataScalarFieldEnum = (typeof WearableDataScalarFieldEnum)[keyof typeof WearableDataScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  title: 'title',
+  body: 'body',
+  read: 'read',
+  channel: 'channel',
+  link: 'link',
+  sentAt: 'sentAt',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
 export const SortOrder = {

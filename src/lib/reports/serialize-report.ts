@@ -56,9 +56,10 @@ export function serializeReportListItem(report: {
 }
 
 export function serializeReportDetail(report: ReportWithRelations): ReportDetail {
-  const parsedData = (report.analysis?.parsedData ?? {}) as {
-    trends?: ReportDetail["analysis"] extends null ? never : NonNullable<ReportDetail["analysis"]>["trends"]
-  }
+  const parsedData = (report.analysis?.parsedData ?? {}) as Record<string, unknown>
+  const parsedTrends = (Array.isArray(parsedData.trends) ? parsedData.trends : []) as ReportDetail["analysis"] extends null ? never : NonNullable<ReportDetail["analysis"]>["trends"]
+  const parsedExplanations = (Array.isArray(parsedData.labValueExplanations) ? parsedData.labValueExplanations : undefined) as ReportDetail["analysis"] extends null ? never : NonNullable<ReportDetail["analysis"]>["labValueExplanations"]
+  const parsedConcerns = (Array.isArray(parsedData.concerns) ? parsedData.concerns : undefined) as ReportDetail["analysis"] extends null ? never : NonNullable<ReportDetail["analysis"]>["concerns"]
 
   return {
     id: report.id,
@@ -90,7 +91,9 @@ export function serializeReportDetail(report: ReportWithRelations): ReportDetail
             flag: row.flag,
             isAbnormal: row.isAbnormal,
           })),
-          trends: parsedData.trends ?? [],
+          trends: parsedTrends ?? [],
+          labValueExplanations: parsedExplanations,
+          concerns: parsedConcerns,
         }
       : null,
   }

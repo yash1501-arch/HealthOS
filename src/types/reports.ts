@@ -25,6 +25,15 @@ export type ParsedLabResult = {
   isAbnormal: boolean
 }
 
+export type LabValueExplanation = {
+  testName: string
+  value: string | number
+  status: "normal" | "high" | "low" | "unknown"
+  explanation: string
+  lifestyleFactors: string[]
+  dietarySuggestions: string[]
+}
+
 export type LabTrend = {
   testName: string
   previousValue: number | null
@@ -72,6 +81,8 @@ export type ReportDetail = {
       isAbnormal: boolean | null
     }>
     trends: LabTrend[]
+    labValueExplanations?: LabValueExplanation[]
+    concerns?: string[]
   } | null
 }
 

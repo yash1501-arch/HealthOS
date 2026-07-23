@@ -10,12 +10,14 @@ import { toastError, toastSuccess } from "@/stores/toast"
 
 function getPasswordStrength(password: string): { score: number; label: string; color: string; width: string } {
   let score = 0
-  if (password.length >= 8) score += 25
+  if (password.length >= 8) score += 20
   if (password.length >= 12) score += 10
   if (/[a-z]/.test(password)) score += 15
   if (/[A-Z]/.test(password)) score += 15
   if (/[0-9]/.test(password)) score += 15
   if (/[^a-zA-Z0-9]/.test(password)) score += 20
+  // Bonus
+  if (password.length >= 16) score += 5
 
   if (score < 30) return { score, label: "Weak", color: "#B53A45", width: `${Math.max(score, 5)}%` }
   if (score < 60) return { score, label: "Fair", color: "#9B651B", width: `${score}%` }
@@ -62,6 +64,10 @@ function validateEmail(email: string): string | null {
 function validatePassword(password: string): string | null {
   if (!password) return "Password is required"
   if (password.length < 8) return "Password must be at least 8 characters"
+  if (!/[A-Z]/.test(password)) return "Password needs an uppercase letter"
+  if (!/[a-z]/.test(password)) return "Password needs a lowercase letter"
+  if (!/[0-9]/.test(password)) return "Password needs a number"
+  if (!/[!@#$%^&*()_+\-=\[\]{}|;':",./<>?`]/.test(password)) return "Password needs a special character"
   return null
 }
 
@@ -80,18 +86,16 @@ export default function RegisterPage() {
     email: "",
     password: "",
     confirmPassword: "",
-    consentPrivacy: false,
-    consentDisclaimer: false,
+    acceptTerms: false,
   })
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)
+  const [serverError, setServerError] = useState("")
 
   function update(field: string, value: string | boolean) {
     setForm((prev) => ({ ...prev, [field]: value }))
-    // Clear field error on change
-    if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: "" }))
-    }
+    if (errors[field]) setErrors((prev) => ({ ...prev, [field]: "" }))
+    if (serverError) setServerError("")
   }
 
   function validate(): boolean {
@@ -110,8 +114,7 @@ export default function RegisterPage() {
       newErrors.confirmPassword = "Passwords do not match"
     }
 
-    if (!form.consentPrivacy) newErrors.consentPrivacy = "You must accept the privacy policy"
-    if (!form.consentDisclaimer) newErrors.consentDisclaimer = "You must accept the medical disclaimer"
+    if (!form.acceptTerms) newErrors.acceptTerms = "You must accept the Terms of Service"
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -122,21 +125,30 @@ export default function RegisterPage() {
     if (!validate()) return
 
     setLoading(true)
+    setServerError("")
 
     try {
-      await api.post("/auth/register", {
+      const result = await api.post<{ userId: string; needsConsent?: boolean }>("/auth/register", {
         email: form.email,
         password: form.password,
         fullName: form.fullName,
-        consentPrivacy: form.consentPrivacy,
-        consentDisclaimer: form.consentDisclaimer,
+        consentPrivacy: true,
+        consentDisclaimer: true,
       })
 
-      toastSuccess("Account created!", "Redirecting to your health assessment...")
-      setTimeout(() => router.push("/assessment"), 800)
+      toastSuccess("Account created!", "Setting up your health profile...")
+      // Navigate to assessment — the ConsentModal will be shown by the assessment layout
+      setTimeout(() => {
+        if (result.needsConsent) {
+          router.push("/assessment?consent=1")
+        } else {
+          router.push("/assessment")
+        }
+      }, 800)
     } catch (err: unknown) {
       const error = err as { message?: string }
       const msg = error.message || "Registration failed"
+      setServerError(msg)
       toastError("Registration failed", msg)
     } finally {
       setLoading(false)
@@ -151,6 +163,13 @@ export default function RegisterPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Server error */}
+        {serverError && (
+          <div className="bg-[#B53A45]/5 border border-[#B53A45]/10 rounded-xl p-3 text-xs text-[#B53A45]">
+            {serverError}
+          </div>
+        )}
+
         {/* Full Name */}
         <div>
           <label htmlFor="reg-name" className="label-text">Full Name</label>
@@ -190,7 +209,7 @@ export default function RegisterPage() {
             value={form.password}
             onChange={(e) => update("password", e.target.value)}
             className={`input-field ${errors.password ? "input-field-error" : ""}`}
-            placeholder="Min 8 characters"
+            placeholder="Min 8 characters, uppercase, lowercase, number, special"
             minLength={8}
             autoComplete="new-password"
           />
@@ -213,34 +232,25 @@ export default function RegisterPage() {
           {errors.confirmPassword && <p className="text-xs text-[#B53A45] mt-1">{errors.confirmPassword}</p>}
         </div>
 
-        {/* Consent */}
-        <div className="space-y-3 rounded-xl p-4 border border-[#E2E8F0]">
+        {/* Terms of Service Checkbox */}
+        <div className="rounded-xl p-4 border border-[#E2E8F0]">
           <label className="flex items-start gap-3 cursor-pointer">
             <input
               type="checkbox"
-              checked={form.consentPrivacy}
-              onChange={(e) => update("consentPrivacy", e.target.checked)}
+              checked={form.acceptTerms}
+              onChange={(e) => update("acceptTerms", e.target.checked)}
               className="mt-0.5 accent-[#176B63] w-4 h-4"
             />
             <div>
-              <span className="text-[#4B5870] text-xs leading-relaxed">
-                I understand that my health data will be encrypted and stored securely.
-              </span>
-              {errors.consentPrivacy && <p className="text-xs text-[#B53A45] mt-0.5">{errors.consentPrivacy}</p>}
-            </div>
-          </label>
-          <label className="flex items-start gap-3 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={form.consentDisclaimer}
-              onChange={(e) => update("consentDisclaimer", e.target.checked)}
-              className="mt-0.5 accent-[#176B63] w-4 h-4"
-            />
-            <div>
-              <span className="text-[#4B5870] text-xs leading-relaxed">
+              <span className="text-xs text-[#4B5870] leading-relaxed">
+                I agree to the{" "}
+                <Link href="/terms" className="text-[#176B63] hover:underline">Terms of Service</Link>
+                {" "}and{" "}
+                <Link href="/privacy" className="text-[#176B63] hover:underline">Privacy Policy</Link>.
                 I understand that HealthOS is not a medical device and does not diagnose diseases.
+                My data will be encrypted and stored securely.
               </span>
-              {errors.consentDisclaimer && <p className="text-xs text-[#B53A45] mt-0.5">{errors.consentDisclaimer}</p>}
+              {errors.acceptTerms && <p className="text-xs text-[#B53A45] mt-0.5">{errors.acceptTerms}</p>}
             </div>
           </label>
         </div>
